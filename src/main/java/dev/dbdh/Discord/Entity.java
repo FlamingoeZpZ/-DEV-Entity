@@ -11,7 +11,6 @@ import javax.security.auth.login.LoginException;
 import java.net.UnknownHostException;
 
 public class Entity {
-
     public static void main(String[] args) throws LoginException, RateLimitedException, InterruptedException, UnknownHostException {
         JDABuilder entity = new JDABuilder(AccountType.BOT).setToken(System.getenv("ENTITYDEVTOKEN"));
 
