@@ -1,5 +1,6 @@
 package dev.dbdh.Discord;
 
+import dev.dbdh.Discord.Listeners.Connection.Join;
 import dev.dbdh.Discord.Listeners.Ready;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
@@ -18,7 +19,10 @@ public class Entity {
         entity.setActivity(Activity.watching("Loading Bars"));
 
         entity.addEventListeners(
+                //Misc Listeners
+                new Join(),
                 new Ready()
+
         );
 
         entity.build();

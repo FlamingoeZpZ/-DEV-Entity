@@ -1,0 +1,6 @@
+dev\dbdh\Discord\Listeners\Ready.class
+dev\dbdh\Discord\Entity.class
+dev\dbdh\Discord\Utilities\Database.class
+dev\dbdh\Discord\Listeners\Connection\Join.class
+dev\dbdh\Discord\Listeners\Connection\JoinData.class
+dev\dbdh\Discord\Utilities\Data.class

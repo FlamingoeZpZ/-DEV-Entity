@@ -12,7 +12,7 @@ public class Data {
         return "~";
     }
 
-    public int getRandomNumber(){
+    public int getJoinNumber(){
 
         Random RNJesus = new Random();
         int i = RNJesus.nextInt(23);
