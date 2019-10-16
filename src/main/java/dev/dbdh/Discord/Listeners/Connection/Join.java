@@ -1,15 +1,25 @@
 package dev.dbdh.Discord.Listeners.Connection;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.client.MongoCollection;
 import dev.dbdh.Discord.Utilities.Data;
+import dev.dbdh.Discord.Utilities.Database;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.bson.Document;
 
+import java.time.Instant;
 import java.util.Random;
 
 public class Join extends ListenerAdapter {
 
     public void onGuildMemberJoin(GuildMemberJoinEvent event){
         Data data = new Data();
+        Database db = new Database();
+        EmbedBuilder eb = new EmbedBuilder();
+        int num = data.getJoinNumber();
         String [] URL = {
                 //Survivor
                 "https://steamuserimages-a.akamaihd.net/ugc/977729722245075235/7DC1276808049996DD89A63DB70CA67E5459E130/",
@@ -68,8 +78,28 @@ public class Join extends ListenerAdapter {
                 "No wonder the survivors say we have tunnel vision, we just can't see "
         };
 
+        eb.setDescription("```CSS\nWelcome to the " + event.getGuild().getName() + "! ``` We hope that you enjoy your stay here " + event.getUser().getAsMention() +" : " + event.getMember().getEffectiveName() + "! If you ever need help don't be afraid to contact an Admin! If you want to Role Assign go to " + event.getGuild().getTextChannelById("629510813518004244").getAsMention() + "! If you want to search for a game, simply @ anyone with the \"Looking to play\" Roles grouping. If you want to get a looking to play role Type \n~MatchPC (For PC players)\n~MatchXB (For Xbox Players)\n~MatchPS (For PS4 Players) \n~MatchMO (For Mobile Players)");
+        eb.setThumbnail(event.getMember().getUser().getEffectiveAvatarUrl());
+        eb.setImage(URL[num]);
+        eb.setFooter(FollowText[num] + "| Can we get a warm welcome for our newest member?", data.getSelfAvatar(event));
+        eb.setTimestamp(Instant.now());
 
+        if(num < 12){
+            eb.setColor(data.survivorBlue());
+        } else {
+            eb.setColor(data.killerRed());
+        }
 
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("Members");
+        Document perksActive = new Document(new BasicDBObject("plunderers", 0).append("ace_in_the_hole", 0).append("pharmacy", 0));
+        Document member = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("username", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("money", 0).append("perks_active", perksActive).append("event_wins", 0));
+        members.insertOne(member);
+        db.close();
+
+        data.getJoinChannel(event).sendMessage(eb.build()).queue((message) -> {
+            eb.clear();
+        });
 
     }
 }

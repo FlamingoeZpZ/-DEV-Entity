@@ -1,5 +1,6 @@
 package dev.dbdh.Discord.Utilities;
 
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -20,6 +21,10 @@ public class Data {
         return i;
     }
 
+    public TextChannel getJoinChannel(GuildMemberJoinEvent event){
+        return event.getGuild().getTextChannelById("540740427511234583");
+    }
+
     public String getSelfAvatar(GuildMemberJoinEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
@@ -29,5 +34,13 @@ public class Data {
     }
     public String getSelfAvatar(GuildMessageReceivedEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
+    }
+
+    public int killerRed(){
+        return 0xb20c0c;
+    }
+
+    public int survivorBlue(){
+        return 0xa1e5f3;
     }
 }
