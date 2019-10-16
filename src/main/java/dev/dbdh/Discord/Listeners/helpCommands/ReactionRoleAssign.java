@@ -1,5 +1,6 @@
 package dev.dbdh.Discord.Listeners.helpCommands;
 
+import dev.dbdh.Discord.Utilities.Color;
 import dev.dbdh.Discord.Utilities.Data;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emote;
@@ -15,6 +16,7 @@ public class ReactionRoleAssign extends ListenerAdapter {
     //TODO Set reaction adder to only work in specific channel
     //---//
     public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event){
+        Color color = new Color();
         Role KillerMain = event.getGuild().getRoleById("540744380416262185"); // 1
         Role SurvivorMain = event.getGuild().getRoleById("540744386506653712"); // 3
 
