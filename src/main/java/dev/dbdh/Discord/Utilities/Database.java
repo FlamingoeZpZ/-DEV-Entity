@@ -10,7 +10,7 @@ import org.bson.Document;
 import java.util.Arrays;
 
 public class Database {
-
+    
     private static MongoClient client;
     private static MongoDatabase db;
 
