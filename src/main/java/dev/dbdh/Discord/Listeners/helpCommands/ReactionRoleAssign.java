@@ -12,164 +12,115 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class ReactionRoleAssign extends ListenerAdapter {
     Data data = new Data();
     public static int ID;
-    //----//
-    //TODO Set reaction adder to only work in specific channel
-    //---//
-    public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event){
-        Color color = new Color();
-        Role KillerMain = event.getGuild().getRoleById("540744380416262185"); // 1
-        Role SurvivorMain = event.getGuild().getRoleById("540744386506653712"); // 3
+    public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event) {
+        if (event.getChannel().getId().equals("629510813518004244")) {
+            Color color = new Color();
+            Role KillerMain = event.getGuild().getRoleById("540744380416262185"); // 1
+            Role SurvivorMain = event.getGuild().getRoleById("540744386506653712"); // 3
 
-        Role Rarely = event.getGuild().getRoleById("540755698255003699");
-        Role Occasional = event.getGuild().getRoleById("540755676541222912");
-        Role AllTheTimes = event.getGuild().getRoleById("540755651731783680");
+            Role Rarely = event.getGuild().getRoleById("540755698255003699");
+            Role Occasional = event.getGuild().getRoleById("540755676541222912");
+            Role AllTheTimes = event.getGuild().getRoleById("540755651731783680");
 
-        Role Gross = event.getGuild().getRoleById("543652286279319552");
-        Role Games = event.getGuild().getRoleById("575326203901116474");
-        Role Viewer = event.getGuild().getRoleById("540759805481189379");
+            Role Gross = event.getGuild().getRoleById("543652286279319552");
+            Role Games = event.getGuild().getRoleById("575326203901116474");
+            Role Viewer = event.getGuild().getRoleById("540759805481189379");
 
-        Role ServerAnnouncement = event.getGuild().getRoleById("589450072488542219");
-        Role GameAnnouncement = event.getGuild().getRoleById("589450041542836243");
-        Role Publisher = event.getGuild().getRoleById("540748208083697665");
-        Role PingForTournaments = event.getGuild().getRoleById("629135819826921493");
+            Role ServerAnnouncement = event.getGuild().getRoleById("589450072488542219");
+            Role GameAnnouncement = event.getGuild().getRoleById("589450041542836243");
+            Role Publisher = event.getGuild().getRoleById("540748208083697665");
+            Role PingForTournaments = event.getGuild().getRoleById("629135819826921493");
 
-        if(!event.getMember().getUser().equals(event.getJDA().getSelfUser()) && // the person who added the reaction IS NOT the bot
-                event.getChannel().equals(event.getGuild().getTextChannelById("629510813518004244"))){
+            if (!event.getMember().getUser().equals(event.getJDA().getSelfUser()) && // the person who added the reaction IS NOT the bot
+                    event.getChannel().equals(event.getGuild().getTextChannelById("629510813518004244"))) {
 
-            if(event.getReactionEmote().getId().equals("575437440450560000")){ //CheckMark
-                if(event.getMember().getRoles().contains(KillerMain))
-                {
-                    event.getGuild().removeRoleFromMember(event.getMember(), KillerMain).queue();
-                }
-                else
-                {
-                    event.getGuild().addRoleToMember(event.getMember(), KillerMain).queue(); // 2
-                }
-            }
-            else if(event.getReactionEmote().getId().equals("579132892370829333")){ // X
-                if(event.getMember().getRoles().contains(SurvivorMain))
-                {
-                    event.getGuild().removeRoleFromMember(event.getMember(), SurvivorMain).queue();
-                }
-                else
-                {
-                    event.getGuild().addRoleToMember(event.getMember(), SurvivorMain).queue(); // 2
-                }
-
-            }
-            else if(event.getReactionEmote().getId().equals("629126364477390848")){
-                if(event.getMember().getRoles().contains(Rarely))
-                {
-                    event.getGuild().removeRoleFromMember(event.getMember(), Rarely).queue();
-                }
-                else
-                {
-                    event.getGuild().addRoleToMember(event.getMember(), Rarely).queue(); // 2
-                }
-            }
-            else if(event.getReactionEmote().getId().equals("629126364083257355")){
-                if(event.getMember().getRoles().contains(Occasional))
-                {
-                    event.getGuild().removeRoleFromMember(event.getMember(), Occasional).queue();
-                }
-                else
-                {
-                    event.getGuild().addRoleToMember(event.getMember(), Occasional).queue(); // 2
-                }
-            }
-            else if(event.getReactionEmote().getId().equals("629126364460744714")){
-                if(event.getMember().getRoles().contains(AllTheTimes))
-                {
-                    event.getGuild().removeRoleFromMember(event.getMember(), AllTheTimes).queue();
-                }
-                else
-                {
-                    event.getGuild().addRoleToMember(event.getMember(), AllTheTimes).queue(); // 2
-                }
-            }
-            else if(event.getReactionEmote().getId().equals("573230699885232140")){
-                if(event.getMember().getRoles().contains(Gross))
-                {
-                    event.getGuild().removeRoleFromMember(event.getMember(), Gross).queue();
-                }
-                else
-                {
-                    event.getGuild().addRoleToMember(event.getMember(), Gross).queue(); // 2
-                }
-            }
-            else if(event.getReactionEmote().getId().equals("573235478711500837")){
-                if(event.getMember().getRoles().contains(Games))
-                {
-                    event.getGuild().removeRoleFromMember(event.getMember(), Games).queue();
-                }
-                else
-                {
-                    event.getGuild().addRoleToMember(event.getMember(), Games).queue(); // 2
-                }
-            }
-            else if(event.getReactionEmote().getId().equals("583392850067324928")){
-                if(event.getMember().getRoles().contains(Viewer))
-                {
-                    event.getGuild().removeRoleFromMember(event.getMember(), Viewer).queue();
-                }
-                else
-                {
-                    event.getGuild().addRoleToMember(event.getMember(), Viewer).queue(); // 2
-                }
-            }
-            else if(event.getReactionEmote().getId().equals("575437537074479114")){
-                if(event.getMember().getRoles().contains(ServerAnnouncement))
-                {
-                    event.getGuild().removeRoleFromMember(event.getMember(), ServerAnnouncement).queue();
-                }
-                else
-                {
-                    event.getGuild().addRoleToMember(event.getMember(), ServerAnnouncement).queue(); // 2
-                }
-            }
-            else if(event.getReactionEmote().getId().equals("577557877343125518")){
-                if(event.getMember().getRoles().contains(GameAnnouncement))
-                {
-                    event.getGuild().removeRoleFromMember(event.getMember(), GameAnnouncement).queue();
-                }
-                else
-                {
-                    event.getGuild().addRoleToMember(event.getMember(), GameAnnouncement).queue(); // 2
-                }
-            }
-            else if(event.getReactionEmote().getId().equals("577557950315626526")){
-                event.getUser().openPrivateChannel().queue((channel) ->
-                {
-                    if(event.getMember().getRoles().contains(Publisher))
-                    {
-                        channel.sendMessage("You already have this role! If you'd like to get it removed message, " + event.getGuild().getOwner().getAsMention()).queue();
+                if (event.getReactionEmote().getId().equals("575437440450560000")) { //CheckMark
+                    if (event.getMember().getRoles().contains(KillerMain)) {
+                        event.getGuild().removeRoleFromMember(event.getMember(), KillerMain).queue();
+                    } else {
+                        event.getGuild().addRoleToMember(event.getMember(), KillerMain).queue(); // 2
                     }
-                    else
-                    {
-                        channel.sendMessage("Please DM " + event.getGuild().getOwner().getAsMention() +" With your streaming link to start streaming with us today!").queue();
+                } else if (event.getReactionEmote().getId().equals("579132892370829333")) { // X
+                    if (event.getMember().getRoles().contains(SurvivorMain)) {
+                        event.getGuild().removeRoleFromMember(event.getMember(), SurvivorMain).queue();
+                    } else {
+                        event.getGuild().addRoleToMember(event.getMember(), SurvivorMain).queue(); // 2
                     }
-                });
-            }
-            else if(event.getReactionEmote().getId().equals("575437440509280296")){
 
-                if(event.getMember().getRoles().contains(PingForTournaments))
-                {
-                    event.getGuild().removeRoleFromMember(event.getMember(), PingForTournaments).queue();
-                }
-                else
-                {
-                    event.getGuild().addRoleToMember(event.getMember(), PingForTournaments).queue(); // 2
+                } else if (event.getReactionEmote().getId().equals("629126364477390848")) {
+                    if (event.getMember().getRoles().contains(Rarely)) {
+                        event.getGuild().removeRoleFromMember(event.getMember(), Rarely).queue();
+                    } else {
+                        event.getGuild().addRoleToMember(event.getMember(), Rarely).queue(); // 2
+                    }
+                } else if (event.getReactionEmote().getId().equals("629126364083257355")) {
+                    if (event.getMember().getRoles().contains(Occasional)) {
+                        event.getGuild().removeRoleFromMember(event.getMember(), Occasional).queue();
+                    } else {
+                        event.getGuild().addRoleToMember(event.getMember(), Occasional).queue(); // 2
+                    }
+                } else if (event.getReactionEmote().getId().equals("629126364460744714")) {
+                    if (event.getMember().getRoles().contains(AllTheTimes)) {
+                        event.getGuild().removeRoleFromMember(event.getMember(), AllTheTimes).queue();
+                    } else {
+                        event.getGuild().addRoleToMember(event.getMember(), AllTheTimes).queue(); // 2
+                    }
+                } else if (event.getReactionEmote().getId().equals("573230699885232140")) {
+                    if (event.getMember().getRoles().contains(Gross)) {
+                        event.getGuild().removeRoleFromMember(event.getMember(), Gross).queue();
+                    } else {
+                        event.getGuild().addRoleToMember(event.getMember(), Gross).queue(); // 2
+                    }
+                } else if (event.getReactionEmote().getId().equals("573235478711500837")) {
+                    if (event.getMember().getRoles().contains(Games)) {
+                        event.getGuild().removeRoleFromMember(event.getMember(), Games).queue();
+                    } else {
+                        event.getGuild().addRoleToMember(event.getMember(), Games).queue(); // 2
+                    }
+                } else if (event.getReactionEmote().getId().equals("583392850067324928")) {
+                    if (event.getMember().getRoles().contains(Viewer)) {
+                        event.getGuild().removeRoleFromMember(event.getMember(), Viewer).queue();
+                    } else {
+                        event.getGuild().addRoleToMember(event.getMember(), Viewer).queue(); // 2
+                    }
+                } else if (event.getReactionEmote().getId().equals("575437537074479114")) {
+                    if (event.getMember().getRoles().contains(ServerAnnouncement)) {
+                        event.getGuild().removeRoleFromMember(event.getMember(), ServerAnnouncement).queue();
+                    } else {
+                        event.getGuild().addRoleToMember(event.getMember(), ServerAnnouncement).queue(); // 2
+                    }
+                } else if (event.getReactionEmote().getId().equals("577557877343125518")) {
+                    if (event.getMember().getRoles().contains(GameAnnouncement)) {
+                        event.getGuild().removeRoleFromMember(event.getMember(), GameAnnouncement).queue();
+                    } else {
+                        event.getGuild().addRoleToMember(event.getMember(), GameAnnouncement).queue(); // 2
+                    }
+                } else if (event.getReactionEmote().getId().equals("577557950315626526")) {
                     event.getUser().openPrivateChannel().queue((channel) ->
                     {
-                        channel.sendMessage("This role means you are okay with being pinged for events").queue();
+                        if (event.getMember().getRoles().contains(Publisher)) {
+                            channel.sendMessage("You already have this role! If you'd like to get it removed message, " + event.getGuild().getOwner().getAsMention()).queue();
+                        } else {
+                            channel.sendMessage("Please DM " + event.getGuild().getOwner().getAsMention() + " With your streaming link to start streaming with us today!").queue();
+                        }
                     });
+                } else if (event.getReactionEmote().getId().equals("575437440509280296")) {
+
+                    if (event.getMember().getRoles().contains(PingForTournaments)) {
+                        event.getGuild().removeRoleFromMember(event.getMember(), PingForTournaments).queue();
+                    } else {
+                        event.getGuild().addRoleToMember(event.getMember(), PingForTournaments).queue(); // 2
+                        event.getUser().openPrivateChannel().queue((channel) ->
+                        {
+                            channel.sendMessage("This role means you are okay with being pinged for events").queue();
+                        });
+                    }
+                } else {
+                    //EDIT
+                    event.getGuild().getTextChannelById("629510813518004244").sendMessage("Error Role not found please DM " + event.getGuild().getOwner().getAsMention());
                 }
+                event.getReaction().removeReaction(event.getUser()).queue();
             }
-            else {
-                //EDIT
-                event.getGuild().getTextChannelById("629510813518004244").sendMessage("Error Role not found please DM " + event.getGuild().getOwner().getAsMention());
-            }
-            event.getReaction().removeReaction(event.getUser()).queue();
         }
     }
     public void onGuildMessageReceived(GuildMessageReceivedEvent event){

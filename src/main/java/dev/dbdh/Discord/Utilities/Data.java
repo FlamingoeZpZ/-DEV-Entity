@@ -29,18 +29,12 @@ public class Data {
     public String getSelfAvatar(GuildMessageReceivedEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
-    
+
     public String getSelfName(GuildMemberJoinEvent event){
         return event.getJDA().getSelfUser().getName();
     }
 
     public String getGuildName(GuildMemberJoinEvent event){
         return event.getGuild().getName();
-    }
-
-    public int getRandomColor(){
-        Random obj = new Random();
-        int random_number = obj.nextInt(0xffffff + 1);
-        return random_number;
     }
 }
