@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.awt.*;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -24,7 +23,6 @@ public class Ready extends ListenerAdapter {
             int game = random.nextInt(games.length);
             event.getJDA().getPresence().setActivity(games[game]);
         }, 0, 2, TimeUnit.MINUTES);
-
     }
 
 }
