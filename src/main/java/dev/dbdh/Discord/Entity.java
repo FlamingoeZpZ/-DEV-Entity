@@ -1,7 +1,8 @@
 package dev.dbdh.Discord;
 
-import dev.dbdh.Discord.Listeners.Connection.*;
-import dev.dbdh.Discord.Listeners.Ready;
+import dev.dbdh.Discord.Listeners.Miscellaneous.Join;
+import dev.dbdh.Discord.Listeners.Miscellaneous.Leave;
+import dev.dbdh.Discord.Listeners.Miscellaneous.Ready;
 import dev.dbdh.Discord.Listeners.helpCommands.ReactionRoleAssign;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
