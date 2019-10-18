@@ -1,9 +1,7 @@
 package dev.dbdh.Discord;
 
-import dev.dbdh.Discord.Listeners.Miscellaneous.Join;
-import dev.dbdh.Discord.Listeners.Miscellaneous.Leave;
-import dev.dbdh.Discord.Listeners.Miscellaneous.Ready;
-import dev.dbdh.Discord.Listeners.helpCommands.ReactionRoleAssign;
+import dev.dbdh.Discord.Listeners.Help_Commands.*;
+import dev.dbdh.Discord.Listeners.Miscellaneous.*;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -25,7 +23,9 @@ public class Entity {
                 new Join(),
                 new Ready(),
                 new Leave(),
-                new ReactionRoleAssign()
+                //Help Listeners
+                new ReactionRoleAssign(),
+                new Help()
 
         );
 

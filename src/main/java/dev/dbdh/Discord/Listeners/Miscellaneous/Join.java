@@ -88,7 +88,7 @@ public class Join extends ListenerAdapter {
                 "No wonder the survivors say we have tunnel vision, we just can't see "
         };
 
-        JoinEvent.setDescription("```CSS\nWelcome to the " + event.getGuild().getName() + "! ``` We hope that you enjoy your stay here " + event.getUser().getAsMention() +" : " + event.getMember().getEffectiveName() + "! If you ever need help don't be afraid to contact an Admin! If you want to Role Assign go to " + event.getGuild().getTextChannelById("629510813518004244").getAsMention() + "! If you want to search for a game, simply @ anyone with the \"Looking to play\" Roles grouping. If you want to get a looking to play role Type \n~MatchPC (For PC players)\n~MatchXB (For Xbox Players)\n~MatchPS (For PS4 Players) \n~MatchMO (For Mobile Players)");
+        JoinEvent.setDescription("```CSS\nWelcome to the " + event.getGuild().getName() + "! ``` We hope that you enjoy your stay here " + event.getUser().getAsMention() +" : " + event.getMember().getEffectiveName() + "! If you ever need help don't be afraid to contact an Admin! If you want to Role Assign go to " + event.getGuild().getTextChannelById("629510813518004244").getAsMention() + "! If you want to search for a game, simply @ anyone with the \"Looking to play\" Roles grouping. If you want to get a looking to play role Type \n~Match PC (For PC players)\n~Match XBOX (For Xbox Players)\n~Match PS4 (For PS4 Players) \n~Match MOBILE (For Mobile Players)");
         JoinEvent.setThumbnail(event.getMember().getUser().getEffectiveAvatarUrl());
         JoinEvent.setImage(URL[num]);
         JoinEvent.setFooter(FollowText[num] + "| Can we get a warm welcome for our newest member?", data.getSelfAvatar(event));

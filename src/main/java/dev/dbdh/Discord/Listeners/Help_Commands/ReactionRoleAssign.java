@@ -1,4 +1,4 @@
-package dev.dbdh.Discord.Listeners.helpCommands;
+package dev.dbdh.Discord.Listeners.Help_Commands;
 
 import dev.dbdh.Discord.Utilities.Color;
 import dev.dbdh.Discord.Utilities.Data;
@@ -14,7 +14,6 @@ public class ReactionRoleAssign extends ListenerAdapter {
     public static int ID;
     public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event) {
         if (event.getChannel().getId().equals("629510813518004244")) {
-            Color color = new Color();
             Role KillerMain = event.getGuild().getRoleById("540744380416262185"); // 1
             Role SurvivorMain = event.getGuild().getRoleById("540744386506653712"); // 3
 
