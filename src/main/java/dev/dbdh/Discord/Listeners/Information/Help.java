@@ -16,7 +16,7 @@ public class Help extends ListenerAdapter {
             || args[0].equalsIgnoreCase(data.getPrefix() +"info")
                 || args[0].equalsIgnoreCase(data.getPrefix() +"i")){ // Terms used to access this command
             EmbedBuilder help = new EmbedBuilder();
-            help.setTitle("Help & Info for " + event.getAuthor().getName(), event.getGuild().getName());
+            help.setAuthor("Help & Info for " + event.getAuthor().getName(), null, event.getGuild().getIconUrl());
             help.setDescription("The ***prefix for "+ event.getAuthor().getName() +" is "+data.getPrefix()+"***"
                     + "\nThis is a list of all commands and features we currently  implemented into " + event.getAuthor().getName()
                     + "\n```Tools``` **~Help/~Info/~I** > Returns this message and explains how to use the bot."

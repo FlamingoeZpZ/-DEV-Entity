@@ -10,7 +10,7 @@ public class Data {
     Random RNJesus = new Random();
 
     public String getPrefix(){
-        return "~";
+        return "!~";
     }
 
     public int getJoinNumber(){

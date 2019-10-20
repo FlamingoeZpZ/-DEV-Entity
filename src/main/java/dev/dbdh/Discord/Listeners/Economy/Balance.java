@@ -24,7 +24,7 @@ public class Balance extends ListenerAdapter {
         Color color = new Color();
         EmbedBuilder eb = new EmbedBuilder();
         String[] aliases = {data.getPrefix() + "balance", data.getPrefix() + "bal", data.getPrefix() + "$"};
-        if (Arrays.stream(aliases).anyMatch(args[0]::equals)) {
+        if (args[0].equalsIgnoreCase(data.getPrefix() + "balance")/* Broken Code Arrays.stream(aliases).anyMatch(args[0]::equals)*/) {
             db.connect();
             MongoCollection<Document> members = db.getCollection("members");
             Document member = members.find(eq("memberId", event.getMember().getUser().getId())).first();
