@@ -17,7 +17,7 @@ public class Database {
     public static void connect() {
         MongoCredential credentials = MongoCredential.createCredential("Entity", "admin", System.getenv("ENTITYSQLPASSWORD").toCharArray());
         client = new MongoClient(new ServerAddress("localhost", 27018), Arrays.asList(credentials));
-        db = client.getDatabase("Entity_DataBase");
+        db = client.getDatabase("entity");
     }
 
     public static MongoCollection<Document> getCollection(String collection) {
