@@ -9,6 +9,7 @@ public class Color {
     public int gold = 0xCCAC00;
     public int darkGreen = 0x228B22;
     public int babyBlue = 0xa1e5f3;
+    public int errorRed = 0xff4d4d;
 
     public int getRandomColor(){
         Random obj = new Random();

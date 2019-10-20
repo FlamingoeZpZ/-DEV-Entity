@@ -1,5 +1,6 @@
 package dev.dbdh.Discord;
 
+import dev.dbdh.Discord.Listeners.Economy.Balance;
 import dev.dbdh.Discord.Listeners.Information.*;
 import dev.dbdh.Discord.Listeners.Miscellaneous.*;
 import net.dv8tion.jda.api.AccountType;
@@ -24,6 +25,8 @@ public class Entity {
                 new Ready(),
                 new Leave(),
 
+                //Economy Listeners
+                new Balance(),
 
                 //Information Listeners
                 new ReactionRoleAssign(),
