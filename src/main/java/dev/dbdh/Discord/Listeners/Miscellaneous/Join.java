@@ -127,9 +127,9 @@ public class Join extends ListenerAdapter {
 
 
         db.connect();
-        MongoCollection<Document> members = db.getCollection("Members");
-        Document perksActive = new Document(new BasicDBObject("plunderers", 0).append("ace_in_the_hole", 0).append("pharmacy", 0));
-        Document member = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("username", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("money", 0).append("perks_active", perksActive).append("event_wins", 0));
+        MongoCollection<Document> members = db.getCollection("members");
+        Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0));
+        Document member = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 0).append("perksActive", perksActive).append("eventWins", 0));
         members.insertOne(member);
         db.close();
 
