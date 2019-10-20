@@ -1,4 +1,4 @@
-package dev.dbdh.Discord.Listeners.Help_Commands;
+package dev.dbdh.Discord.Listeners.Information;
 
 import dev.dbdh.Discord.Utilities.Color;
 import dev.dbdh.Discord.Utilities.Data;

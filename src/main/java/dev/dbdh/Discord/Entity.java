@@ -1,6 +1,6 @@
 package dev.dbdh.Discord;
 
-import dev.dbdh.Discord.Listeners.Help_Commands.*;
+import dev.dbdh.Discord.Listeners.Information.*;
 import dev.dbdh.Discord.Listeners.Miscellaneous.*;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
@@ -23,7 +23,9 @@ public class Entity {
                 new Join(),
                 new Ready(),
                 new Leave(),
-                //Help Listeners
+
+
+                //Information Listeners
                 new ReactionRoleAssign(),
                 new Help(),
                 new LookingToPlay()

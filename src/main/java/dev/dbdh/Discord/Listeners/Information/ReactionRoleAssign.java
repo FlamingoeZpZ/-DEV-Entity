@@ -1,6 +1,5 @@
-package dev.dbdh.Discord.Listeners.Help_Commands;
+package dev.dbdh.Discord.Listeners.Information;
 
-import dev.dbdh.Discord.Utilities.Color;
 import dev.dbdh.Discord.Utilities.Data;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emote;
