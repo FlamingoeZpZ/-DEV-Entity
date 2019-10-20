@@ -30,7 +30,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                 if (members.find(eq("memberID", member.getUser().getId())).first() == null) {
                     if (!member.getUser().isBot()) {
                         Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0));
-                        Document memberInfo = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 0).append("perksActive", perksActive).append("eventWins", 0));
+                        Document memberInfo = new Document(new BasicDBObject("memberId", member.getUser().getId()).append("memberName", member.getUser().getName() + "#" + member.getUser().getDiscriminator()).append("balance", 0).append("perksActive", perksActive).append("eventWins", 0));
                         members.insertOne(memberInfo);
                         eb.setDescription("Added " + member.getUser().getName() + " to Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
                         eb.setColor(color.getRandomColor());
