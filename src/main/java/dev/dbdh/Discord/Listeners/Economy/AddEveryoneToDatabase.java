@@ -20,7 +20,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
             db.connect();
             MongoCollection<Document> members = db.getCollection("members");
             for(Member member: event.getGuild().getMembers()) {
-                if (members.find(eq("memberId", event.getMember().getUser().getId())).first() == null) {
+                if (members.find(eq("memberId", member.getUser().getId())).first() == null) {
                     Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0));
                     Document memberInfo = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 0).append("perksActive", perksActive).append("eventWins", 0));
                     members.insertOne(memberInfo);
