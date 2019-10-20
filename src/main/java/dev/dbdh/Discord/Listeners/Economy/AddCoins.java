@@ -10,7 +10,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class AddCoins extends ListenerAdapter {
 
@@ -35,17 +37,18 @@ public class AddCoins extends ListenerAdapter {
                         message.delete().queueAfter(15, TimeUnit.SECONDS);
                     });
                 } else if (args.length > 2){
-                    Member mentioned = event.getMessage().getMentionedMembers().get(0);
-                    eb.setDescription("Successfully added " + args[2] + " coins to " + mentioned.getAsMention() + "'balance.");
+                    String name = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
+                    Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
+                    eb.setDescription("Successfully added " + args[1] + " coins to " + mentioned.getAsMention() + "'s balance.");
                     eb.setColor(color.getRandomColor());
                     eb.setTimestamp(Instant.now());
                     eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
 
-                    success.setDescription(event.getMember().getAsMention() + " added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance");
+                    success.setDescription(event.getMember().getAsMention() + " added " + args[1] + " coins to " + mentioned.getAsMention() + "'s balance");
                     success.setColor(color.getRandomColor());
                     success.setTimestamp(Instant.now());
                     success.setFooter("Entity Economy Logs");
-                    ecu.addCoins(mentioned.getIdLong(), Integer.parseInt(args[2]));
+                    ecu.addCoins(event, name, Integer.parseInt(args[1]));
                     event.getChannel().sendMessage(eb.build()).queue((message) -> {
                        eb.clear();
                        data.getLogChannel(event).sendMessage(success.build()).queue();
