@@ -1,5 +1,6 @@
 package dev.dbdh.Discord;
 
+import dev.dbdh.Discord.Listeners.Economy.AddCoins;
 import dev.dbdh.Discord.Listeners.Economy.AddEveryoneToDatabase;
 import dev.dbdh.Discord.Listeners.Economy.Balance;
 import dev.dbdh.Discord.Listeners.Information.*;
@@ -27,6 +28,7 @@ public class Entity {
                 new Leave(),
 
                 //Economy Listeners
+                new AddCoins(),
                 new Balance(),
 
                 //Information Listeners

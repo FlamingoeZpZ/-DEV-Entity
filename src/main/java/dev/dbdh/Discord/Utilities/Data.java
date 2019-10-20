@@ -37,4 +37,8 @@ public class Data {
     public String getGuildName(GuildMemberJoinEvent event){
         return event.getGuild().getName();
     }
+
+    public TextChannel getLogChannel(GuildMessageReceivedEvent event){
+        return event.getGuild().getTextChannelById("635607577794969644");
+    }
 }
