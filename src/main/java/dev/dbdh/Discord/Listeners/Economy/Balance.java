@@ -23,7 +23,7 @@ public class Balance extends ListenerAdapter {
         Database db = new Database();
         Color color = new Color();
         EmbedBuilder eb = new EmbedBuilder();
-        String[] aliases = {data.getPrefix() + "balance", data.getPrefix() + "bal", data.getPrefix() + "$"};
+        //String[] aliases = {data.getPrefix() + "balance", data.getPrefix() + "bal", data.getPrefix() + "$"};
         if (args[0].equalsIgnoreCase(data.getPrefix() + "balance")/* Broken Code Arrays.stream(aliases).anyMatch(args[0]::equals)*/) {
             db.connect();
             MongoCollection<Document> members = db.getCollection("members");
@@ -33,12 +33,19 @@ public class Balance extends ListenerAdapter {
                 eb.setColor(color.errorRed);
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Database Error", data.getSelfAvatar(event));
+                event.getChannel().sendMessage(eb.build()).queue((message) ->{
+                    eb.clear();
+                    db.close();
+                });
             } else {
                 eb.setDescription("Your current balance is: $" + member.getString("balance"));
                 eb.setColor(color.getRandomColor());
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Balance Card", data.getSelfAvatar(event));
-                db.close();
+                event.getChannel().sendMessage(eb.build()).queue((message) ->{
+                    eb.clear();
+                    db.close();
+                });
             }
         }
     }
