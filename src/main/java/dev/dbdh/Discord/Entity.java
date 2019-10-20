@@ -25,7 +25,8 @@ public class Entity {
                 new Leave(),
                 //Help Listeners
                 new ReactionRoleAssign(),
-                new Help()
+                new Help(),
+                new LookingToPlay()
 
         );
 
