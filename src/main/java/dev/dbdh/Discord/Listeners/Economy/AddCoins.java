@@ -45,10 +45,9 @@ public class AddCoins extends ListenerAdapter {
                     success.setColor(color.getRandomColor());
                     success.setTimestamp(Instant.now());
                     success.setFooter("Entity Economy Logs");
-
+                    ecu.addCoins(mentioned.getIdLong(), Integer.parseInt(args[2]));
                     event.getChannel().sendMessage(eb.build()).queue((message) -> {
                        eb.clear();
-                       ecu.addCoins(mentioned.getIdLong(), Integer.parseInt(args[2]));
                        data.getLogChannel(event).sendMessage(success.build()).queue();
                        message.delete().queueAfter(15, TimeUnit.SECONDS);
                     });
