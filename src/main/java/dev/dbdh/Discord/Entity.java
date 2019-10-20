@@ -1,5 +1,6 @@
 package dev.dbdh.Discord;
 
+import dev.dbdh.Discord.Listeners.Economy.AddEveryoneToDatabase;
 import dev.dbdh.Discord.Listeners.Economy.Balance;
 import dev.dbdh.Discord.Listeners.Information.*;
 import dev.dbdh.Discord.Listeners.Miscellaneous.*;
@@ -31,7 +32,9 @@ public class Entity {
                 //Information Listeners
                 new ReactionRoleAssign(),
                 new Help(),
-                new LookingToPlay()
+                new LookingToPlay(),
+
+                new AddEveryoneToDatabase()
 
         );
 
