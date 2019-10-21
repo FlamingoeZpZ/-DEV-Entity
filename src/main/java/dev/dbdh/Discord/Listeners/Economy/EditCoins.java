@@ -42,7 +42,7 @@ public class EditCoins extends ListenerAdapter {
                     if (Arrays.stream(removeAliases).anyMatch(args[1]::equals)) {
                         String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                         Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
-                        eb.setDescription("Successfully removed " + args[1] + " coins from " + mentioned.getAsMention() + "'s balance.");
+                        eb.setDescription("Successfully removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance.");
                         eb.setColor(color.getRandomColor());
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
@@ -61,7 +61,7 @@ public class EditCoins extends ListenerAdapter {
                     } else if (Arrays.stream(addAliases).anyMatch(args[1]::equals)) {
                         String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                         Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
-                        eb.setDescription("Successfully added " + args[1] + " coins to " + mentioned.getAsMention() + "'s balance.");
+                        eb.setDescription("Successfully added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance.");
                         eb.setColor(color.getRandomColor());
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
