@@ -1,9 +1,8 @@
 package dev.dbdh.Discord;
 
-import dev.dbdh.Discord.Listeners.Economy.AddCoins;
 import dev.dbdh.Discord.Listeners.Economy.AddEveryoneToDatabase;
 import dev.dbdh.Discord.Listeners.Economy.Balance;
-import dev.dbdh.Discord.Listeners.Economy.RemoveCoins;
+import dev.dbdh.Discord.Listeners.Economy.EditCoins;
 import dev.dbdh.Discord.Listeners.Information.*;
 import dev.dbdh.Discord.Listeners.Miscellaneous.*;
 import net.dv8tion.jda.api.AccountType;
@@ -30,14 +29,9 @@ public class Entity {
                 new Leave(),
 
                 //Economy Listeners
-                new AddCoins(),
                 new AddEveryoneToDatabase(),
-                /**
-                 *  Disabled as its not needed anymore
-                 *
-                 */
                 new Balance(),
-                new RemoveCoins(),
+                new EditCoins(),
 
                 //Information Listeners
                 new ReactionRoleAssign(),
