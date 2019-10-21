@@ -24,6 +24,8 @@ public class EditCoins extends ListenerAdapter {
         EmbedBuilder eb = new EmbedBuilder();
         EmbedBuilder success = new EmbedBuilder();
         RoleCheck rc = new RoleCheck();
+        String[] addAliases = {"-a", "a", "add"};
+        String[] removeAliases = {"-r", "r", "rm", "remove"};
         if (args[0].equalsIgnoreCase(data.getPrefix() + "coins")) {
             if (rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event)) {
                 if (args.length < 4) {
@@ -37,8 +39,6 @@ public class EditCoins extends ListenerAdapter {
                         message.delete().queueAfter(15, TimeUnit.SECONDS);
                     });
                 } else if (args.length > 3) {
-                    String[] addAliases = {"-a", "a", "add"};
-                    String[] removeAliases = {"-r", "r", "rm", "remove"};
                     if (Arrays.stream(removeAliases).anyMatch(args[1]::equals)) {
                         String name = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
                         Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
@@ -47,7 +47,7 @@ public class EditCoins extends ListenerAdapter {
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
 
-                        success.setDescription(event.getMember().getAsMention() + " removed " + args[1] + " coins from " + mentioned.getAsMention() + "'s balance");
+                        success.setDescription(event.getMember().getAsMention() + " removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance");
                         success.setColor(color.getRandomColor());
                         success.setTimestamp(Instant.now());
                         success.setFooter("Entity Economy Logs");
@@ -66,7 +66,7 @@ public class EditCoins extends ListenerAdapter {
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
 
-                        success.setDescription(event.getMember().getAsMention() + " added " + args[1] + " coins to " + mentioned.getAsMention() + "'s balance");
+                        success.setDescription(event.getMember().getAsMention() + " added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance");
                         success.setColor(color.getRandomColor());
                         success.setTimestamp(Instant.now());
                         success.setFooter("Entity Economy Logs");

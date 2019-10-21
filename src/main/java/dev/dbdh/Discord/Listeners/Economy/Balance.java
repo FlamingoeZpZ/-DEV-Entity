@@ -66,7 +66,7 @@ public class Balance extends ListenerAdapter {
                         db.close();
                     });
                 } else {
-                    eb.setDescription(mentioned.getAsMention() + " current balance is: " + member.get("balance"));
+                    eb.setDescription(mentioned.getAsMention() + "'s current balance is: " + member.get("balance"));
                     eb.setColor(color.getRandomColor());
                     eb.setTimestamp(Instant.now());
                     eb.setFooter("Entity Balance Card", data.getSelfAvatar(event));
