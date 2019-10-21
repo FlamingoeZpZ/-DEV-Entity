@@ -1,10 +1,3 @@
-/**
- * Copyright Dead By Daylight Hub Coding Group 2019
- * Nathaniel "ExZiByte" Barker, Gabriel "Flamingo" Kotton
- *
- * You may use this class as inspiration for your own uses. But please DO NOT directly copy.
- */
-
 package dev.dbdh.Discord.Listeners.Economy;
 
 import dev.dbdh.Discord.Utilities.Color;
@@ -21,12 +14,9 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-/**
- * Command class to add Coins to members for the Entity Discord Bot
- */
-public class AddCoins extends ListenerAdapter {
+public class RemoveCoins extends ListenerAdapter {
 
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event){
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         Color color = new Color();
         Data data = new Data();
@@ -34,9 +24,9 @@ public class AddCoins extends ListenerAdapter {
         EmbedBuilder eb = new EmbedBuilder();
         EmbedBuilder success = new EmbedBuilder();
         RoleCheck rc = new RoleCheck();
-        if(args[0].equalsIgnoreCase(data.getPrefix() + "addcoins")){
-            if(rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event)){
-                if(args.length < 3){
+        if (args[0].equalsIgnoreCase(data.getPrefix() + "addcoins")) {
+            if (rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event)) {
+                if (args.length < 3) {
                     eb.setDescription(event.getMember().getAsMention() + " you haven't specified enough arguments \n\n```\n" + data.getPrefix() + "addcoins <@member> <amount of coins to add>\n```");
                     eb.setColor(color.errorRed);
                     eb.setTimestamp(Instant.now());
@@ -46,23 +36,23 @@ public class AddCoins extends ListenerAdapter {
                         eb.clear();
                         message.delete().queueAfter(15, TimeUnit.SECONDS);
                     });
-                } else if (args.length > 2){
+                } else if (args.length > 2) {
                     String name = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
                     Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
-                    eb.setDescription("Successfully added " + args[1] + " coins to " + mentioned.getAsMention() + "'s balance.");
+                    eb.setDescription("Successfully removed " + args[1] + " coins from " + mentioned.getAsMention() + "'s balance.");
                     eb.setColor(color.getRandomColor());
                     eb.setTimestamp(Instant.now());
                     eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
 
-                    success.setDescription(event.getMember().getAsMention() + " added " + args[1] + " coins to " + mentioned.getAsMention() + "'s balance");
+                    success.setDescription(event.getMember().getAsMention() + " removed " + args[1] + " coins from " + mentioned.getAsMention() + "'s balance");
                     success.setColor(color.getRandomColor());
                     success.setTimestamp(Instant.now());
                     success.setFooter("Entity Economy Logs");
-                    ecu.addCoins(event, name, Integer.parseInt(args[1]));
+                    ecu.removeCoins(event, name, Integer.parseInt(args[1]));
                     event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                       eb.clear();
-                       data.getLogChannel(event).sendMessage(success.build()).queue();
-                       message.delete().queueAfter(15, TimeUnit.SECONDS);
+                        eb.clear();
+                        data.getLogChannel(event).sendMessage(success.build()).queue();
+                        message.delete().queueAfter(15, TimeUnit.SECONDS);
                     });
 
                 }
@@ -79,5 +69,4 @@ public class AddCoins extends ListenerAdapter {
             }
         }
     }
-
 }

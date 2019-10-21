@@ -18,7 +18,6 @@ public class Join extends ListenerAdapter {
     public void onGuildMemberJoin(GuildMemberJoinEvent event){
         Color color = new Color();
         Data data = new Data();
-        Database db = new Database();
         EmbedBuilder JoinEvent = new EmbedBuilder();
         int num = data.getJoinNumber();
         int bots = 0;
@@ -125,13 +124,6 @@ public class Join extends ListenerAdapter {
             channel.sendMessage(SentMsg.build()).queue();
         });
 
-
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
-        Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0));
-        Document member = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 0).append("perksActive", perksActive).append("eventWins", 0));
-        members.insertOne(member);
-        db.close();
 
         data.getJoinChannel(event).sendMessage(JoinEvent.build()).queue((message) -> {
             JoinEvent.clear();

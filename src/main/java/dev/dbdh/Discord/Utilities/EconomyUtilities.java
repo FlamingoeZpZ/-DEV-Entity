@@ -25,4 +25,20 @@ public class EconomyUtilities {
         db.close();
     }
 
+    public void removeCoins(GuildMessageReceivedEvent event, String memberName, Integer coins){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId().toString();
+        Database db = new Database();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+
+        Integer balance = member.getInteger("balance");
+
+        Bson newMemberDoc = new Document("balance", balance - coins);
+        Bson updateMemberDoc = new Document("$set", newMemberDoc);
+        members.findOneAndUpdate(member, updateMemberDoc);
+
+        db.close();
+    }
+
 }
