@@ -40,7 +40,7 @@ public class EditCoins extends ListenerAdapter {
                     });
                 } else if (args.length > 3) {
                     if (Arrays.stream(removeAliases).anyMatch(args[1]::equals)) {
-                        String name = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
+                        String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                         Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
                         eb.setDescription("Successfully removed " + args[1] + " coins from " + mentioned.getAsMention() + "'s balance.");
                         eb.setColor(color.getRandomColor());
@@ -59,7 +59,7 @@ public class EditCoins extends ListenerAdapter {
                         });
 
                     } else if (Arrays.stream(addAliases).anyMatch(args[1]::equals)) {
-                        String name = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
+                        String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                         Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
                         eb.setDescription("Successfully added " + args[1] + " coins to " + mentioned.getAsMention() + "'s balance.");
                         eb.setColor(color.getRandomColor());
