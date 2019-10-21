@@ -24,7 +24,7 @@ public class RemoveCoins extends ListenerAdapter {
         EmbedBuilder eb = new EmbedBuilder();
         EmbedBuilder success = new EmbedBuilder();
         RoleCheck rc = new RoleCheck();
-        if (args[0].equalsIgnoreCase(data.getPrefix() + "addcoins")) {
+        if (args[0].equalsIgnoreCase(data.getPrefix() + "removecoins")) {
             if (rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event)) {
                 if (args.length < 3) {
                     eb.setDescription(event.getMember().getAsMention() + " you haven't specified enough arguments \n\n```\n" + data.getPrefix() + "addcoins <@member> <amount of coins to add>\n```");
