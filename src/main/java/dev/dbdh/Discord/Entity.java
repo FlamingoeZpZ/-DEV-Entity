@@ -3,7 +3,9 @@ package dev.dbdh.Discord;
 import dev.dbdh.Discord.Listeners.Economy.AddEveryoneToDatabase;
 import dev.dbdh.Discord.Listeners.Economy.Balance;
 import dev.dbdh.Discord.Listeners.Economy.EditCoins;
-import dev.dbdh.Discord.Listeners.Information.*;
+import dev.dbdh.Discord.Listeners.Fun.LookingToPlay;
+import dev.dbdh.Discord.Listeners.Information.Help;
+import dev.dbdh.Discord.Listeners.Information.ReactionRoleAssign;
 import dev.dbdh.Discord.Listeners.Miscellaneous.*;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
@@ -24,9 +26,12 @@ public class Entity {
         entity.addEventListeners(
                 //Misc Listeners
                 new AddToDatabaseOnJoin(),
-                new Join(),
+                //new Join(),
                 new Ready(),
                 new Leave(),
+
+                //Fun Listeners
+                new LookingToPlay(),
 
                 //Economy Listeners
                 new AddEveryoneToDatabase(),
@@ -35,8 +40,7 @@ public class Entity {
 
                 //Information Listeners
                 new ReactionRoleAssign(),
-                new Help(),
-                new LookingToPlay()
+                new Help()
 
         );
 
