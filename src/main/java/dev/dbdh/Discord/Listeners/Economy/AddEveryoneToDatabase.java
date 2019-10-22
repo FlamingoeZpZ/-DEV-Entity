@@ -32,17 +32,18 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                         Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0));
                         Document memberInfo = new Document(new BasicDBObject("memberId", member.getUser().getId()).append("memberName", member.getUser().getName() + "#" + member.getUser().getDiscriminator()).append("balance", 0).append("perksActive", perksActive).append("eventWins", 0));
                         members.insertOne(memberInfo);
-                        eb.setDescription("Added " + member.getUser().getName() + " to Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
-                        eb.setColor(color.getRandomColor());
-                        eb.setTimestamp(Instant.now());
-                        eb.setFooter("Entity Data Harvester", member.getUser().getEffectiveAvatarUrl());
 
-                        event.getChannel().sendMessage(eb.build()).queueAfter(5, TimeUnit.SECONDS, ((message) -> {
-                            eb.clear();
-                        }));
                     }
                 }
             }
+            eb.setDescription("Added everyone to the Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
+            eb.setColor(color.getRandomColor());
+            eb.setTimestamp(Instant.now());
+            eb.setFooter("Entity Data Harvester", data.getSelfAvatar(event));
+
+            event.getChannel().sendMessage(eb.build()).queueAfter(5, TimeUnit.SECONDS, ((message) -> {
+                eb.clear();
+            }));
             db.close();
         }
     }

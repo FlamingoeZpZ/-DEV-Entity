@@ -17,7 +17,6 @@ public class EconomyUtilities {
         Document member = members.find(eq("memberId", memberID)).first();
 
         Integer balance = Integer.parseInt(member.get("balance").toString());
-
         Bson newMemberDoc = new Document("balance", balance + coins);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
@@ -33,7 +32,6 @@ public class EconomyUtilities {
         Document member = members.find(eq("memberId", memberID)).first();
 
         Integer balance = Integer.parseInt(member.get("balance").toString());
-
         Bson newMemberDoc = new Document("balance", balance - coins);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
