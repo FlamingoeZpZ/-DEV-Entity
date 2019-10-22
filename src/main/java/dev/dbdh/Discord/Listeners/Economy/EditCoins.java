@@ -46,6 +46,21 @@ public class EditCoins extends ListenerAdapter {
                                     ecu.removeCoins(event, member.getUser().getName(), Integer.parseInt(args[2]));
                                 }
                             }
+                            eb.setDescription("Successfully removed " + args[2] + " coins from everyone's balance");
+                            eb.setColor(color.getRandomColor());
+                            eb.setTimestamp(Instant.now());
+                            eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
+
+
+                            success.setDescription(event.getMember().getAsMention() + " removed " + args[2] + " coins from everyone's balance");
+                            success.setColor(color.getRandomColor());
+                            success.setTimestamp(Instant.now());
+                            success.setFooter("Entity Economy Logs");
+                            event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                                eb.clear();
+                                data.getLogChannel(event).sendMessage(success.build()).queue();
+                                message.delete().queueAfter(15, TimeUnit.SECONDS);
+                            });
                         }
                         String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                         Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
