@@ -40,9 +40,9 @@ public class EditCoins extends ListenerAdapter {
                     });
                 } else if (args.length > 3) {
                     if (Arrays.stream(removeAliases).anyMatch(args[1]::equals)) {
-                        if(args[3].equalsIgnoreCase("everyone")){
-                            for(Member member : event.getGuild().getMembers()){
-                                if(!member.getUser().isBot()) {
+                        if (args[3].equalsIgnoreCase("everyone")) {
+                            for (Member member : event.getGuild().getMembers()) {
+                                if (!member.getUser().isBot()) {
                                     ecu.removeCoins(event, member.getUser().getName(), Integer.parseInt(args[2]));
                                 }
                             }
@@ -50,7 +50,6 @@ public class EditCoins extends ListenerAdapter {
                             eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
-
 
                             success.setDescription(event.getMember().getAsMention() + " removed " + args[2] + " coins from everyone's balance");
                             success.setColor(color.getRandomColor());
@@ -61,28 +60,28 @@ public class EditCoins extends ListenerAdapter {
                                 data.getLogChannel(event).sendMessage(success.build()).queue();
                                 message.delete().queueAfter(15, TimeUnit.SECONDS);
                             });
+                        } else {
+                            String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
+                            Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
+                            eb.setDescription("Successfully removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance.");
+                            eb.setColor(color.getRandomColor());
+                            eb.setTimestamp(Instant.now());
+                            eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
+
+                            success.setDescription(event.getMember().getAsMention() + " removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance");
+                            success.setColor(color.getRandomColor());
+                            success.setTimestamp(Instant.now());
+                            success.setFooter("Entity Economy Logs");
+                            event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                                eb.clear();
+                                data.getLogChannel(event).sendMessage(success.build()).queue();
+                                message.delete().queueAfter(15, TimeUnit.SECONDS);
+                            });
                         }
-                        String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
-                        Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
-                        eb.setDescription("Successfully removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance.");
-                        eb.setColor(color.getRandomColor());
-                        eb.setTimestamp(Instant.now());
-                        eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
-
-                        success.setDescription(event.getMember().getAsMention() + " removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance");
-                        success.setColor(color.getRandomColor());
-                        success.setTimestamp(Instant.now());
-                        success.setFooter("Entity Economy Logs");
-                        event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                            eb.clear();
-                            data.getLogChannel(event).sendMessage(success.build()).queue();
-                            message.delete().queueAfter(15, TimeUnit.SECONDS);
-                        });
-
                     } else if (Arrays.stream(addAliases).anyMatch(args[1]::equals)) {
-                        if(args[3].equalsIgnoreCase("everyone")){
-                            for(Member member : event.getGuild().getMembers()){
-                                if(!member.getUser().isBot()) {
+                        if (args[3].equalsIgnoreCase("everyone")) {
+                            for (Member member : event.getGuild().getMembers()) {
+                                if (!member.getUser().isBot()) {
                                     ecu.addCoins(event, member.getUser().getName(), Integer.parseInt(args[2]));
                                 }
                             }
@@ -90,7 +89,6 @@ public class EditCoins extends ListenerAdapter {
                             eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
-
 
                             success.setDescription(event.getMember().getAsMention() + " added " + args[2] + " coins to everyone's balance");
                             success.setColor(color.getRandomColor());
@@ -101,27 +99,26 @@ public class EditCoins extends ListenerAdapter {
                                 data.getLogChannel(event).sendMessage(success.build()).queue();
                                 message.delete().queueAfter(15, TimeUnit.SECONDS);
                             });
+                        } else {
+                            String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
+                            Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
+                            eb.setDescription("Successfully added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance.");
+                            eb.setColor(color.getRandomColor());
+                            eb.setTimestamp(Instant.now());
+                            eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
+
+                            success.setDescription(event.getMember().getAsMention() + " added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance");
+                            success.setColor(color.getRandomColor());
+                            success.setTimestamp(Instant.now());
+                            success.setFooter("Entity Economy Logs");
+                            ecu.addCoins(event, name, Integer.parseInt(args[2]));
+                            event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                                eb.clear();
+                                data.getLogChannel(event).sendMessage(success.build()).queue();
+                                message.delete().queueAfter(15, TimeUnit.SECONDS);
+                            });
                         }
-                        String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
-                        Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
-                        eb.setDescription("Successfully added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance.");
-                        eb.setColor(color.getRandomColor());
-                        eb.setTimestamp(Instant.now());
-                        eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
-
-                        success.setDescription(event.getMember().getAsMention() + " added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance");
-                        success.setColor(color.getRandomColor());
-                        success.setTimestamp(Instant.now());
-                        success.setFooter("Entity Economy Logs");
-                        ecu.addCoins(event, name, Integer.parseInt(args[2]));
-                        event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                            eb.clear();
-                            data.getLogChannel(event).sendMessage(success.build()).queue();
-                            message.delete().queueAfter(15, TimeUnit.SECONDS);
-                        });
-
                     }
-
                 }
             }  else {
                 eb.setDescription(event.getMember().getAsMention() + " you don't have sufficient permissions to edit the balance of members");
@@ -136,5 +133,4 @@ public class EditCoins extends ListenerAdapter {
             }
         }
     }
-
 }
