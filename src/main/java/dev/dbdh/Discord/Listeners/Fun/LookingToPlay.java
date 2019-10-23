@@ -23,11 +23,14 @@ public class LookingToPlay extends ListenerAdapter {
         String[] pcAliases = {"computer", "laptop", "desktop", "pc"};
         String[] mobileAliases = {"mobile", "phone", "tablet", "iphone", "android"};
         String[] switchAliases = {"Nintendo", "Switch", "ns"};
-        String voiceChannel = "They are not in any voice channels"; //default for if in channel
+        String voiceChannel;
         if (args[0].equalsIgnoreCase(data.getPrefix() + "match")) {
             if(event.getMember().getVoiceState().inVoiceChannel())
             {
                 voiceChannel = "They are in **" + event.getMember().getVoiceState().getChannel().getName() + "** voice chat";
+            }
+            else{
+                voiceChannel = "They are not in any voice channels";
             }
             if (args.length < 2) {
                 eb.setDescription(event.getMember().getAsMention() + " What platform are you looking for people to play with on?\n`XBOX | PS4 | PC | MOBILE | SWITCH `\n\n```\n" + data.getPrefix() + "match <platform>\n```\n\n```\n<> | REQUIRED\n**Notice:** If you are in a voice channel, the channel will be added\n```");
