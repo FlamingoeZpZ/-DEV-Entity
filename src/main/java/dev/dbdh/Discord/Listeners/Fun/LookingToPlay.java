@@ -32,10 +32,10 @@ public class LookingToPlay extends ListenerAdapter {
             else{
                 voiceChannel = "They are not in any voice channels";
             }
-            if (args.length < 2) {
+            if (args.length != 2) {
                 eb.setDescription(event.getMember().getAsMention() + " What platform are you looking for people to play with on?\n`XBOX | PS4 | PC | MOBILE | SWITCH `\n\n```\n" + data.getPrefix() + "match <platform>\n```\n\n```\n<> | REQUIRED\n**Notice:** If you are in a voice channel, the channel will be added\n```");
                 eb.setColor(color.errorRed);
-                eb.setFooter("Entity Matchmaking Command Insufficient Arguments", data.getSelfAvatar(event));
+                eb.setFooter("***Entity Matchmaking Command Error***", data.getSelfAvatar(event));
 
                 event.getChannel().sendMessage(eb.build()).queue((message) -> {
                     eb.clear();
