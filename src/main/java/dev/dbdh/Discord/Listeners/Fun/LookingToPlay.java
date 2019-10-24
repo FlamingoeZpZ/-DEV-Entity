@@ -38,8 +38,7 @@ public class LookingToPlay extends ListenerAdapter {
                     eb.clear();
                     message.delete().queueAfter(30, TimeUnit.SECONDS);
                 });
-            } else if (args.length == 2) {
-                if (event.getMember().getVoiceState().inVoiceChannel()) {
+            } else {
                     if (Arrays.stream(xboxAliases).anyMatch(args[1]::equalsIgnoreCase)){
                         event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on Xbox " + event.getGuild().getRoleById("606527228074786851").getAsMention() + "\n" + voiceChannel).queue();
                         event.getGuild().addRoleToMember(event.getMember(), event.getGuild().getRoleById("606527228074786851")).queue();
@@ -55,7 +54,6 @@ public class LookingToPlay extends ListenerAdapter {
                     } else if (Arrays.stream(switchAliases).anyMatch(args[1]::equalsIgnoreCase)) {
                         event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on Mobile " + event.getGuild().getRoleById("634878800185786378").getAsMention() + "\n" + voiceChannel).queue();
                         event.getGuild().addRoleToMember(event.getMember(), event.getGuild().getRoleById("634878800185786378")).queue();
-                        }
                         } else if (args[1].equalsIgnoreCase("stop")) {
                         event.getChannel().sendMessage("Stopped matchmaking").queue();
                         //XBOX
