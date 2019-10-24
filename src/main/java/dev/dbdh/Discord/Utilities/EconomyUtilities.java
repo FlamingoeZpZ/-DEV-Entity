@@ -2,6 +2,7 @@ package dev.dbdh.Discord.Utilities;
 
 import com.mongodb.client.MongoCollection;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.bson.BsonArray;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -38,6 +39,28 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public void
+    public void addPerkLevel(GuildMessageReceivedEvent event, String memberName, String perkName){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
 
+        Integer perkLevel = Integer.parseInt(member.get("perksActive." + perkName).toString());
+        Bson newMemberDoc = new Document("perksActive." + perkName,  perkLevel++); // use . to access objects in arrays ( BSON )
+        Bson updateMemberDoc = new Document("$set", newMemberDoc);
+        members.findOneAndUpdate(member, updateMemberDoc);
+        db.close();
+    }
+    public void removePerkLevel(GuildMessageReceivedEvent event, String memberName, String perkName){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+
+        Integer perkLevel = Integer.parseInt(member.get("perksActive." + perkName).toString());
+        Bson newMemberDoc = new Document("perksActive." + perkName,  perkLevel--); // use . to access objects in arrays ( BSON )
+        Bson updateMemberDoc = new Document("$set", newMemberDoc);
+        members.findOneAndUpdate(member, updateMemberDoc);
+        db.close();
+    }
 }
