@@ -39,6 +39,16 @@ public class EconomyUtilities {
         db.close();
     }
 
+    public Integer getCoins(GuildMessageReceivedEvent event, String memberName){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Integer balance = Integer.parseInt(member.get("balance").toString());
+        db.close();
+        return balance;
+    }
+
     public void addPerkLevel(GuildMessageReceivedEvent event, String memberName, String perkName){
         String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
         db.connect();
