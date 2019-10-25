@@ -25,8 +25,7 @@ public class Entity {
 
         entity.addEventListeners(
                 //Misc Listeners
-                new AddToDatabaseOnJoin(),
-                //new Join(),
+                new Join(),
                 new Ready(),
                 new Leave(),
 

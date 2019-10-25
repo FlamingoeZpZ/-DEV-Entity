@@ -38,5 +38,4 @@ public class EconomyUtilities {
 
         db.close();
     }
-
 }

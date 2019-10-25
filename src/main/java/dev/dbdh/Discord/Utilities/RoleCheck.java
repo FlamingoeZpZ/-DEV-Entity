@@ -1,8 +1,12 @@
 package dev.dbdh.Discord.Utilities;
 
+import com.mongodb.client.MongoCollection;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.bson.Document;
 
 public class RoleCheck {
+
+    Database db = new Database();
 
     public boolean isOwner(GuildMessageReceivedEvent event){
         return event.getMember().getRoles().contains(event.getGuild().getRoleById("552572692163985408"));
@@ -24,5 +28,13 @@ public class RoleCheck {
 
     public boolean isModerator(GuildMessageReceivedEvent event){
         return event.getMember().getRoles().contains(event.getGuild().getRoleById("540745858929393689"));
+    }
+
+    public boolean isChannelOwner(GuildMessageReceivedEvent event) {
+        boolean isChannelOwner = false;
+        db.connect();
+        MongoCollection<Document> channels = db.getCollection("channels");
+        channels.find();
+        return isChannelOwner;
     }
 }
