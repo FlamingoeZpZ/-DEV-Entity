@@ -73,4 +73,14 @@ public class EconomyUtilities {
         members.findOneAndUpdate(member, updateMemberDoc);
         db.close();
     }
+
+    public Integer getPerkLevel(GuildMessageReceivedEvent event, String memberName, String perkName){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Integer perkLevel = Integer.parseInt(member.get("perksActive." + perkName).toString());
+        db.close();
+        return perkLevel;
+    }
 }
