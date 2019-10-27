@@ -25,7 +25,8 @@ public class Join extends ListenerAdapter {
             if (members.find(eq("memberID", event.getMember().getUser().getId())).first() == null) {
                 Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0).append("timeWizard", 0).append("quickAndQuiet", 0 ).append("deadHard", 0).append("devisive" , 0));
                 Document chestsOwned = new Document(new BasicDBObject("basicChest", 0).append("shinyChest", 0).append("legendaryChest", 0).append("mythicChest", 0));
-                Document memberInfo = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 2500).append("perksActive", perksActive).append("chestsOwned", chestsOwned).append("eventWins", 0));
+                Document chestsOpened = new Document(new BasicDBObject("basicChest", 0).append("shinyChest", 0).append("legendaryChest", 0).append("mythicChest", 0));
+                Document memberInfo = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 2500).append("perksActive", perksActive).append("chestsOwned", chestsOwned).append("chestsOpened", chestsOpened).append("eventWins", 0));
                 members.insertOne(memberInfo);
             }
             db.close();
