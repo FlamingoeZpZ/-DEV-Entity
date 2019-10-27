@@ -29,8 +29,9 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
             for(Member member: event.getGuild().getMembers()) {
                 if (members.find(eq("memberID", member.getUser().getId())).first() == null) {
                     if (!member.getUser().isBot()) {
-                        Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0));
-                        Document memberInfo = new Document(new BasicDBObject("memberId", member.getUser().getId()).append("memberName", member.getUser().getName() + "#" + member.getUser().getDiscriminator()).append("balance", 0).append("perksActive", perksActive).append("eventWins", 0));
+                        Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0).append("timeWizard", 0).append("quickAndQuiet", 0 ).append("deadHard", 0).append("devisive" , 0));
+                        Document chestsOwned = new Document(new BasicDBObject("basicChest", 0).append("shinyChest", 0).append("legendaryChest", 0).append("mythicChest", 0));
+                        Document memberInfo = new Document(new BasicDBObject("memberId", member.getUser().getId()).append("memberName", member.getUser().getName() + "#" + member.getUser().getDiscriminator()).append("balance", 2500).append("perksActive", perksActive).append("chestsOwned", chestsOwned).append("eventWins", 0));
                         members.insertOne(memberInfo);
 
                     }

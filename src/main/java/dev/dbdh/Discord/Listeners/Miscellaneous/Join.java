@@ -23,8 +23,9 @@ public class Join extends ListenerAdapter {
             db.connect();
             MongoCollection<Document> members = db.getCollection("members");
             if (members.find(eq("memberID", event.getMember().getUser().getId())).first() == null) {
-                Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0));
-                Document memberInfo = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 0).append("perksActive", perksActive).append("eventWins", 0));
+                Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0).append("timeWizard", 0).append("quickAndQuiet", 0 ).append("deadHard", 0).append("devisive" , 0));
+                Document chestsOwned = new Document(new BasicDBObject("basicChest", 0).append("shinyChest", 0).append("legendaryChest", 0).append("mythicChest", 0));
+                Document memberInfo = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 2500).append("perksActive", perksActive).append("chestsOwned", chestsOwned).append("eventWins", 0));
                 members.insertOne(memberInfo);
             }
             db.close();
@@ -41,7 +42,7 @@ public class Join extends ListenerAdapter {
                     "https://entity.nestedvar.dev/images/survivor/8.gif",
                     "https://entity.nestedvar.dev/images/survivor/9.gif",
                     "https://entity.nestedvar.dev/images/survivor/10.png",
-                    //broken "https://scontent-iad3-1.cdninstagram.com/vp/c5da5e362c3fdb06129f62c3adf91a90/5D9E72E0/t51.2885-15/sh0.08/e35/c85.0.725.725a/s640x640/56331123_405441466939574_4999243448575151304_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com",
+                    "https://entity.nestedvar.dev/images/survivor/11.png",
                     "https://entity.nestedvar.dev/images/survivor/12.jpeg",
                     //Killer
                     "https://entity.nestedvar.dev/images/killer/1.png",
@@ -70,7 +71,7 @@ public class Join extends ListenerAdapter {
                     "Epic... Gamer... Moment ",
                     "Don't hurt Meg pls ",
                     "Dwight being smooth As FUCK ",
-                    "Ma Puppet :sob: ",
+                    "Eleven is fitting xD",
                     "What will you survivors do now? ",
                     //Killer
                     "This pic speaks for itself ",

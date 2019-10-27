@@ -27,6 +27,7 @@ public class EditCoins extends ListenerAdapter {
         String[] addAliases = {"-a", "a", "add"};
         String[] removeAliases = {"-r", "r", "rm", "remove"};
         if (args[0].equalsIgnoreCase(data.getPrefix() + "coins")) {
+            event.getMessage().delete().queueAfter(15, TimeUnit.SECONDS);
             if (rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event)) {
                 if (args.length < 4) {
                     eb.setDescription(event.getMember().getAsMention() + " you haven't specified enough arguments \n\n```\n" + data.getPrefix() + "coins <add/remove> <amount of coins to add/remove> <member>\n```");
