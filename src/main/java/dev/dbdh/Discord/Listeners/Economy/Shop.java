@@ -72,4 +72,5 @@ Shop.setDescription("How to use the " + event.getGuild().getName() + " shop"
                     + "``ID: 1 = Quick and Quiet (Allows for extra mistakes)``\n"
                     + "``ID: 2 = Dead Hard (Increases XP Gain)``\n"
                     + "``ID: 3 = Decisive Strike(Increases Gold Gain)``"
+                    + "``ID: 3 = Decisive Strike(Increases Gold Gain)``"
                     */
