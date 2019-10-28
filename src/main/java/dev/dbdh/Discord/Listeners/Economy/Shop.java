@@ -21,7 +21,7 @@ public class Shop {
         if (Arrays.stream(shopAliases).anyMatch( command::equalsIgnoreCase)) {
             if(args.length < 4) {
                 eb.setFooter("Entity Shop System " + data.getSelfAvatar(event)); // Global ending
-                eb.setDescription("Insufficient Arguments.\n\n```\n" + data.getPrefix() + "shop <chest/chase>")
+                eb.setDescription("Insufficient Arguments.\n\n```\n" + data.getPrefix() + "shop <chest/chase>");
 
             } else if(args.length == 3){
                 if(Arrays.stream(chestAliases).anyMatch(args[1]::equalsIgnoreCase)){
