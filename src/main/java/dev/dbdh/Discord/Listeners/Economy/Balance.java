@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -18,10 +17,9 @@ import java.util.stream.Collectors;
 import static com.mongodb.client.model.Filters.eq;
 
 public class Balance extends ListenerAdapter {
-
+    Data data = new Data();
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
-        Data data = new Data();
         Database db = new Database();
         Color color = new Color();
         EmbedBuilder eb = new EmbedBuilder();
@@ -50,7 +48,7 @@ public class Balance extends ListenerAdapter {
                         db.close();
                     });
                 }
-            } else if(args.length == 2) {
+            } else if(args.length >= 2) {
                 String name = Arrays.stream(args).skip(1).collect(Collectors.joining(" "));
                 Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
                 db.connect();
@@ -77,6 +75,30 @@ public class Balance extends ListenerAdapter {
                 }
             }
         }
+    }
+
+    public String getName(){
+        return "balance";
+    }
+
+    public String getDescription(){
+        return "Shows the balance of the specified member if no member is specified this will show the balance of the command issuer";
+    }
+
+    public String getShortDescription(){
+        return "Shows the balance of the specified member";
+    }
+
+    public String getRolesRequired(){
+        return "`Everyone`";
+    }
+
+    public String getCommandSyntax(){
+        return "```\n" + data.getPrefix() + "balance {member}\n```";
+    }
+
+    public boolean isDisabled(){
+        return false;
     }
 
 }
