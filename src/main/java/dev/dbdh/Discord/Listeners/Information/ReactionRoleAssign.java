@@ -12,7 +12,7 @@ public class ReactionRoleAssign extends ListenerAdapter {
     Data data = new Data();
     public static int ID;
     public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event) {
-        if (event.getChannel().getId().equals("629510813518004244")) {
+        if (event.getChannel().getId().equals("638558586645118997")) {
             Role KillerMain = event.getGuild().getRoleById("540744380416262185"); // 1
             Role SurvivorMain = event.getGuild().getRoleById("540744386506653712"); // 3
 

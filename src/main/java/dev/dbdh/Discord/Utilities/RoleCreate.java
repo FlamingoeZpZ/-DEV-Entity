@@ -18,7 +18,7 @@ public class RoleCreate {
         muteRole.getManager().revokePermissions(Permission.MESSAGE_TTS, Permission.MESSAGE_WRITE,
                 Permission.VOICE_DEAF_OTHERS, Permission.VOICE_MOVE_OTHERS,
                 Permission.VOICE_MUTE_OTHERS, Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD,
-                Permission.NICKNAME_CHANGE, Permission.MESSAGE_ADD_REACTION).queue();
+                Permission.NICKNAME_CHANGE, Permission.MESSAGE_ADD_REACTION, Permission.ADMINISTRATOR).queue();
 
         for (TextChannel channel : event.getGuild().getTextChannels()) {
             if (!channel.getParent().getId().equals("579392397189054465")) {

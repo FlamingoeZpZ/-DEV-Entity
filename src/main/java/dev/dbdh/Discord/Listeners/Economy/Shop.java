@@ -21,7 +21,9 @@ public class Shop {
             if (args.length == 1) {
 
             } else {
-                
+                if(Arrays.stream(Al.chestAliases).anyMatch(args[1]::equalsIgnoreCase)){
+
+                }
             }
 
         }
