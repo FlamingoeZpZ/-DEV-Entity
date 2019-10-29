@@ -28,7 +28,7 @@ public class Embeds {
         eb.setDescription("You have tempmuted " + mentioned.getAsMention() + "\n\nReason: \n```\n" + reason + "\n```");
         eb.setColor(color.getRandomColor());
         eb.setTimestamp(Instant.now());
-        eb.setFooter("Votrix Tempmute", data.getSelfAvatar(event));
+        eb.setFooter("Entity Tempmute", data.getSelfAvatar(event));
         return eb;
     }
     public static EmbedBuilder getMutedEmbed(GuildMessageReceivedEvent event, String[] args, String reason) {
@@ -45,7 +45,7 @@ public class Embeds {
         eb.setDescription(event.getMember().getAsMention() + " has tempmuted " + mentioned.getAsMention() + "\n\nDetails: ```\nReason: " + reason + "\nTime: " + args[2].substring(0, args[2].length() - 1) + " " + time.getTime(args[2]).name() + "\n```");
         eb.setColor(color.getRandomColor());
         eb.setTimestamp(Instant.now());
-        eb.setFooter("Votrix Tempmute Log", data.getSelfAvatar(event));
+        eb.setFooter("Entity Tempmute Log", data.getSelfAvatar(event));
         return eb;
     }
 }

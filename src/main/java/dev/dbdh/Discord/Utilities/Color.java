@@ -15,6 +15,5 @@ public class Color {
         Random obj = new Random();
         int random_number = obj.nextInt(0xffffff + 1);
         return random_number;
-        //Dammit ExZi I had this idea, but you've already done it!
     }
 }

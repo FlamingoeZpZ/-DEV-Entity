@@ -23,7 +23,7 @@ public class Tempmute extends ListenerAdapter {
         Embeds embeds = new Embeds();
         EmbedBuilder eb = new EmbedBuilder();
         if (args[0].equalsIgnoreCase(data.getPrefix() + "tempmute")) {
-            if (rc.isOwner(event) || rc.isDeveloper(event)) {
+            if (rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event) || rc.isHeadModerator(event) || rc.isModerator(event)){
                 if (args.length < 2) {
                     eb.setDescription("You didn't specify enough arguments. Please refer to " + data.getPrefix() + "`tempmute help` for more information");
                     eb.setColor(color.getRandomColor());
@@ -39,7 +39,7 @@ public class Tempmute extends ListenerAdapter {
                         eb.setDescription("Tempmute Help\n```\n" + data.getPrefix() + "tempmute @member <length><length multiplier> [reason]\n<> | Required\n[] | Optional\n```");
                         eb.setColor(color.getRandomColor());
                         eb.setTimestamp(Instant.now());
-                        eb.setFooter("Votrix Tempmute Help", data.getSelfAvatar(event));
+                        eb.setFooter("Entity Tempmute Help", data.getSelfAvatar(event));
                         event.getChannel().sendMessage(eb.build()).queue((message) -> {
                             eb.clear();
                             message.delete().queueAfter(20, TimeUnit.SECONDS);

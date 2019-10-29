@@ -26,7 +26,7 @@ public class RoleRemove extends ListenerAdapter {
         EmbedBuilder success = new EmbedBuilder();
         EmbedBuilder grantee = new EmbedBuilder();
         if (args[0].equalsIgnoreCase(data.getPrefix() + "removerole")) {
-            if (rc.isOwner(event) || rc.isDeveloper(event)) {
+            if (rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event)) {
                 if (args.length < 3) {
                     eb.setDescription("You didn't specify enough arguments. Please refer to " + data.getPrefix() + "help removerole.");
                     eb.setColor(color.getRandomColor());

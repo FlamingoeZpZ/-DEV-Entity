@@ -22,7 +22,7 @@ public class Unmute extends ListenerAdapter {
         EmbedBuilder success = new EmbedBuilder();
 
         if(args[0].equalsIgnoreCase(data.getPrefix() + "unmute")){
-            if(rc.isOwner(event) || rc.isDeveloper(event)){
+            if(rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event) || rc.isHeadModerator(event) || rc.isModerator(event)){
                 if(args.length < 2) {
                     eb.setDescription("You didn't specify enough arguments \n" + data.getPrefix() + "unmute @<member>");
                     eb.setColor(color.getRandomColor());
@@ -40,17 +40,17 @@ public class Unmute extends ListenerAdapter {
                     eb.setDescription("Successfully unmuted " + mentioned.getAsMention());
                     eb.setColor(color.getRandomColor());
                     eb.setTimestamp(Instant.now());
-                    eb.setFooter("Votrix Unmute", data.getSelfAvatar(event));
+                    eb.setFooter("Entity Unmute", data.getSelfAvatar(event));
 
                     success.setDescription(event.getMember().getAsMention() + " unmuted " + mentioned.getAsMention());
                     success.setColor(color.getRandomColor());
                     success.setTimestamp(Instant.now());
-                    success.setFooter("Votrix Unmute Log", data.getSelfAvatar(event));
+                    success.setFooter("Entity Unmute Log", data.getSelfAvatar(event));
 
                     unmuted.setDescription("You've been unmuted");
                     unmuted.setColor(color.getRandomColor());
                     unmuted.setTimestamp(Instant.now());
-                    unmuted.setFooter("Votrix Unmute", data.getSelfAvatar(event));
+                    unmuted.setFooter("Entity Unmute", data.getSelfAvatar(event));
 
                     event.getGuild().removeRoleFromMember(mentioned, event.getGuild().getRolesByName("Muted", true).get(0)).queue();
 

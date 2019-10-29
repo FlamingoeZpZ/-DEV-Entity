@@ -33,7 +33,7 @@ public class Mute extends ListenerAdapter {
         EmbedBuilder success = new EmbedBuilder();
 
         if (args[0].equalsIgnoreCase(data.getPrefix() + "mute")) {
-            if (rc.isOwner(event) || rc.isDeveloper(event)) {
+            if (rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event) || rc.isHeadModerator(event) || rc.isModerator(event)){
                 if (args.length < 2) {
                     eb.setDescription("You didn't specify enough arguments \n" + data.getPrefix() + "mute @<member>");
                     eb.setColor(color.getRandomColor());

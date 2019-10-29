@@ -24,7 +24,7 @@ public class Kick extends ListenerAdapter {
         EmbedBuilder success = new EmbedBuilder();
         EmbedBuilder kicked = new EmbedBuilder();
         if(args[0].equalsIgnoreCase(data.getPrefix() + "kick") || args[0].equalsIgnoreCase("***" + data.getPrefix() + "yeet***")){
-            if(rc.isOwner(event) || rc.isDeveloper(event)){
+            if(rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event) || rc.isHeadModerator(event)){
                 if(args.length < 2){
                     eb.setDescription("You didn't specify enough arguments");
                     eb.setColor(color.getRandomColor());
