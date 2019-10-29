@@ -1,6 +1,7 @@
 package dev.dbdh.Discord.Utilities;
 
 import com.mongodb.client.MongoCollection;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.bson.BsonArray;
 import org.bson.Document;
@@ -82,5 +83,14 @@ public class EconomyUtilities {
         Integer perkLevel = Integer.parseInt(member.get("perksActive." + perkName).toString());
         db.close();
         return perkLevel;
+    }
+
+    public void removeMemberFromDatabase(GuildMemberLeaveEvent event, String memberName){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        members.deleteOne(member);
+        db.close();
     }
 }

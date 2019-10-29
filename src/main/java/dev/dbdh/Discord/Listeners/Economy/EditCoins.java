@@ -64,11 +64,11 @@ public class EditCoins extends ListenerAdapter {
                         } else {
                             String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                             Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
+                            ecu.removeCoins(event, name, Integer.parseInt(args[2]));
                             eb.setDescription("Successfully removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance.");
                             eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
-
                             success.setDescription(event.getMember().getAsMention() + " removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance");
                             success.setColor(color.getRandomColor());
                             success.setTimestamp(Instant.now());
@@ -103,6 +103,7 @@ public class EditCoins extends ListenerAdapter {
                         } else {
                             String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                             Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
+                            ecu.addCoins(event, name, Integer.parseInt(args[2]));
                             eb.setDescription("Successfully added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance.");
                             eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());
@@ -112,7 +113,6 @@ public class EditCoins extends ListenerAdapter {
                             success.setColor(color.getRandomColor());
                             success.setTimestamp(Instant.now());
                             success.setFooter("Entity Economy Logs");
-                            ecu.addCoins(event, name, Integer.parseInt(args[2]));
                             event.getChannel().sendMessage(eb.build()).queue((message) -> {
                                 eb.clear();
                                 data.getLogChannel(event).sendMessage(success.build()).queue();

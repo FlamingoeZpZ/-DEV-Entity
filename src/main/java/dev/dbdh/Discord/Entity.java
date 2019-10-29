@@ -7,6 +7,7 @@ import dev.dbdh.Discord.Listeners.Fun.LookingToPlay;
 import dev.dbdh.Discord.Listeners.Information.Help;
 import dev.dbdh.Discord.Listeners.Information.ReactionRoleAssign;
 import dev.dbdh.Discord.Listeners.Miscellaneous.*;
+import dev.dbdh.Discord.Listeners.Moderation.*;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -39,7 +40,18 @@ public class Entity {
 
                 //Information Listeners
                 new ReactionRoleAssign(),
-                new Help()
+                new Help(),
+
+                //Moderation Listeners
+                new Ban(),
+                new Clear(),
+                new Kick(),
+                new Mute(),
+                new RoleAdd(),
+                new RoleRemove(),
+                new Softban(),
+                new Tempmute(),
+                new Unmute()
 
         );
 
