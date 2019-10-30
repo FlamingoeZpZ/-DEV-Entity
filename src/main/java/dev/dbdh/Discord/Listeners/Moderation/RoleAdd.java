@@ -144,7 +144,7 @@ public class RoleAdd extends ListenerAdapter {
     }
 
     public String getRequiredRoles() {
-        return "Owner, Developer";
+        return "Owner, Developer, Administrator";
     }
 
     public boolean isDisabled() {

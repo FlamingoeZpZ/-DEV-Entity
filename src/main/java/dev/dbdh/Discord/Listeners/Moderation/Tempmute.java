@@ -193,7 +193,7 @@ public class Tempmute extends ListenerAdapter {
     }
 
     public String getRequiredRoles() {
-        return "Owner, Developer, Administrator, Moderator";
+        return "Owner, Developer, Administrator, Head Moderator, Moderator";
     }
 
     public String getCommandSyntax() {
