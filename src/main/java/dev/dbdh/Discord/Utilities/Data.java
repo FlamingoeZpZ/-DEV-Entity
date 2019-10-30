@@ -17,12 +17,10 @@ public class Data {
 
     public static String getPrefix() {
         String prefix = "!~";
-        System.out.println(prefix);
         db.connect();
         MongoCollection<Document> guild = db.getCollection("guild");
         prefix = guild.find().first().getString("prefix");
         db.close();
-        System.out.println(prefix);
         return prefix;
     }
 
