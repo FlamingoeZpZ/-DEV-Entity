@@ -22,13 +22,14 @@ public class Join extends ListenerAdapter {
         Database db = new Database();
         EmbedBuilder eb = new EmbedBuilder();
         if (!event.getMember().getUser().isBot()) {
+            long unixTime = System.currentTimeMillis() / 1000L;
             db.connect();
             MongoCollection<Document> members = db.getCollection("members");
             if (members.find(eq("memberID", event.getMember().getUser().getId())).first() == null) {
                 Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0).append("timeWizard", 0).append("quickAndQuiet", 0 ).append("deadHard", 0).append("devisive" , 0));
                 Document chestsOwned = new Document(new BasicDBObject("basicChest", 0).append("shinyChest", 0).append("legendaryChest", 0).append("mythicChest", 0));
                 Document chestsOpened = new Document(new BasicDBObject("basicChest", 0).append("shinyChest", 0).append("legendaryChest", 0).append("mythicChest", 0));
-                Document memberInfo = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 2500).append("perksActive", perksActive).append("chestsOwned", chestsOwned).append("chestsOpened", chestsOpened).append("eventWins", 0).append("cooldown", Instant.now()));
+                Document memberInfo = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 2500).append("perksActive", perksActive).append("chestsOwned", chestsOwned).append("chestsOpened", chestsOpened).append("eventWins", 0).append("cooldown", unixTime));
                 members.insertOne(memberInfo);
             }
             db.close();
