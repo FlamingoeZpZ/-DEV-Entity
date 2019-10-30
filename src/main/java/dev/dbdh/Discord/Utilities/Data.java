@@ -1,19 +1,38 @@
 package dev.dbdh.Discord.Utilities;
 
+import com.mongodb.client.MongoCollection;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import java.util.Random;
 
 public class Data {
     Random RNJesus = new Random();
+    private static final Database db = new Database();
 
-    public String getPrefix(){
-        return "!~";
+    public static String getPrefix() {
+        String prefix;
+        db.connect();
+        MongoCollection<Document> guild = db.getCollection("guild");
+        prefix = guild.find().first().getString("prefix");
+        db.close();
+        return prefix;
     }
 
+    public static void setPrefix(String prefix) {
+        db.connect();
+        MongoCollection<Document> guild = db.getCollection("guild");
+        String oldPrefix = guild.find().first().getString("prefix");
+        Bson filter = new Document("prefix", oldPrefix);
+        Bson newPrefix = new Document("prefix", prefix);
+        Bson updatePrefix = new Document("$set", newPrefix);
+        guild.updateOne(filter, updatePrefix);
+        db.close();
+    }
     public int getJoinNumber(){
         int i = RNJesus.nextInt(23);
         return i;
