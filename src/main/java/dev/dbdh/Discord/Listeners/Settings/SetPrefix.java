@@ -24,12 +24,12 @@ public class SetPrefix extends ListenerAdapter {
                 data.setPrefix(args[1]);
                 eb.setDescription("Successfully set the prefix to `" + args[1] + "`");
                 eb.setColor(color.getRandomColor());
-                eb.setFooter("Votrix Set Prefix", data.getSelfAvatar(event));
+                eb.setFooter("Entity Set Prefix", data.getSelfAvatar(event));
                 eb.setTimestamp(Instant.now());
 
                 success.setDescription(event.getMember().getAsMention() + " set the prefix to `" + args[1] + "`");
                 success.setColor(color.getRandomColor());
-                success.setFooter("Votrix Set Prefix Log", data.getSelfAvatar(event));
+                success.setFooter("Entity Set Prefix Log", data.getSelfAvatar(event));
                 success.setTimestamp(Instant.now());
 
                 event.getChannel().sendMessage(eb.build()).queue((message) -> {
@@ -41,7 +41,7 @@ public class SetPrefix extends ListenerAdapter {
                     });
                 });
 
-                event.getGuild().modifyNickname(event.getGuild().getSelfMember(), "Votrix ( " + args[1] + " )").queue();
+                event.getGuild().modifyNickname(event.getGuild().getSelfMember(), "Entity ( " + args[1] + " )").queue();
             }
         }
     }
