@@ -85,8 +85,7 @@ public class EconomyUtilities {
         return perkLevel;
     }
 
-    public void removeMemberFromDatabase(GuildMemberLeaveEvent event, String memberName){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public void removeMemberFromDatabase(GuildMemberLeaveEvent event, String memberID){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();

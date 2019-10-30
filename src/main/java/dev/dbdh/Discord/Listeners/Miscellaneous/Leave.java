@@ -18,7 +18,7 @@ public class Leave extends ListenerAdapter {
         EmbedBuilder eb = new EmbedBuilder();
 
         if(!event.getMember().getUser().isBot()){
-            ecu.removeMemberFromDatabase(event, event.getMember().getUser().getName());
+            ecu.removeMemberFromDatabase(event, event.getMember().getUser().getId());
             eb.setDescription("Removed " + event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator() + " from the database.");
             eb.setColor(color.errorRed);
             eb.setTimestamp(Instant.now());
