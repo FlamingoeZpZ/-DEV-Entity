@@ -104,7 +104,7 @@ public class EditCoins extends ListenerAdapter {
                             String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                             Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
                             ecu.addCoins(event, name, Integer.parseInt(args[2]));
-                            eb.setDescription("Successfully added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance.\n\nNew balance:" + ecu.getCoins(event, name));
+                            eb.setDescription("Successfully added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance.\n\nNew balance: " + ecu.getCoins(event, name));
                             eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
