@@ -1,32 +1,175 @@
 package dev.dbdh.Discord.Listeners.Information;
 
+import dev.dbdh.Discord.Listeners.Fun.Screenshare;
+import dev.dbdh.Discord.Listeners.Moderation.*;
+import dev.dbdh.Discord.Listeners.Settings.SetPrefix;
 import dev.dbdh.Discord.Utilities.Color;
 import dev.dbdh.Discord.Utilities.Data;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.time.Instant;
+import java.util.concurrent.TimeUnit;
+
 public class Help extends ListenerAdapter {
+
     public void onGuildMessageReceived(GuildMessageReceivedEvent event){
+        String[] args = event.getMessage().getContentRaw().split("\\s+");
         Data data = new Data();
         Color color = new Color();
-        String [] args = event.getMessage().getContentRaw().split("\\s+");
+        EmbedBuilder eb = new EmbedBuilder();
 
-        if(args[0].equalsIgnoreCase(data.getPrefix() +"help")
-            || args[0].equalsIgnoreCase(data.getPrefix() +"info")
-                || args[0].equalsIgnoreCase(data.getPrefix() +"i")){ // Terms used to access this command
-            EmbedBuilder help = new EmbedBuilder();
-            help.setAuthor("Help & Info for " + event.getAuthor().getName(), null, event.getGuild().getIconUrl());
-            help.setDescription("The ***prefix for "+ event.getAuthor().getName() +" is "+data.getPrefix()+"***"
-                    + "\nThis is a list of all commands and features we currently  implemented into " + event.getAuthor().getName()
-                    + "\n```Tools``` **~Help/~Info/~I** > Returns this message and explains how to use the bot."
-                    + "\n**Match (Mobile/PC/PS4/XBOX)** @'s all players with the looking to play role, and grants you the looking to play ."
-                    + "\n **"+ event.getGuild().getTextChannelById("629510813518004244")+"** > To allow uses to explicitly assign self roles, giving freedom and simplicity."
-                    + "\n```Server Change Events```Randomized embeds for when people join the server\nLog for bot updates."
-                    + "\n```Our goals``` Currency, Fun events, Raffling system, ~~Join Event~~, Tournament logger."
-                    + "\n```Want to help us or learn to create your own bot?``` Message " + event.getGuild().getOwner().getAsMention() + " and join (here)[https://discord.gg/759C4zV] if you're interested in learning to make a bot!" );
-            help.setColor(color.getRandomColor());
-            help.setFooter("Created by:" + event.getGuild().getMemberById("79693184417931264").getAsMention() + event.getGuild().getMemberById("235502382358724611").getAsMention() +"\n Made with Java and MongoDB for " + event.getGuild().getName(), event.getAuthor().getAvatarUrl());
+        if(args[0].equalsIgnoreCase(data.getPrefix() + "help")){
+            if(args.length < 2){
+
+                RoleAdd addrole = new RoleAdd();
+                Ban ban = new Ban();
+                Clear clear = new Clear();
+                Kick kick = new Kick();
+                Mute mute = new Mute();
+                Screenshare screenshare = new Screenshare();
+                SetPrefix setprefix = new SetPrefix();
+                Softban softban = new Softban();
+                Tempmute tempmute = new Tempmute();
+                Unmute unmute = new Unmute();
+
+                eb.setTitle("⚙ Help");
+                eb.setDescription("Commands for Entity!\n\n```\n**Fun Commands**\n```\n" + data.getPrefix() + "screenshare --  " + screenshare.getShortDescription() + "\n```\n**Moderation Commands**\n```\n" + data.getPrefix() + "addrole     --  " + addrole.getShortDescription() + "\n" + data.getPrefix() + "ban         --  " + ban.getShortDescription() + "\n" + data.getPrefix() + "clear       --  " + clear.getShortDescription() + "\n" + data.getPrefix() + "kick        --  " + kick.getShortDescription() + "\n" + data.getPrefix() + "mute        --  " + mute.getShortDescription() + "\n" + data.getPrefix() + "softban     --  " + softban.getShortDescription() + "\n" + data.getPrefix() + "tempmute    --  " + tempmute.getShortDescription() + "\n" + data.getPrefix() + "unmute      --  " + unmute.getShortDescription() + "\n```\n**Setting Commands**\n```\n" + data.getPrefix() + "setprefix   --  " + setprefix.getShortDescription() + "\n```\n\n**For command syntax help do**\n```\n" + data.getPrefix() + "help {command}\n```");
+                eb.setColor(color.getRandomColor());
+                eb.setTimestamp(Instant.now());
+                eb.setFooter("Entity Commands Help Menu", data.getSelfAvatar(event));
+
+                event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                    message.delete().queueAfter(2, TimeUnit.MINUTES);
+                    event.getMessage().delete().queueAfter(2, TimeUnit.MINUTES);
+                    eb.clear();
+                });
+
+            } else if(args.length < 3){
+                if(args[1].equalsIgnoreCase("addrole")){
+                    RoleAdd command = new RoleAdd();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() +"\n\n **Required Roles:**\n" + command.getRequiredRoles()  + "\n\n **How to use the addrole command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n() | Optional unless previous item chosen to be used\n```");
+                    eb.setFooter("Entity Ban Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                }
+                else if(args[1].equalsIgnoreCase("ban")){
+                    Ban command = new Ban();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() +"\n\n **Required Roles:**\n" + command.getRequiredRoles()  + "\n\n **How to use the ban command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
+                    eb.setFooter("Entity Ban Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                } else if(args[1].equalsIgnoreCase("clear")){
+                    Clear command = new Clear();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the clear command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");                    eb.setFooter("Entity Clear Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                } else if(args[1].equalsIgnoreCase("kick")){
+                    Kick command = new Kick();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() +"\n\n **Required Roles:**\n" + command.getRequiredRoles()  + "\n\n **How to use the kick command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
+                    eb.setFooter("Entity Kick Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                } else if(args[1].equalsIgnoreCase("mute")){
+                    Mute command = new Mute();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the mute command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
+                    eb.setFooter("Entity Mute Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                } else if(args[1].equalsIgnoreCase("screenshare")){
+                    Screenshare command = new Screenshare();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the screenshare command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
+                    eb.setFooter("Entity Screenshare Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                } else if(args[1].equalsIgnoreCase("setprefix")){
+                    SetPrefix command = new SetPrefix();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the setprefix command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
+                    eb.setFooter("Entity SetPrefix Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                } else if(args[1].equalsIgnoreCase("softban")){
+                    Softban command = new Softban();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the softban command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
+                    eb.setFooter("Entity Softban Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                }  else if(args[1].equalsIgnoreCase("tempmute")){
+                    Tempmute command = new Tempmute();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the tempmute command:**\n" + command.getCommandSyntax() + "\n**Time Multipliers**\n```\nS | SECONDS\nM | MINUTES\nH | HOURS\nD | DAYS\n```\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
+                    eb.setFooter("Entity Tempmute Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                } else if(args[1].equalsIgnoreCase("unmute")){
+                    Unmute command = new Unmute();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the unmute command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
+                    eb.setFooter("Entity Unmute Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                }
+
+            }
         }
     }
 }
