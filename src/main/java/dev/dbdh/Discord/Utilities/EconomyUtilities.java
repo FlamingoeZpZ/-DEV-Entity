@@ -50,6 +50,82 @@ public class EconomyUtilities {
         return balance;
     }
 
+    public void addLevel(GuildMessageReceivedEvent event, String memberName, Integer level){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Integer currentlevel = Integer.parseInt(member.get("level").toString());
+        Bson newMemberDoc = new Document("level", currentlevel + level);
+        Bson updateMemberDoc = new Document("$set", newMemberDoc);
+        members.findOneAndUpdate(member, updateMemberDoc);
+        db.close();
+    }
+
+    public void removeLevel(GuildMessageReceivedEvent event, String memberName, Integer level){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Integer currentLevel = Integer.parseInt(member.get("level").toString());
+        Bson newMemberDoc = new Document("level", currentLevel - level);
+        Bson updateMemberDoc = new Document("$set", newMemberDoc);
+        members.findOneAndUpdate(member, updateMemberDoc);
+        db.close();
+    }
+
+    public Integer getLevel(GuildMessageReceivedEvent event, String memberName){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Integer currentLevel = Integer.parseInt(member.get("level").toString());
+        db.close();
+        return currentLevel;
+    }
+
+    public void addXP(GuildMessageReceivedEvent event, String memberName, Integer xp){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Integer currentXP = Integer.parseInt(member.get("xp").toString());
+        Bson newMemberDoc = new Document("xp", currentXP + xp);
+        Bson updateMemberDoc = new Document("$set", newMemberDoc);
+        members.findOneAndUpdate(member, updateMemberDoc);
+        db.close();
+    }
+
+    public void removeXP(GuildMessageReceivedEvent event, String memberName, Integer xp){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Integer currentXP = Integer.parseInt(member.get("xp").toString());
+        Bson newMemberDoc = new Document("xp", currentXP - xp);
+        Bson updateMemberDoc = new Document("$set", newMemberDoc);
+        members.findOneAndUpdate(member, updateMemberDoc);
+        db.close();
+    }
+
+    public Integer getXP(GuildMessageReceivedEvent event, String memberName){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Integer currentXP = Integer.parseInt(member.get("xp").toString());
+        db.close();
+        return currentXP;
+    }
+
+    public void addChest(GuildMessageReceivedEvent event, String memberName, String type, Integer count){
+        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        //Integer chestCount = Integer.parseInt(member.get(""))
+    }
+
     public void addPerkLevel(GuildMessageReceivedEvent event, String memberName, String perkName){
         String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
         db.connect();
@@ -62,6 +138,7 @@ public class EconomyUtilities {
         members.findOneAndUpdate(member, updateMemberDoc);
         db.close();
     }
+
     public void removePerkLevel(GuildMessageReceivedEvent event, String memberName, String perkName){
         String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
         db.connect();
