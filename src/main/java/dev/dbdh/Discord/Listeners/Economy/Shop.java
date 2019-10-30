@@ -5,10 +5,11 @@ import dev.dbdh.Discord.Utilities.Data;
 import dev.dbdh.Discord.Utilities.Aliases;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.Arrays;
 
-public class Shop {
+public class Shop extends ListenerAdapter {
     Color color = new Color(); // Each shop has different colour identifiers
     EmbedBuilder eb = new EmbedBuilder();
 
@@ -21,9 +22,14 @@ public class Shop {
             if (args.length == 1) {
 
             } else {
-                if(Arrays.stream(Al.chestAliases).anyMatch(args[1]::equalsIgnoreCase)){
+                if (Arrays.stream(Al.chestAliases).anyMatch(args[1]::equalsIgnoreCase)) {
+
+                } else if (Arrays.stream(Al.chaseAliases).anyMatch(args[1]::equalsIgnoreCase)) {
+
+                } else if (Arrays.stream(Al.specialtyAliases).anyMatch(args[1]::equalsIgnoreCase)) {
 
                 }
+
             }
 
         }
