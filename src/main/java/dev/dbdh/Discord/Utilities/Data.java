@@ -1,6 +1,7 @@
 package dev.dbdh.Discord.Utilities;
 
 import com.mongodb.client.MongoCollection;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;

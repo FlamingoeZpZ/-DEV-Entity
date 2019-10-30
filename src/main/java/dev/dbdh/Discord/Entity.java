@@ -4,10 +4,12 @@ import dev.dbdh.Discord.Listeners.Economy.AddEveryoneToDatabase;
 import dev.dbdh.Discord.Listeners.Economy.Balance;
 import dev.dbdh.Discord.Listeners.Economy.EditCoins;
 import dev.dbdh.Discord.Listeners.Fun.LookingToPlay;
+import dev.dbdh.Discord.Listeners.Fun.Screenshare;
 import dev.dbdh.Discord.Listeners.Information.Help;
 import dev.dbdh.Discord.Listeners.Information.ReactionRoleAssign;
 import dev.dbdh.Discord.Listeners.Miscellaneous.*;
 import dev.dbdh.Discord.Listeners.Moderation.*;
+import dev.dbdh.Discord.Listeners.Settings.SetPrefix;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -32,6 +34,7 @@ public class Entity {
 
                 //Fun Listeners
                 new LookingToPlay(),
+                new Screenshare(),
 
                 //Economy Listeners
                 new AddEveryoneToDatabase(),
@@ -51,8 +54,10 @@ public class Entity {
                 new RoleRemove(),
                 new Softban(),
                 new Tempmute(),
-                new Unmute()
+                new Unmute(),
 
+                // Settings Listeners
+                new SetPrefix()
         );
 
         entity.build();
