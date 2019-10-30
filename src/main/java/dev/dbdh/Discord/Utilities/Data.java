@@ -16,7 +16,7 @@ public class Data {
     private static final Database db = new Database();
 
     public static String getPrefix() {
-        String prefix;
+        String prefix = "!~";
         db.connect();
         MongoCollection<Document> guild = db.getCollection("guild");
         prefix = guild.find().first().getString("prefix");
