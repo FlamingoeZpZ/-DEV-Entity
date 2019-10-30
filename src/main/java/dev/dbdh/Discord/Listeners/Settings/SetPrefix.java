@@ -1,12 +1,12 @@
-package votrix.Discord.commands.Settings;
+package dev.dbdh.Discord.Listeners.Settings;
 
+import dev.dbdh.Discord.Utilities.Color;
+import dev.dbdh.Discord.Utilities.Data;
+import dev.dbdh.Discord.Utilities.RoleCheck;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import votrix.Discord.utils.Data;
-import votrix.Discord.utils.RoleCheck;
 
-import java.awt.*;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
@@ -14,6 +14,7 @@ public class SetPrefix extends ListenerAdapter {
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event){
         String[] args = event.getMessage().getContentRaw().split("\\s+");
+        Color color = new Color();
         Data data = new Data();
         RoleCheck rc = new RoleCheck();
         EmbedBuilder eb = new EmbedBuilder();
@@ -22,12 +23,12 @@ public class SetPrefix extends ListenerAdapter {
             if (rc.isOwner(event) || rc.isDeveloper(event)) {
                 data.setPrefix(args[1]);
                 eb.setDescription("Successfully set the prefix to `" + args[1] + "`");
-                eb.setColor(new Color(data.getColor()));
+                eb.setColor(color.getRandomColor());
                 eb.setFooter("Votrix Set Prefix", data.getSelfAvatar(event));
                 eb.setTimestamp(Instant.now());
 
                 success.setDescription(event.getMember().getAsMention() + " set the prefix to `" + args[1] + "`");
-                success.setColor(new Color(data.getColor()));
+                success.setColor(color.getRandomColor());
                 success.setFooter("Votrix Set Prefix Log", data.getSelfAvatar(event));
                 success.setTimestamp(Instant.now());
 
