@@ -3,6 +3,7 @@ package dev.dbdh.Discord.Utilities;
 import com.mongodb.client.MongoCollection;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.user.update.UserUpdateNameEvent;
 import org.bson.BsonArray;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -160,6 +161,16 @@ public class EconomyUtilities {
         Integer perkLevel = Integer.parseInt(member.get("perksActive." + perkName).toString());
         db.close();
         return perkLevel;
+    }
+
+    public void updateMemberOnDatabase(UserUpdateNameEvent event, String memberID, String newMemberName){
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Bson newMemberDoc = new Document("memberName", newMemberName);
+        Bson updateMemberDoc = new Document("$set", newMemberDoc);
+        members.findOneAndUpdate(member, updateMemberDoc);
+        db.close();
     }
 
     public void removeMemberFromDatabase(GuildMemberLeaveEvent event, String memberID){
