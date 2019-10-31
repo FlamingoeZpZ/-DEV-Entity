@@ -15,7 +15,7 @@ public class Censor extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event){
         Color color = new Color();
         Data data = new Data();
-        String[] curseWords = {"Ass", "Fuck", "Nigger", "Fag", "Cunt", "Bitch", "Shit"};
+        String[] curseWords = {"Ass", "Asshole", "Fuck", "Fucker", "Nigger", "Fag", "Faggot", "Cunt", "Bitch", "Shit"};
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         EmbedBuilder eb = new EmbedBuilder();
         for (String arg : args) {
