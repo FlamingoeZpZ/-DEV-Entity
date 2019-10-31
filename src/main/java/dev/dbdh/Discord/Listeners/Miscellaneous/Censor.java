@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class Censor extends ListenerAdapter {
 
@@ -25,6 +26,7 @@ public class Censor extends ListenerAdapter {
                 eb.setFooter("Entity Blacklisted Word Filter", data.getSelfAvatar(event));
 
                 event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                    message.delete().queueAfter(15, TimeUnit.SECONDS);
                     data.getLogChannel(event).sendMessage(eb.build()).queue((msg) -> {
                         event.getMessage().delete().queue();
                     });
