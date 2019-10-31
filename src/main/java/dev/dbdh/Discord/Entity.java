@@ -32,6 +32,7 @@ public class Entity {
                 new Join(),
                 new Ready(),
                 new Leave(),
+                new NameUpdate(),
 
                 //Fun Listeners
                 new LookingToPlay(),
