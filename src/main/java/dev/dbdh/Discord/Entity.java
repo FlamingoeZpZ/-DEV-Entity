@@ -28,6 +28,7 @@ public class Entity {
 
         entity.addEventListeners(
                 //Misc Listeners
+                new Censor(),
                 new Join(),
                 new Ready(),
                 new Leave(),
