@@ -44,7 +44,7 @@ public class EditCoins extends ListenerAdapter {
                         if (args[3].equalsIgnoreCase("everyone")) {
                             for (Member member : event.getGuild().getMembers()) {
                                 if (!member.getUser().isBot()) {
-                                    ecu.removeCoins(event, member.getUser().getName(), Integer.parseInt(args[2]));
+                                    ecu.removeCoins(event, member.getUser().getId(), Integer.parseInt(args[2]));
                                 }
                             }
                             eb.setDescription("Successfully removed " + args[2] + " coins from everyone's balance");
@@ -64,7 +64,7 @@ public class EditCoins extends ListenerAdapter {
                         } else {
                             String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                             Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
-                            ecu.removeCoins(event, name, Integer.parseInt(args[2]));
+                            ecu.removeCoins(event, mentioned.getUser().getId(), Integer.parseInt(args[2]));
                             eb.setDescription("Successfully removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance.\n\nNew balance: " + ecu.getCoins(event, name));
                             eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());
@@ -83,7 +83,7 @@ public class EditCoins extends ListenerAdapter {
                         if (args[3].equalsIgnoreCase("everyone")) {
                             for (Member member : event.getGuild().getMembers()) {
                                 if (!member.getUser().isBot()) {
-                                    ecu.addCoins(event, member.getUser().getName(), Integer.parseInt(args[2]));
+                                    ecu.addCoins(event, member.getUser().getId(), Integer.parseInt(args[2]));
                                 }
                             }
                             eb.setDescription("Successfully added " + args[2] + " coins to everyone's balance");
@@ -103,7 +103,7 @@ public class EditCoins extends ListenerAdapter {
                         } else {
                             String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                             Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
-                            ecu.addCoins(event, name, Integer.parseInt(args[2]));
+                            ecu.addCoins(event, mentioned.getUser().getId(), Integer.parseInt(args[2]));
                             eb.setDescription("Successfully added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance.\n\nNew balance: " + ecu.getCoins(event, name));
                             eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());

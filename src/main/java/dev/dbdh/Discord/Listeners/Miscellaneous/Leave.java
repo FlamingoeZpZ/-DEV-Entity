@@ -16,7 +16,6 @@ public class Leave extends ListenerAdapter {
         Data data = new Data();
         EconomyUtilities ecu = new EconomyUtilities();
         EmbedBuilder eb = new EmbedBuilder();
-
         if(!event.getMember().getUser().isBot()){
             ecu.removeMemberFromDatabase(event, event.getMember().getUser().getId());
             eb.setDescription("Removed " + event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator() + " from the database.");

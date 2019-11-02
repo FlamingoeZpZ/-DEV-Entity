@@ -3,6 +3,7 @@ package dev.dbdh.Discord.Listeners.Miscellaneous;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
+import dev.dbdh.Discord.Utilities.Color;
 import dev.dbdh.Discord.Utilities.Counter;
 import dev.dbdh.Discord.Utilities.Data;
 import dev.dbdh.Discord.Utilities.Database;
@@ -12,15 +13,47 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
 
 import java.time.Instant;
+import java.util.Random;
 
 import static com.mongodb.client.model.Filters.eq;
 
 public class Join extends ListenerAdapter {
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         Counter counter = new Counter();
+        Color color = new Color();
         Data data = new Data();
         Database db = new Database();
         EmbedBuilder eb = new EmbedBuilder();
+
+        String[] messages = {
+                "[member] just joined the server - glhf!",
+                "[member] just joined. Everyone, look busy!",
+                "[member] just joined. Can I get a heal?",
+                "[member] joined your party.",
+                "[member] joined. You must construct additional pylons!",
+                "Ermagherd. [member] is here!",
+                "Welcome, [member]. Stay awhile and listen.",
+                "Welcome, [member]. We were expecting you ( ͡° ͜ʖ ͡°)",
+                "Welcome, [member]. We hope you brought pizza.",
+                "Welcome [member]. Leave your weapons by the door.",
+                "A wild [member] appeared.",
+                "Swoooosh. [member] just landed.",
+                "Brace yourselves. [member] just joined the server.",
+                "[member] just joined. Hide your bananas.",
+                "[member] just arrived. Seems OP - please nerf.",
+                "[member] just slid into the server.",
+                "A [member] has spawned in the server.",
+                "Big [member] showed up!",
+                "Where’s [member]? In the server!",
+                "[member] hopped into the server. Kangaroo!!",
+                "[member] just showed up. Hold my beer.",
+                "Never gonna give [member] up, never gonna let [member] down!",
+                "It's dangerous to go alone, take [member].",
+                "It's [member]! Praise the sun!. [T]/",
+                "Ha! [member] has joined. You activated my trap card!",
+                "Hello is it [member] you're looking for?"
+        };
+
         if (!event.getMember().getUser().isBot()) {
             long unixTime = System.currentTimeMillis() / 1000L;
             db.connect();
@@ -34,64 +67,16 @@ public class Join extends ListenerAdapter {
             }
             db.close();
 
-            String[] URL = {
-                    //Survivor
-                    "https://entity.nestedvar.dev/images/survivor/1.jpg",
-                    "https://entity.nestedvar.dev/images/survivor/2.jpg",
-                    "https://entity.nestedvar.dev/images/survivor/3.jpeg",
-                    "https://entity.nestedvar.dev/images/survivor/4.jpeg",
-                    "https://entity.nestedvar.dev/images/survivor/5.png",
-                    "https://entity.nestedvar.dev/images/survivor/6.jpg",
-                    "https://entity.nestedvar.dev/images/survivor/7.png",
-                    "https://entity.nestedvar.dev/images/survivor/8.gif",
-                    "https://entity.nestedvar.dev/images/survivor/9.gif",
-                    "https://entity.nestedvar.dev/images/survivor/10.png",
-                    "https://entity.nestedvar.dev/images/survivor/11.png",
-                    "https://entity.nestedvar.dev/images/survivor/12.jpeg",
-                    //Killer
-                    "https://entity.nestedvar.dev/images/killer/1.png",
-                    "https://entity.nestedvar.dev/images/killer/2.png",
-                    "https://entity.nestedvar.dev/images/killer/3.jpeg",
-                    "https://entity.nestedvar.dev/images/killer/4.png",
-                    "https://entity.nestedvar.dev/images/killer/5.gif",
-                    "https://entity.nestedvar.dev/images/killer/6.jpg",
-                    "https://entity.nestedvar.dev/images/killer/7.png",
-                    "https://entity.nestedvar.dev/images/killer/8.gif",
-                    "https://entity.nestedvar.dev/images/killer/9.gif",
-                    "https://entity.nestedvar.dev/images/killer/10.jpg",
-                    "https://entity.nestedvar.dev/images/killer/11.jpg",
-                    "https://entity.nestedvar.dev/images/killer/12.jpg"
+            Random random = new Random();
+            int message = random.nextInt(messages.length);
+            eb.setDescription(messages[message].replace("[member]", event.getMember().getAsMention()));
+            eb.setColor(color.getRandomColor());
+            eb.setTimestamp(Instant.now());
+            eb.setFooter(counter.getMemberCount(event) + " members", data.getSelfAvatar(event));
 
-            };
-            String[] FollowText = {
-                    //Survivor
-                    "But I need my perks Behaviour ",
-                    "Because Altruism is for psychos ",
-                    "Maybe we shouldn't do cross country SWF? ",
-                    "Typical white ward action :sob: ",
-                    "There is no coming back from that one chief... ",
-                    "Altrusim too gud ",
-                    "Jake is cuter but it's whatever ",
-                    "Epic... Gamer... Moment ",
-                    "Don't hurt Meg pls ",
-                    "Dwight being smooth As FUCK ",
-                    "Eleven is fitting xD",
-                    "What will you survivors do now? ",
-                    //Killer
-                    "This pic speaks for itself ",
-                    "Maybe you should be worried? ",
-                    "RIP hex totem... I woulda told a joke, but it'd be too dull ",
-                    "You won't be able to ",
-                    "Bing Bong, Welcome our newest Member! ",
-                    event.getGuild().getMemberById("383771414290890773").getNickname() + " is a filthy Nurse main please hate him ",
-                    "CARRRRL ",
-                    "Legion at it again! Hittin up em stabs ",
-                    "Hello, " + event.getMember().getAsMention() + " I'm always watching ",
-                    "The light burns me too ",
-                    "Permanent pain for poor micheal ",
-                    "No wonder the survivors say we have tunnel vision, we just can't see "
-            };
-
+            event.getGuild().getTextChannelById("606703075310436403").sendMessage(eb.build()).queue((message1) -> {
+                eb.clear();
+            });
         }
     }
 }

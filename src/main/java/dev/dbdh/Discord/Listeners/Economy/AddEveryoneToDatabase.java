@@ -36,7 +36,6 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                         Document chestsOpened = new Document(new BasicDBObject("basicChest", 0).append("shinyChest", 0).append("legendaryChest", 0).append("mythicChest", 0));
                         Document memberInfo = new Document(new BasicDBObject("memberId", member.getUser().getId()).append("memberName", member.getUser().getName() + "#" + member.getUser().getDiscriminator()).append("balance", 2500L).append("perksActive", perksActive).append("chestsOwned", chestsOwned).append("chestsOpened", chestsOpened).append("eventWins", 0).append("cooldown", unixTime));
                         members.insertOne(memberInfo);
-
                     }
                 }
             }

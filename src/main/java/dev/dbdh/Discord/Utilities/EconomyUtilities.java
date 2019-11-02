@@ -12,23 +12,18 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class EconomyUtilities {
     Database db = new Database();
-    public void addCoins(GuildMessageReceivedEvent event, String memberName, Integer coins){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
-
+    public void addCoins(GuildMessageReceivedEvent event, String memberID, Integer coins){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-
         Integer balance = Integer.parseInt(member.get("balance").toString());
         Bson newMemberDoc = new Document("balance", balance + coins);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
-
         db.close();
     }
 
-    public void removeCoins(GuildMessageReceivedEvent event, String memberName, Integer coins){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public void removeCoins(GuildMessageReceivedEvent event, String memberID, Integer coins){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -41,8 +36,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public Integer getCoins(GuildMessageReceivedEvent event, String memberName){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public Integer getCoins(GuildMessageReceivedEvent event, String memberID){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -51,8 +45,7 @@ public class EconomyUtilities {
         return balance;
     }
 
-    public void addLevel(GuildMessageReceivedEvent event, String memberName, Integer level){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public void addLevel(GuildMessageReceivedEvent event, String memberID, Integer level){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -63,8 +56,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public void removeLevel(GuildMessageReceivedEvent event, String memberName, Integer level){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public void removeLevel(GuildMessageReceivedEvent event, String memberID, Integer level){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -75,8 +67,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public Integer getLevel(GuildMessageReceivedEvent event, String memberName){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public Integer getLevel(GuildMessageReceivedEvent event, String memberID){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -85,8 +76,7 @@ public class EconomyUtilities {
         return currentLevel;
     }
 
-    public void addXP(GuildMessageReceivedEvent event, String memberName, Integer xp){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public void addXP(GuildMessageReceivedEvent event, String memberID, Integer xp){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -97,8 +87,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public void removeXP(GuildMessageReceivedEvent event, String memberName, Integer xp){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public void removeXP(GuildMessageReceivedEvent event, String memberID, Integer xp){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -109,8 +98,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public Integer getXP(GuildMessageReceivedEvent event, String memberName){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public Integer getXP(GuildMessageReceivedEvent event, String memberID){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -119,16 +107,38 @@ public class EconomyUtilities {
         return currentXP;
     }
 
-    public void addChest(GuildMessageReceivedEvent event, String memberName, String type, Integer count){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public void addChest(GuildMessageReceivedEvent event, String memberID, String type, Integer count){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        //Integer chestCount = Integer.parseInt(member.get(""))
+        Integer chestCount = member.getInteger("chestsOwned." + type);
+        Bson newMemberDoc = new Document("chestsOwned." + type, chestCount + count);
+        Bson updateMemberDoc = new Document("$set", newMemberDoc);
+        members.findOneAndUpdate(member, updateMemberDoc);
+        db.close();
     }
 
-    public void addPerkLevel(GuildMessageReceivedEvent event, String memberName, String perkName){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public void removeChest(GuildMessageReceivedEvent event, String memberID, String type, Integer count){
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Integer chestCount = member.getInteger("chestsOwned." + type);
+        Bson newMemberDoc = new Document("chestsOwned." + type, chestCount - count);
+        Bson updateMemberDoc = new Document("$set", newMemberDoc);
+        members.findOneAndUpdate(member, updateMemberDoc);
+        db.close();
+    }
+
+    public Integer getChests(GuildMessageReceivedEvent event, String memberID, String type){
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Integer chestCount = member.getInteger("chestsOwned." + type);
+        db.close();
+        return chestCount;
+    }
+
+    public void addPerkLevel(GuildMessageReceivedEvent event, String memberID, String perkName){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -140,8 +150,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public void removePerkLevel(GuildMessageReceivedEvent event, String memberName, String perkName){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public void removePerkLevel(GuildMessageReceivedEvent event, String memberID, String perkName){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -153,8 +162,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public Integer getPerkLevel(GuildMessageReceivedEvent event, String memberName, String perkName){
-        String memberID = event.getGuild().getMembersByName(memberName, true).get(0).getId();
+    public Integer getPerkLevel(GuildMessageReceivedEvent event, String memberID, String perkName){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -179,5 +187,11 @@ public class EconomyUtilities {
         Document member = members.find(eq("memberId", memberID)).first();
         members.deleteOne(member);
         db.close();
+    }
+
+    public boolean isCooldownReady(GuildMessageReceivedEvent event, String memberID){
+
+
+        return true;
     }
 }
