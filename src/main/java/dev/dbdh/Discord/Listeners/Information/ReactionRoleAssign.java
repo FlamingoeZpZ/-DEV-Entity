@@ -8,6 +8,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+/**
+ * DISGUSTING CODE REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+ */
 public class ReactionRoleAssign extends ListenerAdapter {
     Data data = new Data();
     public static int ID;

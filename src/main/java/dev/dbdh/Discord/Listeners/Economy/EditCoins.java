@@ -65,11 +65,11 @@ public class EditCoins extends ListenerAdapter {
                             String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                             Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
                             ecu.removeCoins(event, mentioned.getUser().getId(), Integer.parseInt(args[2]));
-                            eb.setDescription("Successfully removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance.\n\nNew balance: " + ecu.getCoins(event, name));
+                            eb.setDescription("Successfully removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance.\n\nNew balance: " + ecu.getCoins(event, mentioned.getUser().getId()));
                             eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
-                            success.setDescription(event.getMember().getAsMention() + " removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance.\n\nNew balance: " + ecu.getCoins(event, name));
+                            success.setDescription(event.getMember().getAsMention() + " removed " + args[2] + " coins from " + mentioned.getAsMention() + "'s balance.\n\nNew balance: " + ecu.getCoins(event, mentioned.getUser().getId()));
                             success.setColor(color.getRandomColor());
                             success.setTimestamp(Instant.now());
                             success.setFooter("Entity Economy Logs");
@@ -104,12 +104,12 @@ public class EditCoins extends ListenerAdapter {
                             String name = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                             Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
                             ecu.addCoins(event, mentioned.getUser().getId(), Integer.parseInt(args[2]));
-                            eb.setDescription("Successfully added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance.\n\nNew balance: " + ecu.getCoins(event, name));
+                            eb.setDescription("Successfully added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance.\n\nNew balance: " + ecu.getCoins(event, mentioned.getUser().getId()));
                             eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Entity Economy Update", data.getSelfAvatar(event));
 
-                            success.setDescription(event.getMember().getAsMention() + " added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance.\n\nNew balance: " + ecu.getCoins(event, name));
+                            success.setDescription(event.getMember().getAsMention() + " added " + args[2] + " coins to " + mentioned.getAsMention() + "'s balance.\n\nNew balance: " + ecu.getCoins(event, mentioned.getUser().getId()));
                             success.setColor(color.getRandomColor());
                             success.setTimestamp(Instant.now());
                             success.setFooter("Entity Economy Logs");
