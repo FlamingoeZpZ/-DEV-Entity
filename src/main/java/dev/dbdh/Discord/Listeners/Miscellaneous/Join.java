@@ -74,7 +74,7 @@ public class Join extends ListenerAdapter {
             eb.setTimestamp(Instant.now());
             eb.setFooter(counter.getMemberCount(event) + " members", data.getSelfAvatar(event));
 
-            event.getGuild().getTextChannelById("606703075310436403").sendMessage(eb.build()).queue((message1) -> {
+            event.getGuild().getTextChannelById("640005609760227371").sendMessage(eb.build()).queue((message1) -> {
                 eb.clear();
             });
         }
