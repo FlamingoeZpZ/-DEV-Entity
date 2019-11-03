@@ -3,7 +3,6 @@ package dev.dbdh.Discord;
 import dev.dbdh.Discord.Listeners.Economy.AddEveryoneToDatabase;
 import dev.dbdh.Discord.Listeners.Economy.Balance;
 import dev.dbdh.Discord.Listeners.Economy.EditCoins;
-import dev.dbdh.Discord.Listeners.Fun.CleverBot;
 import dev.dbdh.Discord.Listeners.Fun.Cleverbot;
 import dev.dbdh.Discord.Listeners.Fun.LookingToPlay;
 import dev.dbdh.Discord.Listeners.Fun.Screenshare;
