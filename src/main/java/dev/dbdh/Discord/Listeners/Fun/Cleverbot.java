@@ -33,10 +33,10 @@ public class Cleverbot extends ListenerAdapter {
                 } catch (IOException e){
                     e.printStackTrace();
 
-                    eb.setDescription("An error has occured with the chatbot API \n\n```\n" + e.toString().substring(0, 1950) + "\n```");
+                    eb.setDescription("An error has occured with the chatbot API \n\n```\n" + e.toString() + "\n```");
                     eb.setColor(color.getRandomColor());
                     eb.setTimestamp(Instant.now());
-                    eb.setFooter("Votrix Cleverbot API Error", data.getSelfAvatar(event));
+                    eb.setFooter("Entity Cleverbot API Error", data.getSelfAvatar(event));
 
                     data.getLogChannel(event).sendMessage(eb.build()).queue();
                 }
@@ -52,10 +52,10 @@ public class Cleverbot extends ListenerAdapter {
                 } catch (IOException e) {
                     e.printStackTrace();
 
-                    eb.setDescription("An error has occured with the chatbot API \n\n```\n" + e.toString().substring(0, 1950) + "\n```");
+                    eb.setDescription("An error has occured with the chatbot API \n\n```\n" + e.toString() + "\n```");
                     eb.setColor(color.errorRed);
                     eb.setTimestamp(Instant.now());
-                    eb.setFooter("Votrix Cleverbot API Error", data.getSelfAvatar(event));
+                    eb.setFooter("Entity Cleverbot API Error", data.getSelfAvatar(event));
 
                     data.getLogChannel(event).sendMessage(eb.build()).queue();
                 }
