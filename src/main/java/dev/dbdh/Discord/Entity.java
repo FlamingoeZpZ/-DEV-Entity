@@ -31,6 +31,8 @@ public class Entity {
 
         entity.addEventListeners(
 
+                new TestDate(),
+
                 // Economy Listeners
                 new AddEveryoneToDatabase(),
                 new Balance(),
