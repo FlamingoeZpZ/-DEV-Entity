@@ -2,7 +2,9 @@ package dev.dbdh.Discord;
 
 import dev.dbdh.Discord.Listeners.Economy.AddEveryoneToDatabase;
 import dev.dbdh.Discord.Listeners.Economy.Balance;
+import dev.dbdh.Discord.Listeners.Economy.Daily;
 import dev.dbdh.Discord.Listeners.Economy.EditCoins;
+import dev.dbdh.Discord.Listeners.Fun.Chest;
 import dev.dbdh.Discord.Listeners.Fun.Cleverbot;
 import dev.dbdh.Discord.Listeners.Fun.LookingToPlay;
 import dev.dbdh.Discord.Listeners.Fun.Screenshare;
@@ -28,26 +30,28 @@ public class Entity {
         entity.setActivity(Activity.watching("Loading Bars"));
 
         entity.addEventListeners(
-                //Misc Listeners
-                //new Censor(),
-                new Join(),
-                new Ready(),
-                new Leave(),
-                new NameUpdate(),
+
+                // Economy Listeners
+                new AddEveryoneToDatabase(),
+                new Balance(),
+                new Daily(),
+                new EditCoins(),
 
                 //Fun Listeners
+                new Chest(),
                 new Cleverbot(),
                 new LookingToPlay(),
                 new Screenshare(),
 
-                //Economy Listeners
-                new AddEveryoneToDatabase(),
-                new Balance(),
-                new EditCoins(),
-
                 //Information Listeners
-                new ReactionRoleAssign(),
                 new Help(),
+                new ReactionRoleAssign(),
+
+                //Misc Listeners
+                new Join(),
+                new Leave(),
+                new NameUpdate(),
+                new Ready(),
 
                 //Moderation Listeners
                 new Ban(),
@@ -59,6 +63,9 @@ public class Entity {
                 new Softban(),
                 new Tempmute(),
                 new Unmute(),
+
+                // Party Listeners
+
 
                 // Settings Listeners
                 new SetPrefix()

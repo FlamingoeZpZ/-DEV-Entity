@@ -12,7 +12,8 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class EconomyUtilities {
     Database db = new Database();
-    public void addCoins(GuildMessageReceivedEvent event, String memberID, Integer coins){
+
+    public void addCoins(GuildMessageReceivedEvent event, String memberID, Integer coins) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -23,7 +24,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public void removeCoins(GuildMessageReceivedEvent event, String memberID, Integer coins){
+    public void removeCoins(GuildMessageReceivedEvent event, String memberID, Integer coins) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -36,7 +37,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public Integer getCoins(GuildMessageReceivedEvent event, String memberID){
+    public Integer getCoins(GuildMessageReceivedEvent event, String memberID) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -45,7 +46,7 @@ public class EconomyUtilities {
         return balance;
     }
 
-    public void addLevel(GuildMessageReceivedEvent event, String memberID, Integer level){
+    public void addLevel(GuildMessageReceivedEvent event, String memberID, Integer level) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -56,7 +57,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public void removeLevel(GuildMessageReceivedEvent event, String memberID, Integer level){
+    public void removeLevel(GuildMessageReceivedEvent event, String memberID, Integer level) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -67,7 +68,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public Integer getLevel(GuildMessageReceivedEvent event, String memberID){
+    public Integer getLevel(GuildMessageReceivedEvent event, String memberID) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -76,7 +77,7 @@ public class EconomyUtilities {
         return currentLevel;
     }
 
-    public void addXP(GuildMessageReceivedEvent event, String memberID, Integer xp){
+    public void addXP(GuildMessageReceivedEvent event, String memberID, Integer xp) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -87,7 +88,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public void removeXP(GuildMessageReceivedEvent event, String memberID, Integer xp){
+    public void removeXP(GuildMessageReceivedEvent event, String memberID, Integer xp) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -98,7 +99,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public Integer getXP(GuildMessageReceivedEvent event, String memberID){
+    public Integer getXP(GuildMessageReceivedEvent event, String memberID) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -107,7 +108,7 @@ public class EconomyUtilities {
         return currentXP;
     }
 
-    public void addChest(GuildMessageReceivedEvent event, String memberID, String type, Integer count){
+    public void addChest(GuildMessageReceivedEvent event, String memberID, String type, Integer count) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -118,7 +119,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public void removeChest(GuildMessageReceivedEvent event, String memberID, String type, Integer count){
+    public void removeChest(GuildMessageReceivedEvent event, String memberID, String type, Integer count) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -129,7 +130,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public Integer getChests(GuildMessageReceivedEvent event, String memberID, String type){
+    public Integer getChests(GuildMessageReceivedEvent event, String memberID, String type) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -138,31 +139,31 @@ public class EconomyUtilities {
         return chestCount;
     }
 
-    public void addPerkLevel(GuildMessageReceivedEvent event, String memberID, String perkName){
+    public void addPerkLevel(GuildMessageReceivedEvent event, String memberID, String perkName) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
 
         Integer perkLevel = Integer.parseInt(member.get("perksActive." + perkName).toString());
-        Bson newMemberDoc = new Document("perksActive." + perkName,  perkLevel++); // use . to access objects in arrays ( BSON )
+        Bson newMemberDoc = new Document("perksActive." + perkName, perkLevel++); // use . to access objects in arrays ( BSON )
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
         db.close();
     }
 
-    public void removePerkLevel(GuildMessageReceivedEvent event, String memberID, String perkName){
+    public void removePerkLevel(GuildMessageReceivedEvent event, String memberID, String perkName) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
 
         Integer perkLevel = Integer.parseInt(member.get("perksActive." + perkName).toString());
-        Bson newMemberDoc = new Document("perksActive." + perkName,  perkLevel--); // use . to access objects in arrays ( BSON )
+        Bson newMemberDoc = new Document("perksActive." + perkName, perkLevel--); // use . to access objects in arrays ( BSON )
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
         db.close();
     }
 
-    public Integer getPerkLevel(GuildMessageReceivedEvent event, String memberID, String perkName){
+    public Integer getPerkLevel(GuildMessageReceivedEvent event, String memberID, String perkName) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -171,7 +172,7 @@ public class EconomyUtilities {
         return perkLevel;
     }
 
-    public void updateMemberOnDatabase(UserUpdateNameEvent event, String memberID, String newMemberName){
+    public void updateMemberOnDatabase(UserUpdateNameEvent event, String memberID, String newMemberName) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -181,7 +182,7 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public void removeMemberFromDatabase(GuildMemberLeaveEvent event, String memberID){
+    public void removeMemberFromDatabase(GuildMemberLeaveEvent event, String memberID) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
@@ -189,9 +190,58 @@ public class EconomyUtilities {
         db.close();
     }
 
-    public boolean isCooldownReady(GuildMessageReceivedEvent event, String memberID){
+    public boolean isCooldownReady(GuildMessageReceivedEvent event, String memberID, String type) {
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        if(type.equalsIgnoreCase("freeChest")) {
+            if ((member.getLong("cooldowns.freeChest") + 300000) <= System.currentTimeMillis() / 1000L) {
+                db.close();
+                return true;
+            } else {
+                db.close();
+                return false;
+            }
+        } else if(type.equalsIgnoreCase("daily")){
+            if((member.getLong("cooldowns.daily") + 86400000) <= System.currentTimeMillis() / 1000L){
+                db.close();
+                return true;
+            } else {
+                db.close();
+                return false;
+            }
+        } else if(type.equalsIgnoreCase("chase")){
+            if((member.getLong("cooldowns.chase") + 300000) <= System.currentTimeMillis() / 1000L){
+                db.close();
+                return true;
+            } else {
+                db.close();
+                return false;
+            }
+        }
+        db.close();
+        return false;
+    }
 
-
-        return true;
+    public void resetCooldown(GuildMessageReceivedEvent event, String memberID, String type){
+        db.connect();
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        if(type.equalsIgnoreCase("freeChest")){
+            Bson newMemberDoc = new Document("cooldowns.freeChest", System.currentTimeMillis() / 1000L);
+            Bson updateMemberDoc = new Document("$set", newMemberDoc);
+            members.findOneAndUpdate(member, updateMemberDoc);
+            db.close();
+        } else if(type.equalsIgnoreCase("daily")){
+            Bson newMemberDoc = new Document("cooldowns.daily", System.currentTimeMillis() / 1000L);
+            Bson updateMemberDoc = new Document("$set", newMemberDoc);
+            members.findOneAndUpdate(member, updateMemberDoc);
+            db.close();
+        } else if(type.equalsIgnoreCase("chase")){
+            Bson newMemberDoc = new Document("cooldowns.chase", System.currentTimeMillis() / 1000L);
+            Bson updateMemberDoc = new Document("$set", newMemberDoc);
+            members.findOneAndUpdate(member, updateMemberDoc);
+            db.close();
+        }
     }
 }
