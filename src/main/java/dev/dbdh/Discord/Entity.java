@@ -1,9 +1,6 @@
 package dev.dbdh.Discord;
 
-import dev.dbdh.Discord.Listeners.Economy.AddEveryoneToDatabase;
-import dev.dbdh.Discord.Listeners.Economy.Balance;
-import dev.dbdh.Discord.Listeners.Economy.Daily;
-import dev.dbdh.Discord.Listeners.Economy.EditCoins;
+import dev.dbdh.Discord.Listeners.Economy.*;
 import dev.dbdh.Discord.Listeners.Fun.Chest;
 import dev.dbdh.Discord.Listeners.Fun.Cleverbot;
 import dev.dbdh.Discord.Listeners.Fun.LookingToPlay;
@@ -36,6 +33,7 @@ public class Entity {
                 new Balance(),
                 new Daily(),
                 new EditCoins(),
+                new SuccessfulBump(),
 
                 //Fun Listeners
                 new Chest(),

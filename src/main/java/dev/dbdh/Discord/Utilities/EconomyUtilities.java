@@ -232,6 +232,7 @@ public class EconomyUtilities {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
+        Document cooldowns = (Document) member.get("cooldowns");
         if(type.equalsIgnoreCase("freeChest")){
             Bson newMemberDoc = new Document("cooldowns.freeChest", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);

@@ -35,12 +35,12 @@ public class Screenshare extends ListenerAdapter {
                 eb.setDescription(event.getMember().getAsMention() + " created a screenshare link for " + event.getMember().getVoiceState().getChannel().getName() + "\n\n[Screenshare Link](https://www.discordapp.com/channels/537736395268161537/" + event.getMember().getVoiceState().getChannel().getId() + " \"Click to join the screenshare for the voice channel " + event.getMember().getVoiceState().getChannel().getName() +"\")");
                 eb.setColor(color.getRandomColor());
                 eb.setTimestamp(Instant.now());
-                eb.setFooter("Votrix Screenshare", data.getSelfAvatar(event));
+                eb.setFooter("Entity Screenshare", data.getSelfAvatar(event));
 
                 success.setDescription(event.getMember().getAsMention() + " has created a screenshare link for the voice channel " + event.getMember().getVoiceState().getChannel().getName());
                 success.setColor(color.getRandomColor());
                 success.setTimestamp(Instant.now());
-                success.setFooter("Votrix Screenshare Log", data.getSelfAvatar(event));
+                success.setFooter("Entity Screenshare Log", data.getSelfAvatar(event));
 
                 event.getChannel().sendMessage(eb.build()).queue((message1) -> {
                     data.getLogChannel(event).sendMessage(success.build()).queue((message2) -> {
