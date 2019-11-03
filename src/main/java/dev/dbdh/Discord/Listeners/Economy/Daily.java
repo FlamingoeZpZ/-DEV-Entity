@@ -23,6 +23,7 @@ public class Daily extends ListenerAdapter {
                 int upper = 250;
                 int lower = 5;
                 int r = (int) (Math.random() * (upper - lower)) + lower;
+                ecu.addCoins(event, event.getMember().getUser().getId(), r);
                 eb.setDescription("You opened your daily and got " + r + " coins!");
                 eb.setColor(color.getRandomColor());
                 eb.setTimestamp(Instant.now());
