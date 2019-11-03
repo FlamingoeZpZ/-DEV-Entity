@@ -208,7 +208,7 @@ public class EconomyUtilities {
                 return false;
             }
         } else if(type.equalsIgnoreCase("daily")){
-            if((cooldowns.getLong("cooldowns.daily") + 86400000L) >= System.currentTimeMillis()){
+            if((cooldowns.getLong("daily") + 86400000L) >= System.currentTimeMillis()){
                 db.close();
                 return true;
             } else {
@@ -216,7 +216,7 @@ public class EconomyUtilities {
                 return false;
             }
         } else if(type.equalsIgnoreCase("chase")){
-            if((cooldowns.getLong("cooldowns.chase") + 300000L) >= System.currentTimeMillis()){
+            if((cooldowns.getLong("chase") + 300000L) >= System.currentTimeMillis()){
                 db.close();
                 return true;
             } else {

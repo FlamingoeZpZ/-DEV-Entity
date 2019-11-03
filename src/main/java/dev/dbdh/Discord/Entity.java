@@ -30,7 +30,7 @@ public class Entity {
         entity.setActivity(Activity.watching("Loading Bars"));
 
         entity.addEventListeners(
-                
+
                 // Economy Listeners
                 new AddEveryoneToDatabase(),
                 new Balance(),
