@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -55,7 +56,7 @@ public class Join extends ListenerAdapter {
         };
 
         if (!event.getMember().getUser().isBot()) {
-            long unixTime = System.currentTimeMillis() / 1000L;
+            LocalDateTime unixTime = LocalDateTime.now();
             db.connect();
             MongoCollection<Document> members = db.getCollection("members");
             if (members.find(eq("memberID", event.getMember().getUser().getId())).first() == null) {

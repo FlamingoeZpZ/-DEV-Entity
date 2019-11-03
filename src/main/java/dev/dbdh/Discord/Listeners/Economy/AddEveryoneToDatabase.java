@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +26,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
         Database db = new Database();
         EmbedBuilder eb = new EmbedBuilder();
         if(args[0].equalsIgnoreCase("addEveryoneStoopidBot")){
-            long unixTime = System.currentTimeMillis() / 1000L;
+            LocalDateTime unixTime = LocalDateTime.now();
             db.connect();
             MongoCollection<Document> members = db.getCollection("members");
             for(Member member: event.getGuild().getMembers()) {
