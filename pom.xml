@@ -26,18 +26,26 @@
 
     <dependencies>
 
+        <!-- JDA Java Discord API -->
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
             <version>4.0.0_52</version>
         </dependency>
 
+        <!-- MongoDB Driver for Java -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>3.11.1</version>
         </dependency>
 
+        <!-- CleverBot API for Java -->
+        <dependency>
+            <groupId>com.michaelwflaherty</groupId>
+            <artifactId>cleverbotapi</artifactId>
+            <version>1.0.3</version>
+        </dependency>
     </dependencies>
 
     <build>
