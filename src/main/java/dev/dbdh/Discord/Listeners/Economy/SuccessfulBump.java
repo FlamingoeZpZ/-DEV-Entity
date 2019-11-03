@@ -6,7 +6,10 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class SuccessfulBump extends ListenerAdapter {
 
     public void onGuildMessageEmbed(GuildMessageEmbedEvent event){
-        System.out.println(event.getMessageEmbeds().get(0).toData());
+        if(event.getMessageEmbeds().get(0).toData().getString("description").contains("<@") && event.getMessageEmbeds().get(0).toData().getString("description").contains(">")){
+            String embedDescription = event.getMessageEmbeds().get(0).toData().getString("description");
+            //embedDescription.substring();
+        }
     }
 
 }

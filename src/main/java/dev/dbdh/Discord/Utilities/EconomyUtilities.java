@@ -234,17 +234,17 @@ public class EconomyUtilities {
         Document member = members.find(eq("memberId", memberID)).first();
         Document cooldowns = (Document) member.get("cooldowns");
         if(type.equalsIgnoreCase("freeChest")){
-            Bson newMemberDoc = new Document("cooldowns.freeChest", System.currentTimeMillis());
+            Bson newMemberDoc = new Document("freeChest", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
         } else if(type.equalsIgnoreCase("daily")){
-            Bson newMemberDoc = new Document("cooldowns.daily", System.currentTimeMillis());
+            Bson newMemberDoc = new Document("daily", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
         } else if(type.equalsIgnoreCase("chase")){
-            Bson newMemberDoc = new Document("cooldowns.chase", System.currentTimeMillis());
+            Bson newMemberDoc = new Document("chase", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
