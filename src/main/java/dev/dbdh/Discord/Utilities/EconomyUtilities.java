@@ -199,7 +199,7 @@ public class EconomyUtilities {
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeChest")) {
-            if ((member.getLong("cooldowns.freeChest") + 300000) >= System.currentTimeMillis()) {
+            if ((member.getLong("cooldowns.freeChest") + 300000L) >= System.currentTimeMillis()) {
                 db.close();
                 return true;
             } else {
@@ -207,7 +207,7 @@ public class EconomyUtilities {
                 return false;
             }
         } else if(type.equalsIgnoreCase("daily")){
-            if((member.getLong("cooldowns.daily") + 86400000) >= System.currentTimeMillis()){
+            if((member.getLong("cooldowns.daily") + 86400000L) >= System.currentTimeMillis()){
                 db.close();
                 return true;
             } else {
@@ -215,7 +215,7 @@ public class EconomyUtilities {
                 return false;
             }
         } else if(type.equalsIgnoreCase("chase")){
-            if((member.getLong("cooldowns.chase") + 300000) >= System.currentTimeMillis()){
+            if((member.getLong("cooldowns.chase") + 300000L) >= System.currentTimeMillis()){
                 db.close();
                 return true;
             } else {
