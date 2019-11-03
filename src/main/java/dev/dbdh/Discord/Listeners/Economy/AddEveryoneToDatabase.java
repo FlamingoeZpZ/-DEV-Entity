@@ -34,7 +34,8 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                         Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0).append("timeWizard", 0).append("quickAndQuiet", 0 ).append("deadHard", 0).append("devisive" , 0));
                         Document chestsOwned = new Document(new BasicDBObject("basicChest", 0).append("shinyChest", 0).append("legendaryChest", 0).append("mythicChest", 0));
                         Document chestsOpened = new Document(new BasicDBObject("basicChest", 0).append("shinyChest", 0).append("legendaryChest", 0).append("mythicChest", 0));
-                        Document memberInfo = new Document(new BasicDBObject("memberId", member.getUser().getId()).append("memberName", member.getUser().getName() + "#" + member.getUser().getDiscriminator()).append("balance", 2500L).append("perksActive", perksActive).append("chestsOwned", chestsOwned).append("chestsOpened", chestsOpened).append("eventWins", 0).append("cooldown", unixTime));
+                        Document cooldowns = new Document(new BasicDBObject("daily", unixTime).append("freeBasic", unixTime).append("chase", unixTime));
+                        Document memberInfo = new Document(new BasicDBObject("memberId", member.getUser().getId()).append("memberName", member.getUser().getName() + "#" + member.getUser().getDiscriminator()).append("balance", 2500L).append("perksActive", perksActive).append("chestsOwned", chestsOwned).append("chestsOpened", chestsOpened).append("eventWins", 0).append("cooldowns", cooldowns));
                         members.insertOne(memberInfo);
                     }
                 }
