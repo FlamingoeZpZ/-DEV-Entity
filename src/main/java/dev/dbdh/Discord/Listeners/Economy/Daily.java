@@ -20,6 +20,7 @@ public class Daily extends ListenerAdapter {
         EmbedBuilder eb = new EmbedBuilder();
         if (args[0].equalsIgnoreCase(data.getPrefix() + "daily")) {
             if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "daily")) {
+                ecu.resetCooldown(event, event.getMember().getUser().getId(), "daily");
                 int upper = 250;
                 int lower = 5;
                 int r = (int) (Math.random() * (upper - lower)) + lower;

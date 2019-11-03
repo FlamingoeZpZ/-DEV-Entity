@@ -233,17 +233,17 @@ public class EconomyUtilities {
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeChest")){
-            Bson newMemberDoc = new Document("cooldowns.freeChest", System.currentTimeMillis() / 1000L);
+            Bson newMemberDoc = new Document("cooldowns.freeChest", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
         } else if(type.equalsIgnoreCase("daily")){
-            Bson newMemberDoc = new Document("cooldowns.daily", System.currentTimeMillis() / 1000L);
+            Bson newMemberDoc = new Document("cooldowns.daily", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
         } else if(type.equalsIgnoreCase("chase")){
-            Bson newMemberDoc = new Document("cooldowns.chase", System.currentTimeMillis() / 1000L);
+            Bson newMemberDoc = new Document("cooldowns.chase", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
