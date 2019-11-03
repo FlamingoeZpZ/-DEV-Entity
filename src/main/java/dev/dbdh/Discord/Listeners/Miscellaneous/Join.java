@@ -56,7 +56,7 @@ public class Join extends ListenerAdapter {
         };
 
         if (!event.getMember().getUser().isBot()) {
-            LocalDateTime unixTime = LocalDateTime.now();
+            Long unixTime = System.currentTimeMillis();
             db.connect();
             MongoCollection<Document> members = db.getCollection("members");
             if (members.find(eq("memberID", event.getMember().getUser().getId())).first() == null) {
