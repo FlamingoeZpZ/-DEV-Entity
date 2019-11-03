@@ -14,24 +14,21 @@ public class Shop extends ListenerAdapter {
     EmbedBuilder eb = new EmbedBuilder();
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        Aliases Al = new Aliases();
-        Data data = new Data();
         String args[] = event.getMessage().getContentRaw().split("\\s+");
+        Aliases Al = new Aliases();
+        Color color = new Color();
+        Data data = new Data();
         String command = data.getPrefix() + args[0];
+        EmbedBuilder eb = new EmbedBuilder();
         if (Arrays.stream(Al.shopAliases).anyMatch(command::equalsIgnoreCase)) {
-            if (args.length == 1) {
-
-            } else {
-                if (Arrays.stream(Al.chestAliases).anyMatch(args[1]::equalsIgnoreCase)) {
-
-                } else if (Arrays.stream(Al.chaseAliases).anyMatch(args[1]::equalsIgnoreCase)) {
-
-                } else if (Arrays.stream(Al.specialtyAliases).anyMatch(args[1]::equalsIgnoreCase)) {
-
-                }
+            //Shop Perk 3 Ace in the hole
+            if (args.length < 4) {
+                eb.setDescription("*Insufficient terms for the 'Shop' command*\nShop command usage: " + data.getPrefix() + "shop <Item Type> <Amount> <Name/ID>" +
+                        "\n Item Types: Perks | Chests | ~~Tools~~\n Amount: Enter the amount desired; PERKS CAP AT 3 | CHESTS CAP AT 200" +
+                        "\n Name/ID __Perks:__ 1 | ace in the hole, 2 | pharmacy" );
+                eb.setColor(color.getRandomColor());
 
             }
-
         }
     }
 }
@@ -46,6 +43,5 @@ public class Shop extends ListenerAdapter {
  * "\nChase: Contains perks and boosters used for increasing luck and rewards in the ~chase command\n"
  * + "``ID: 1 = Quick and Quiet (Allows for extra mistakes)``\n" +
  * "``ID: 2 = Dead Hard (Increases XP Gain)``\n" +
- * "``ID: 3 = Decisive Strike(Increases Gold Gain)``" +
  * "``ID: 3 = Decisive Strike(Increases Gold Gain)``"
  */
