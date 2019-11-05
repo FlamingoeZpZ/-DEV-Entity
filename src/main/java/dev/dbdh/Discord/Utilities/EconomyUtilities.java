@@ -194,6 +194,22 @@ public class EconomyUtilities {
         db.close();
     }
 
+    public long getCooldown(GuildMessageReceivedEvent event, String memberID, String type){
+        db.connect();
+        long cooldownTime = 0;
+        MongoCollection<Document> members = db.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Document cooldowns = (Document) member.get("cooldowns");
+        if(type.equalsIgnoreCase("freeChest")) {
+            cooldownTime = cooldowns.getLong("freeChest") + 300000L;
+        } else if(type.equalsIgnoreCase("daily")){
+            cooldownTime = cooldowns.getLong("daily") + 86400000L;
+        } else if(type.equalsIgnoreCase("chase")){
+            cooldownTime = cooldowns.getLong("chase") + 300000L;
+        }
+        return cooldownTime;
+    }
+
     public boolean isCooldownReady(GuildMessageReceivedEvent event, String memberID, String type) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
