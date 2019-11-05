@@ -37,7 +37,7 @@ public class Daily extends ListenerAdapter {
                     eb.clear();
                 });
             } else {
-                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM-dd-yyyy");
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM-dd-YYYY");
                 String formattedDate = formatter.format(Date.from(Instant.ofEpochSecond(ecu.getCooldown(event, event.getMember().getUser().getId(), "daily"))));
                 eb.setDescription("Your daily cooldown is not ready.\nTry again at " + formattedDate);
                 eb.setColor(color.getRandomColor());
