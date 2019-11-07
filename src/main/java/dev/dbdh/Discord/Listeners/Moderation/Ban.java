@@ -22,6 +22,7 @@ public class Ban extends ListenerAdapter {
         Color color = new Color();
         EmbedBuilder eb = new EmbedBuilder();
         EmbedBuilder banned = new EmbedBuilder();
+        EmbedBuilder success = new EmbedBuilder();
         if (args[0].equalsIgnoreCase(data.getPrefix() + "ban")) {
             if (rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event)) {
                 if (args.length < 2) {
@@ -41,8 +42,13 @@ public class Ban extends ListenerAdapter {
                     banned.setDescription("You've been banned from: " + event.getGuild().getName()
                             + "\n\nReason: \n```\nThere was no reason specified\n```");
                     banned.setColor(color.getRandomColor());
-                    banned.setFooter(event.getJDA().getSelfUser().getName() + " Banned", data.getSelfAvatar(event));
+                    banned.setFooter("Entity Banned", data.getSelfAvatar(event));
                     banned.setTimestamp(Instant.now());
+
+                    success.setDescription(event.getMember().getAsMention() + " banned " + mentioned.getAsMention() + "\n\nReason:\n```\nThere was no reason specified\n```");
+                    success.setColor(color.getRandomColor());
+                    success.setFooter("Entity Ban", data.getSelfAvatar(event));
+                    success.setTimestamp(Instant.now());
 
                     eb.setDescription("You've banned: " + mentioned.getAsMention() + "\n\nReason:\n```\nNo reason specified\n```");
                     eb.setColor(color.getRandomColor());
@@ -52,12 +58,14 @@ public class Ban extends ListenerAdapter {
                     mentioned.getUser().openPrivateChannel().queue((channel) -> {
                         channel.sendMessage(banned.build()).queue();
                         banned.clear();
-
-                        event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                            message.delete().queueAfter(20, TimeUnit.SECONDS);
-                            event.getMessage().delete().queueAfter(20, TimeUnit.SECONDS);
-                            eb.clear();
-                            event.getGuild().ban(mentioned, 7, "No Reason Specified").queue();
+                        data.getLogChannel(event).sendMessage(success.build()).queue((message1) -> {
+                            success.clear();
+                            event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                                message.delete().queueAfter(20, TimeUnit.SECONDS);
+                                event.getMessage().delete().queueAfter(20, TimeUnit.SECONDS);
+                                eb.clear();
+                                event.getGuild().ban(mentioned, 7, "No Reason Specified").queue();
+                            });
                         });
                     });
 
@@ -71,6 +79,11 @@ public class Ban extends ListenerAdapter {
                             data.getSelfAvatar(event));
                     banned.setTimestamp(Instant.now());
 
+                    success.setDescription(event.getMember().getAsMention() + " banned " + mentioned.getAsMention() + "\n\nReason:\n```\n" + reason + "\n```");
+                    success.setColor(color.getRandomColor());
+                    success.setFooter("Entity Ban", data.getSelfAvatar(event));
+                    success.setTimestamp(Instant.now());
+
                     eb.setDescription("You've banned: " + mentioned.getAsMention() + " \n\nReason: \n```\n" + reason + "\n```");
                     eb.setColor(color.getRandomColor());
                     eb.setFooter(event.getJDA().getSelfUser().getName() + " Ban",
@@ -81,11 +94,14 @@ public class Ban extends ListenerAdapter {
                         channel.sendMessage(banned.build()).queue();
                         banned.clear();
 
-                        event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                            message.delete().queueAfter(20, TimeUnit.SECONDS);
-                            event.getMessage().delete().queueAfter(20, TimeUnit.SECONDS);
-                            eb.clear();
-                            event.getGuild().ban(mentioned, 7, reason).queue();
+                        data.getLogChannel(event).sendMessage(success.build()).queue((message1)-> {
+                            success.clear();
+                            event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                                message.delete().queueAfter(20, TimeUnit.SECONDS);
+                                event.getMessage().delete().queueAfter(20, TimeUnit.SECONDS);
+                                eb.clear();
+                                event.getGuild().ban(mentioned, 7, reason).queue();
+                            });
                         });
                     });
 

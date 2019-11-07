@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -16,16 +17,16 @@ public class Kick extends ListenerAdapter {
 
     Data data = new Data();
 
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event){
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         Color color = new Color();
         RoleCheck rc = new RoleCheck();
         EmbedBuilder eb = new EmbedBuilder();
         EmbedBuilder success = new EmbedBuilder();
         EmbedBuilder kicked = new EmbedBuilder();
-        if(args[0].equalsIgnoreCase(data.getPrefix() + "kick") || args[0].equalsIgnoreCase("***" + data.getPrefix() + "yeet***")){
-            if(rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event) || rc.isHeadModerator(event)){
-                if(args.length < 2){
+        if (args[0].equalsIgnoreCase(data.getPrefix() + "kick") || args[0].equalsIgnoreCase("***" + data.getPrefix() + "yeet***")) {
+            if (rc.isOwner(event) || rc.isDeveloper(event) || rc.isAdministrator(event) || rc.isHeadModerator(event)) {
+                if (args.length < 2) {
                     eb.setDescription("You didn't specify enough arguments");
                     eb.setColor(color.getRandomColor());
                     eb.setFooter("Insufficient Arguments", data.getSelfAvatar(event));
@@ -36,31 +37,36 @@ public class Kick extends ListenerAdapter {
                         event.getMessage().delete().queueAfter(15, TimeUnit.SECONDS);
                         eb.clear();
                     });
-                }else if (args.length < 3) {
+                } else if (args.length < 3) {
                     Member mentioned = event.getMessage().getMentionedMembers().get(0);
 
-                    kicked.setDescription("You've been kicked from: " + event.getGuild().getName()
-                            + "\n\nReason: \n```\nThere was no reason specified\n```");
+                    kicked.setDescription("You've been kicked from: " + event.getGuild().getName() + "\n\nReason: \n```\nThere was no reason specified\n```");
                     kicked.setColor(color.getRandomColor());
-                    kicked.setFooter(event.getJDA().getSelfUser().getName() + " Kicked",
-                            data.getSelfAvatar(event));
+                    kicked.setFooter("Entity Kicked", data.getSelfAvatar(event));
                     kicked.setTimestamp(Instant.now());
+
+                    success.setDescription(event.getMember().getAsMention() + " kicked " + mentioned.getAsMention() + "\n\nReason:\n```\nThere was no reason specified\n```");
+                    success.setColor(color.getRandomColor());
+                    success.setFooter("Entity Kick", data.getSelfAvatar(event));
+                    success.setTimestamp(Instant.now());
 
                     eb.setDescription("You've kicked: " + mentioned.getAsMention() + "\n\nReason:\n```\nNo reason specified\n```");
                     eb.setColor(color.getRandomColor());
-                    eb.setFooter(event.getJDA().getSelfUser().getName() + " Kick",
-                            data.getSelfAvatar(event));
+                    eb.setFooter("Entity Kick", data.getSelfAvatar(event));
                     eb.setTimestamp(Instant.now());
 
                     mentioned.getUser().openPrivateChannel().queue((channel) -> {
                         channel.sendMessage(kicked.build()).queue();
                         kicked.clear();
 
-                        event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                            message.delete().queueAfter(20, TimeUnit.SECONDS);
-                            event.getMessage().delete().queueAfter(20, TimeUnit.SECONDS);
-                            eb.clear();
-                            event.getGuild().kick(mentioned, "No reason specified").queue();
+                        data.getLogChannel(event).sendMessage(success.build()).queue((message1) -> {
+                            success.clear();
+                            event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                                message.delete().queueAfter(20, TimeUnit.SECONDS);
+                                event.getMessage().delete().queueAfter(20, TimeUnit.SECONDS);
+                                eb.clear();
+                                event.getGuild().kick(mentioned, "No reason specified").queue();
+                            });
                         });
                     });
 
@@ -70,25 +76,31 @@ public class Kick extends ListenerAdapter {
 
                     kicked.setDescription("You've been kicked from: " + event.getGuild().getName() + "\n\nReason:\n```\n" + reason + "\n```");
                     kicked.setColor(color.getRandomColor());
-                    kicked.setFooter(event.getJDA().getSelfUser().getName() + " Kicked",
-                            data.getSelfAvatar(event));
+                    kicked.setFooter(event.getJDA().getSelfUser().getName() + " Kicked", data.getSelfAvatar(event));
                     kicked.setTimestamp(Instant.now());
+
+                    success.setDescription(event.getMember().getAsMention() + " kicked " + mentioned.getAsMention() + "\n\nReason:\n```\n" + reason + "\n```");
+                    success.setColor(color.getRandomColor());
+                    success.setFooter("Entity Kick", data.getSelfAvatar(event));
+                    success.setTimestamp(Instant.now());
 
                     eb.setDescription("You've kicked: " + mentioned.getAsMention() + " \n\nReason: \n```\n" + reason + "\n```");
                     eb.setColor(color.getRandomColor());
-                    eb.setFooter(event.getJDA().getSelfUser().getName() + " kicked",
-                            data.getSelfAvatar(event));
+                    eb.setFooter("Entity kicked", data.getSelfAvatar(event));
                     eb.setTimestamp(Instant.now());
 
                     mentioned.getUser().openPrivateChannel().queue((channel) -> {
                         channel.sendMessage(kicked.build()).queue();
                         kicked.clear();
 
-                        event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                            message.delete().queueAfter(20, TimeUnit.SECONDS);
-                            event.getMessage().delete().queueAfter(20, TimeUnit.SECONDS);
-                            eb.clear();
-                            event.getGuild().kick(mentioned, reason).queue();
+                        data.getLogChannel(event).sendMessage(success.build()).queue((message1) -> {
+                            success.clear();
+                            event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                                message.delete().queueAfter(20, TimeUnit.SECONDS);
+                                event.getMessage().delete().queueAfter(20, TimeUnit.SECONDS);
+                                eb.clear();
+                                event.getGuild().kick(mentioned, reason).queue();
+                            });
                         });
                     });
 
@@ -108,7 +120,7 @@ public class Kick extends ListenerAdapter {
         }
     }
 
-    public String getName(){
+    public String getName() {
         return "Kick";
     }
 
