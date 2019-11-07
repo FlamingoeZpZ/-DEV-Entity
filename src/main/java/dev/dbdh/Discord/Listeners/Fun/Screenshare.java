@@ -22,7 +22,7 @@ public class Screenshare extends ListenerAdapter {
                 eb.setDescription(event.getMember().getAsMention() + " you'll need to join a voice channel before using this command");
                 eb.setColor(color.getRandomColor());
                 eb.setTimestamp(Instant.now());
-                eb.setFooter("Votrix Screenshare", data.getSelfAvatar(event));
+                eb.setFooter("Entity Screenshare", data.getSelfAvatar(event));
 
                 event.getChannel().sendMessage(eb.build()).queue((message) -> {
                     message.delete().queueAfter(10, TimeUnit.SECONDS);
