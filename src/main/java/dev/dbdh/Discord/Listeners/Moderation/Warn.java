@@ -2,6 +2,7 @@ package dev.dbdh.Discord.Listeners.Moderation;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Updates;
 import dev.dbdh.Discord.Utilities.Color;
 import dev.dbdh.Discord.Utilities.Data;
 import dev.dbdh.Discord.Utilities.Database;
@@ -64,9 +65,7 @@ public class Warn extends ListenerAdapter {
                     Document member = members.find(eq("memberId", mentioned.getUser().getId())).first();
                     Document warnings = (Document) member.get("warnings");
                     BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
-                    Bson newMemberDoc = new Document("warnings", newWarning);
-                    Bson updateMemberDoc = new Document("$push", newMemberDoc);
-                    members.findOneAndUpdate(member, updateMemberDoc);
+                    members.updateOne(eq("memberId", mentioned.getUser().getId()),Updates.addToSet("warnings", newWarning));
                     db.close();
 
                     eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\n```");
