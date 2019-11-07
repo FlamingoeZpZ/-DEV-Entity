@@ -61,6 +61,7 @@ public class Entity {
                 new Softban(),
                 new Tempmute(),
                 new Unmute(),
+                new Warn(),
 
                 // Party Listeners
 
