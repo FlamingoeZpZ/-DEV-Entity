@@ -65,7 +65,7 @@ public class Warn extends ListenerAdapter {
                     Document warnings = (Document) member.get("warnings");
                     BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
                     Bson newMemberDoc = new Document("warnings", newWarning);
-                    Bson updateMemberDoc = new Document("$set", newMemberDoc);
+                    Bson updateMemberDoc = new Document("$push", newMemberDoc);
                     members.findOneAndUpdate(member, updateMemberDoc);
                     db.close();
 
