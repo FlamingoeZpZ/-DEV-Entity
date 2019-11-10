@@ -19,14 +19,16 @@ import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.security.acl.LastOwnerException;
 import java.util.logging.FileHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class Entity {
     public static void main(String[] args) throws LoginException, RateLimitedException, InterruptedException, UnknownHostException {
 
-        Logger logger = Logger.getLogger("MyLog");
+        Logger logger = Logger.getLogger("dev.dbdh.Discord.Entity");
         FileHandler fh;
 
         try {
@@ -37,7 +39,7 @@ public class Entity {
             fh.setFormatter(formatter);
 
             // the following statement is used to log any messages
-            logger.info("My first log");
+            logger.setUseParentHandlers(true);
 
         } catch (SecurityException e) {
             e.printStackTrace();
