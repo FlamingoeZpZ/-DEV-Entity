@@ -64,12 +64,10 @@ public class Warn extends ListenerAdapter {
                     db.connect();
                     MongoCollection<Document> members = db.getCollection("members");
                     Document member = members.find(eq("memberId", mentioned.getUser().getId())).first();
-                    if(member.get("warnings") != null) {
                         BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
                         List<BasicDBObject> memberWarnings = new ArrayList<>();
                         memberWarnings.add(newWarning);
                         members.updateOne(member, new Document("$push", memberWarnings));
-                    }
                     db.close();
 
                     eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\n```");
