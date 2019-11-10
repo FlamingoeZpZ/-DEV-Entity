@@ -67,9 +67,7 @@ public class Warn extends ListenerAdapter {
                     if(member.get("warnings") != null) {
                         BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
                         List<BasicDBObject> memberWarnings = new ArrayList<>();
-                        for(int i = 0; i <= memberWarnings.size(); i++){
-                            memberWarnings.add(newWarning);
-                        }
+                        memberWarnings.add(newWarning);
                         members.updateOne(member, new Document("$push", memberWarnings));
                     }
                     db.close();
