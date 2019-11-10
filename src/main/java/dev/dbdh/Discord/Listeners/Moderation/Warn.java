@@ -25,7 +25,7 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class Warn extends ListenerAdapter {
 
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event){
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         Color color = new Color();
         Data data = new Data();
@@ -47,7 +47,7 @@ public class Warn extends ListenerAdapter {
                         message.delete().queueAfter(20, TimeUnit.SECONDS);
                         eb.clear();
                     });
-                } else if(args.length < 3) {
+                } else if (args.length < 3) {
                     eb.setDescription("You haven't specified a reason for the warning");
                     eb.setColor(color.getRandomColor());
                     eb.setFooter("Invalid Reason", data.getSelfAvatar(event));
@@ -58,16 +58,14 @@ public class Warn extends ListenerAdapter {
                         message.delete().queueAfter(20, TimeUnit.SECONDS);
                         eb.clear();
                     });
-                } else if(args.length >= 3) {
+                } else if (args.length >= 3) {
                     Member mentioned = event.getMessage().getMentionedMembers().get(0);
                     String reason = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
                     db.connect();
                     MongoCollection<Document> members = db.getCollection("members");
                     Document member = members.find(eq("memberId", mentioned.getUser().getId())).first();
-                        BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
-                        List<BasicDBObject> memberWarnings = new ArrayList<>();
-                        memberWarnings.add(newWarning);
-                        members.updateOne(member, new Document("$mod", memberWarnings));
+                    BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
+                    members.updateOne(eq("memberID", event.getMember().getUser().getId()), Updates.addToSet("warnings", newWarning));
                     db.close();
 
                     eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\n```");
