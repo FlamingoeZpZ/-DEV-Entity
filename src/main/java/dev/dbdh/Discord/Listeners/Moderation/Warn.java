@@ -16,6 +16,7 @@ import org.bson.conversions.Bson;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -63,9 +64,7 @@ public class Warn extends ListenerAdapter {
                     db.connect();
                     MongoCollection<Document> members = db.getCollection("members");
                     Document member = members.find(eq("memberId", mentioned.getUser().getId())).first();
-                    Document warnings = (Document) member.get("warnings");
-                    BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
-                    members.updateOne(eq("memberId", mentioned.getUser().getId()),Updates.addToSet("warnings", newWarning));
+                    members.updateOne(member, new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()));
                     db.close();
 
                     eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\n```");
