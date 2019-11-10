@@ -70,7 +70,7 @@ public class Warn extends ListenerAdapter {
                         for(int i = 0; i <= memberWarnings.size(); i++){
                             memberWarnings.add(newWarning);
                         }
-                        members.updateOne(member, new Document("$set", memberWarnings));
+                        members.updateOne(member, new Document("$push", memberWarnings));
                     }
                     db.close();
 
