@@ -17,37 +17,10 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import javax.security.auth.login.LoginException;
-import java.io.IOException;
 import java.net.UnknownHostException;
-import java.security.acl.LastOwnerException;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class Entity {
     public static void main(String[] args) throws LoginException, RateLimitedException, InterruptedException, UnknownHostException {
-
-        Logger logger = Logger.getLogger("dev.dbdh.Discord.Entity");
-        FileHandler fh;
-
-        try {
-            // This block configure the logger with handler and formatter
-            fh = new FileHandler("./entity.log");
-            logger.addHandler(fh);
-            SimpleFormatter formatter = new SimpleFormatter();
-            fh.setFormatter(formatter);
-
-            // the following statement is used to log any messages
-            logger.setUseParentHandlers(true);
-
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
         JDABuilder entity = new JDABuilder(AccountType.BOT).setToken(System.getenv("ENTITYDEVTOKEN"));
 
         entity.setStatus(OnlineStatus.DO_NOT_DISTURB);

@@ -15,6 +15,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -60,11 +61,17 @@ public class Warn extends ListenerAdapter {
                 } else if(args.length >= 3) {
                     Member mentioned = event.getMessage().getMentionedMembers().get(0);
                     String reason = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
-
                     db.connect();
                     MongoCollection<Document> members = db.getCollection("members");
                     Document member = members.find(eq("memberId", mentioned.getUser().getId())).first();
-                    members.updateOne(member, new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()));
+                    if(member.get("warnings") != null) {
+                        BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
+                        List<BasicDBObject> memberWarnings = new ArrayList<>();
+                        for(int i = 0; i <= memberWarnings.size(); i++){
+                            memberWarnings.add(newWarning);
+                        }
+                        members.updateOne(member, new Document("$set", memberWarnings));
+                    }
                     db.close();
 
                     eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\n```");
