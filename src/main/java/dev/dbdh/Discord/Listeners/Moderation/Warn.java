@@ -67,7 +67,7 @@ public class Warn extends ListenerAdapter {
                         BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
                         List<BasicDBObject> memberWarnings = new ArrayList<>();
                         memberWarnings.add(newWarning);
-                        members.updateOne(member, new Document("$push", memberWarnings));
+                        members.updateOne(member, new Document("$mod", memberWarnings));
                     db.close();
 
                     eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\n```");
