@@ -25,7 +25,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
         Data data = new Data();
         Database db = new Database();
         EmbedBuilder eb = new EmbedBuilder();
-        if(args[0].equalsIgnoreCase("addEveryoneStoopidBot")){
+        if(args[0].equalsIgnoreCase("I_CRAVE_DATA_PLEASE_FEED_ME_DATA")){
             Long unixTime = System.currentTimeMillis();
             db.connect();
             MongoCollection<Document> members = db.getCollection("members");
