@@ -5,7 +5,9 @@ import dev.dbdh.Discord.Listeners.Fun.Chest;
 import dev.dbdh.Discord.Listeners.Fun.Cleverbot;
 import dev.dbdh.Discord.Listeners.Fun.LookingToPlay;
 import dev.dbdh.Discord.Listeners.Fun.Screenshare;
+import dev.dbdh.Discord.Listeners.Information.AliasesHelp;
 import dev.dbdh.Discord.Listeners.Information.Help;
+import dev.dbdh.Discord.Listeners.Information.ListWarnings;
 import dev.dbdh.Discord.Listeners.Information.ReactionRoleAssign;
 import dev.dbdh.Discord.Listeners.Miscellaneous.*;
 import dev.dbdh.Discord.Listeners.Moderation.*;
@@ -41,7 +43,9 @@ public class Entity {
                 new Screenshare(),
 
                 //Information Listeners
+                new AliasesHelp(),
                 new Help(),
+                new ListWarnings(),
                 new ReactionRoleAssign(),
 
                 //Misc Listeners
@@ -54,6 +58,7 @@ public class Entity {
                 new Ban(),
                 new Clear(),
                 new Kick(),
+
                 new Mute(),
                 new RoleAdd(),
                 new RoleRemove(),

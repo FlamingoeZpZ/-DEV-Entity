@@ -4,13 +4,8 @@ import com.mongodb.client.MongoCollection;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateNameEvent;
-import org.bson.BsonArray;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 import static com.mongodb.client.model.Filters.eq;
 

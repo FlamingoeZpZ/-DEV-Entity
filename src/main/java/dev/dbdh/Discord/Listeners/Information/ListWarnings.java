@@ -1,4 +1,4 @@
-package dev.dbdh.Discord.Listeners.Moderation;
+package dev.dbdh.Discord.Listeners.Information;
 
 import com.mongodb.client.MongoCollection;
 import dev.dbdh.Discord.Utilities.Color;
@@ -25,9 +25,9 @@ public class ListWarnings extends ListenerAdapter {
             if(args.length < 2){
                 db.connect();
                 MongoCollection<Document> members = db.getCollection("members");
-                Bson filter;
                 Document member = members.find(eq("memberId", event.getMember().getUser().getId())).first();
                 Document warnings = (Document) member.get("warnings");
+                db.close();
                 System.out.println(warnings);
             }
         }
