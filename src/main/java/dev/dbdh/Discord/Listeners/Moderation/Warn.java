@@ -12,12 +12,9 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -63,9 +60,10 @@ public class Warn extends ListenerAdapter {
                     String reason = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
                     db.connect();
                     MongoCollection<Document> members = db.getCollection("members");
-                    Document member = members.find(eq("memberId", mentioned.getUser().getId())).first();
+                    BasicDBObject member = new BasicDBObject("memberId", mentioned.getUser().getId());
                     BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
-                    members.updateOne(eq("memberID", event.getMember().getUser().getId()), Updates.addToSet("warnings", newWarning));
+                    BasicDBObject updateDoc = new BasicDBObject("$push", new BasicDBObject("warnings.$", newWarning));
+                    members.updateOne(member, updateDoc);
                     db.close();
 
                     eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\n```");
