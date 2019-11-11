@@ -1,5 +1,6 @@
 package dev.dbdh.Discord.Listeners.Information;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import dev.dbdh.Discord.Utilities.Color;
 import dev.dbdh.Discord.Utilities.Data;
@@ -9,6 +10,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -26,7 +28,8 @@ public class ListWarnings extends ListenerAdapter {
                 db.connect();
                 MongoCollection<Document> members = db.getCollection("members");
                 Document member = members.find(eq("memberId", event.getMember().getUser().getId())).first();
-                Document warnings = (Document) member.get("warnings");
+                ArrayList warnings = new ArrayList<>();
+                warnings.add(member.get("warnings"));
                 db.close();
                 System.out.println(warnings);
             }
