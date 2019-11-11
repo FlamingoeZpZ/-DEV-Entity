@@ -62,7 +62,7 @@ public class Warn extends ListenerAdapter {
                     MongoCollection<Document> members = db.getCollection("members");
                     BasicDBObject member = new BasicDBObject("memberId", mentioned.getUser().getId());
                     BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
-                    BasicDBObject updateDoc = new BasicDBObject("$push", new BasicDBObject("warningsz`", newWarning));
+                    BasicDBObject updateDoc = new BasicDBObject("$push", new BasicDBObject("warnings", newWarning));
                     members.updateOne(member, updateDoc);
                     db.close();
 
