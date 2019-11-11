@@ -22,10 +22,11 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class Warn extends ListenerAdapter {
 
+    Data data = new Data();
+
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         Color color = new Color();
-        Data data = new Data();
         Database db = new Database();
         RoleCheck rc = new RoleCheck();
         EmbedBuilder eb = new EmbedBuilder();
@@ -36,7 +37,7 @@ public class Warn extends ListenerAdapter {
                 if (args.length < 2) {
                     eb.setDescription("You haven't specified the member that you would like to warn. Please refer to `" + data.getPrefix() + "help warn` for the correct syntax");
                     eb.setColor(color.getRandomColor());
-                    eb.setFooter("Insufficient Arguments", data.getSelfAvatar(event));
+                    eb.setFooter("Insufficient Arguments | Invalid Member", data.getSelfAvatar(event));
                     eb.setTimestamp(Instant.now());
 
                     event.getChannel().sendMessage(eb.build()).queue((message) -> {
@@ -47,7 +48,7 @@ public class Warn extends ListenerAdapter {
                 } else if (args.length < 3) {
                     eb.setDescription("You haven't specified a reason for the warning");
                     eb.setColor(color.getRandomColor());
-                    eb.setFooter("Invalid Reason", data.getSelfAvatar(event));
+                    eb.setFooter("Insufficient Arguments | v Invalid Reason", data.getSelfAvatar(event));
                     eb.setTimestamp(Instant.now());
 
                     event.getChannel().sendMessage(eb.build()).queue((message) -> {
@@ -94,4 +95,29 @@ public class Warn extends ListenerAdapter {
             }
         }
     }
+
+    public String getName(){
+        return "Warn";
+    }
+
+    public String getDescription() {
+        return "Warns the specified member for the specified reason";
+    }
+
+    public String getShortDescription() {
+        return "Warn someone";
+    }
+
+    public String getRequiredRoles() {
+        return "Owner, Developer, Administrator, Head Moderator, Moderator";
+    }
+
+    public String getCommandSyntax() {
+        return "```\n" + data.getPrefix() + "warn {@member} [reason]\n```";
+    }
+
+    public boolean isDisabled() {
+        return false;
+    }
+
 }
