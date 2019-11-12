@@ -77,6 +77,7 @@ public class Join extends ListenerAdapter {
             eb.setFooter(counter.getMemberCount(event) + " members", data.getSelfAvatar(event));
 
             data.getLogChannel(event).sendMessage(eb.build()).queue((message1) -> {
+                data.getJoinChannel(event).sendMessage(eb.build()).queue();
                 eb.clear();
             });
         }
