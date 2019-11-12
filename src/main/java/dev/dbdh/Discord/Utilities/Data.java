@@ -41,7 +41,7 @@ public class Data {
     }
 
     public TextChannel getJoinChannel(GuildMemberJoinEvent event){
-        return event.getGuild().getTextChannelById("540740427511234583");
+        return event.getGuild().getTextChannelById("640005609760227371");
     }
 
     public String getSelfAvatar(GuildMemberJoinEvent event){
