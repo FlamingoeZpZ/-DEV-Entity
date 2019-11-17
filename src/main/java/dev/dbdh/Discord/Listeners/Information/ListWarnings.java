@@ -1,17 +1,16 @@
 package dev.dbdh.Discord.Listeners.Information;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.util.JSON;
 import dev.dbdh.Discord.Utilities.Color;
 import dev.dbdh.Discord.Utilities.Data;
 import dev.dbdh.Discord.Utilities.Database;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -23,15 +22,18 @@ public class ListWarnings extends ListenerAdapter {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         Color color = new Color();
         Database db = new Database();
+        EmbedBuilder eb = new EmbedBuilder();
         if(args[0].equalsIgnoreCase(data.getPrefix() + "warnings")){
             if(args.length < 2){
                 db.connect();
                 MongoCollection<Document> members = db.getCollection("members");
                 Document member = members.find(eq("memberId", event.getMember().getUser().getId())).first();
-                ArrayList warnings = new ArrayList<>();
-                warnings.add(member.get("warnings"));
-                db.close();
+                String warnings = JSON.serialize(member.get("warnings"));
                 System.out.println(warnings);
+                eb.setDescription("Warnings for " + event.getMember().getAsMention() + "");
+                eb.setTimestamp(Instant.now());
+                eb.setFooter("Warnings List", data.getSelfAvatar(event));
+                db.close();
             }
         }
     }
