@@ -1,17 +1,11 @@
 package dev.dbdh.Discord;
 
 import dev.dbdh.Discord.Listeners.Economy.*;
-import dev.dbdh.Discord.Listeners.Fun.Chest;
-import dev.dbdh.Discord.Listeners.Fun.Cleverbot;
-import dev.dbdh.Discord.Listeners.Fun.LookingToPlay;
-import dev.dbdh.Discord.Listeners.Fun.Screenshare;
-import dev.dbdh.Discord.Listeners.Information.AliasesHelp;
-import dev.dbdh.Discord.Listeners.Information.Help;
-import dev.dbdh.Discord.Listeners.Information.ListWarnings;
-import dev.dbdh.Discord.Listeners.Information.ReactionRoleAssign;
+import dev.dbdh.Discord.Listeners.Fun.*;
+import dev.dbdh.Discord.Listeners.Information.*;
 import dev.dbdh.Discord.Listeners.Miscellaneous.*;
 import dev.dbdh.Discord.Listeners.Moderation.*;
-import dev.dbdh.Discord.Listeners.Settings.SetPrefix;
+import dev.dbdh.Discord.Listeners.Settings.*;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -40,7 +34,7 @@ public class Entity {
                 new Chest(),
                 new Cleverbot(),
                 new LookingToPlay(),
-                new Screenshare(),
+                //new Screenshare(),
 
                 //Information Listeners
                 new AliasesHelp(),
@@ -49,6 +43,7 @@ public class Entity {
                 new ReactionRoleAssign(),
 
                 //Misc Listeners
+                new Censor(),
                 new Join(),
                 new Leave(),
                 new NameUpdate(),
