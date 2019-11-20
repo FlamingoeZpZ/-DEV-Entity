@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Random;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -73,6 +72,7 @@ public class Join extends ListenerAdapter {
             int message = random.nextInt(messages.length);
             eb.setDescription(messages[message].replace("[member]", event.getMember().getAsMention()));
             eb.setColor(color.getRandomColor());
+            eb.setThumbnail(event.getMember().getUser().getEffectiveAvatarUrl());
             eb.setTimestamp(Instant.now());
             eb.setFooter(counter.getMemberCount(event) + " members", data.getSelfAvatar(event));
 
