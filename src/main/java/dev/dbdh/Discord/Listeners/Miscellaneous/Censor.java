@@ -1,7 +1,6 @@
 package dev.dbdh.Discord.Listeners.Miscellaneous;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.util.JSON;
 import dev.dbdh.Discord.Utilities.Color;
@@ -17,8 +16,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -38,12 +37,20 @@ public class Censor extends ListenerAdapter {
         Document guildDoc = guild.find().first();
         String curseWordsString = g.toJson(JSON.serialize(guildDoc));
         db.close();
-        Type type = new TypeToken<List<String>>(){}.getType();
-        List<String> curseWordList = g.fromJson(curseWordsString, type);
-        String[] curseWords = curseWordList.toArray(new String[0]);
+        JSONObject curseWordObj;
+        try{
+            curseWordObj = (JSONObject) parser.parse(curseWordsString);
+        } catch(ParseException e){
+            e.printStackTrace();
+        }
+        JSONArray arr = new JSONArray(curseWordObj.get("blacklistedWords"));
+        List<String> list = new ArrayList<>();
+        for(int i = 0; i < arr.size(); i++){
+            list.add(arr.get(i).toString());
+        }
+        String[] curseWords = list.toArray(new String[0]);
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         EmbedBuilder eb = new EmbedBuilder();
-        System.out.println(curseWords);
         for (String arg : args) {
             if(Arrays.stream(curseWords).anyMatch(arg::equalsIgnoreCase)){
                 eb.setDescription("{member} has said a blacklisted word!\nChannel: {channel}\nMessage: {message}\nMessage Hyperlink: {link}".replace("{member}", event.getMember().getAsMention()).replace("{channel}", event.getChannel().getAsMention()).replace("{message}", event.getMessage().toString()).replace("{link}", event.getMessage().getJumpUrl()));
