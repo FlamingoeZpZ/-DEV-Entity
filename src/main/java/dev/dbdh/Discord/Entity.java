@@ -43,7 +43,7 @@ public class Entity {
                 new ReactionRoleAssign(),
 
                 //Misc Listeners
-                new Censor(),
+                //new Censor(),
                 new Join(),
                 new Leave(),
                 new NameUpdate(),

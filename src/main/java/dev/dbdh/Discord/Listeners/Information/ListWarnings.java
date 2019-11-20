@@ -1,5 +1,6 @@
 package dev.dbdh.Discord.Listeners.Information;
 
+import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.util.JSON;
 import dev.dbdh.Discord.Utilities.Color;
@@ -9,8 +10,13 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.time.Instant;
+import java.util.Iterator;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -23,17 +29,29 @@ public class ListWarnings extends ListenerAdapter {
         Color color = new Color();
         Database db = new Database();
         EmbedBuilder eb = new EmbedBuilder();
+        Gson g = new Gson();
+        JSONParser parser = new JSONParser();
         if(args[0].equalsIgnoreCase(data.getPrefix() + "warnings")){
             if(args.length < 2){
                 db.connect();
                 MongoCollection<Document> members = db.getCollection("members");
                 Document member = members.find(eq("memberId", event.getMember().getUser().getId())).first();
-                String warnings = JSON.serialize(member.get("warnings"));
-                System.out.println(warnings);
-                eb.setDescription("Warnings for " + event.getMember().getAsMention() + "");
+                String memberJSON = g.toJson(JSON.serialize(member));
+                db.close();
+                eb.setDescription("Warnings for " + event.getMember().getAsMention());
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Warnings List", data.getSelfAvatar(event));
-                db.close();
+                try {
+                    JSONObject memberObj = (JSONObject) parser.parse(memberJSON);
+                    JSONArray warnings = (JSONArray) memberObj.get("warnings");
+                    Iterator<JSONObject> iterator = warnings.iterator();
+                    while(iterator.hasNext()){
+                        JSONObject objt = iterator.next();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }

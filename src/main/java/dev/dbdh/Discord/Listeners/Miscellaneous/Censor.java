@@ -37,17 +37,16 @@ public class Censor extends ListenerAdapter {
         Document guildDoc = guild.find().first();
         String curseWordsString = g.toJson(JSON.serialize(guildDoc));
         db.close();
-        JSONObject curseWordObj;
         try{
-            curseWordObj = (JSONObject) parser.parse(curseWordsString);
+            JSONObject curseWordObj = (JSONObject) parser.parse(curseWordsString);
+            //JSONArray arr = new JSONArray(curseWordObj.get("blacklistedWords"));
         } catch(ParseException e){
             e.printStackTrace();
         }
-        JSONArray arr = new JSONArray(curseWordObj.get("blacklistedWords"));
         List<String> list = new ArrayList<>();
-        for(int i = 0; i < arr.size(); i++){
+        /*for(int i = 0; i < arr.size(); i++){
             list.add(arr.get(i).toString());
-        }
+        }*/
         String[] curseWords = list.toArray(new String[0]);
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         EmbedBuilder eb = new EmbedBuilder();
