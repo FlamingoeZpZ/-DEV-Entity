@@ -28,13 +28,13 @@ public class Entity {
                 new Balance(),
                 new Daily(),
                 new EditCoins(),
-                new SuccessfulBump(),
+                //new SuccessfulBump(),
 
                 //Fun Listeners
                 new Chest(),
                 new Cleverbot(),
                 new LookingToPlay(),
-                //new Screenshare(),
+                new Screenshare(),
 
                 //Information Listeners
                 new AliasesHelp(),
