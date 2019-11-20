@@ -19,7 +19,7 @@ public class Chest extends ListenerAdapter {
         EconomyUtilities ecu = new EconomyUtilities();
         EmbedBuilder eb = new EmbedBuilder();
         if (args[0].equalsIgnoreCase(data.getPrefix() + "chest")) {
-            if (event.getMessage().getChannel().equals(event.getGuild().getTextChannelById("632350945891581992"))) {
+            if (event.getMessage().getChannel().equals(event.getGuild().getTextChannelById("635558839147823115"))) {
                 if (args.length < 2) {
                     eb.setDescription("You need to specify what type of chest you would like to open. `Basic | Shiny | Legendary | Mythic`");
                     eb.setColor(color.getRandomColor());
