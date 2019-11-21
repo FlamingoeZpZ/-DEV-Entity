@@ -51,7 +51,7 @@ public class RoleAdd extends ListenerAdapter {
                     success.setTimestamp(Instant.now());
                     success.setFooter("Entity Role Add Log", data.getSelfAvatar(event));
 
-                    grantee.setDescription("You've been granted the role " + role.getAsMention() + " by " + event.getMember().getAsMention());
+                    grantee.setDescription("You've been granted the role " + role.getName() + " by " + event.getMember().getAsMention());
                     grantee.setColor(color.getRandomColor());
                     grantee.setTimestamp(Instant.now());
                     grantee.setFooter("Entity Role Granted", data.getSelfAvatar(event));
@@ -83,7 +83,7 @@ public class RoleAdd extends ListenerAdapter {
                     success.setTimestamp(Instant.now());
                     success.setFooter("Entity Role Add Log", data.getSelfAvatar(event));
 
-                    grantee.setDescription("You've been granted the role " + role.getAsMention() + " by " + event.getMember().getAsMention() + "\nThis role will be removed in " + Integer.parseInt(args[3].substring(0, args[3].length() - 1)) + " " + Time.getTime(args[3]).name());
+                    grantee.setDescription("You've been granted the role " + role.getName() + " by " + event.getMember().getAsMention() + "\nThis role will be removed in " + Integer.parseInt(args[3].substring(0, args[3].length() - 1)) + " " + Time.getTime(args[3]).name());
                     grantee.setColor(color.getRandomColor());
                     grantee.setTimestamp(Instant.now());
                     grantee.setFooter("Entity Role Granted", data.getSelfAvatar(event));

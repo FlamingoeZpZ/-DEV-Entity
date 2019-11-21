@@ -52,7 +52,7 @@ public class RoleRemove extends ListenerAdapter {
                     success.setTimestamp(Instant.now());
                     success.setFooter("Entity Role Remove Log", data.getSelfAvatar(event));
 
-                    grantee.setDescription("You've been removed from the role " + role.getAsMention() + " by " + event.getMember().getAsMention());
+                    grantee.setDescription("You've been removed from the role " + role.getName() + " by " + event.getMember().getAsMention());
                     grantee.setColor(color.getRandomColor());
                     grantee.setTimestamp(Instant.now());
                     grantee.setFooter("Entity Role Removed", data.getSelfAvatar(event));
@@ -84,7 +84,7 @@ public class RoleRemove extends ListenerAdapter {
                     success.setTimestamp(Instant.now());
                     success.setFooter("Entity Role Remove Log", data.getSelfAvatar(event));
 
-                    grantee.setDescription("You've been removed from the role " + role.getAsMention() + " by " + event.getMember().getAsMention() + "\nThis role will be readded in " + Integer.parseInt(args[3].substring(0, args[3].length() - 1)) + " " + Time.getTime(args[3]).name());
+                    grantee.setDescription("You've been removed from the role " + role.getName() + " by " + event.getMember().getAsMention() + "\nThis role will be readded in " + Integer.parseInt(args[3].substring(0, args[3].length() - 1)) + " " + Time.getTime(args[3]).name());
                     grantee.setColor(color.getRandomColor());
                     grantee.setTimestamp(Instant.now());
                     grantee.setFooter("Entity Role Removed", data.getSelfAvatar(event));
