@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class Help extends ListenerAdapter {
 
@@ -37,7 +38,7 @@ public class Help extends ListenerAdapter {
                 Unmute unmute = new Unmute();
 
                 eb.setTitle("⚙ Help");
-                eb.setDescription("Commands for Entity!\n\n**Fun Commands**\n```\n[prefix]screenshare --  " + screenshare.getShortDescription() + "\n[prefix]match       -- " + match.getShortDescription() + "\n```\n**Moderation Commands**\n```\n[prefix]addrole     --  " + addrole.getShortDescription() + "\n[prefix]ban         --  " + ban.getShortDescription() + "\n[prefix]clear       --  " + clear.getShortDescription() + "\n[prefix]kick        --  " + kick.getShortDescription() + "\n[prefix]mute        --  " + mute.getShortDescription() + "\n[prefix]softban     --  " + softban.getShortDescription() + "\n[prefix]tempmute    --  " + tempmute.getShortDescription() + "\n[prefix]unmute      --  " + unmute.getShortDescription() + "\n```\n**Setting Commands**\n```\n[prefix]setprefix   --  " + setprefix.getShortDescription() + "\n```\n\n**For command syntax help do**\n```\n[prefix]help {command}\n```".replace("[prefix]", data.getPrefix()));
+                eb.setDescription("Commands for Entity!\n\n**Fun Commands**\n```\n[prefix]screenshare --  " + screenshare.getShortDescription() + "\n[prefix]match       -- " + match.getShortDescription() + "\n```\n**Moderation Commands**\n```\n[prefix]addrole     --  " + addrole.getShortDescription() + "\n[prefix]ban         --  " + ban.getShortDescription() + "\n[prefix]clear       --  " + clear.getShortDescription() + "\n[prefix]kick        --  " + kick.getShortDescription() + "\n[prefix]mute        --  " + mute.getShortDescription() + "\n[prefix]softban     --  " + softban.getShortDescription() + "\n[prefix]tempmute    --  " + tempmute.getShortDescription() + "\n[prefix]unmute      --  " + unmute.getShortDescription() + "\n```\n**Setting Commands**\n```\n[prefix]setprefix   --  " + setprefix.getShortDescription() + "\n```\n\n**For command syntax help do**\n```\n[prefix]help {command}\n```".replaceAll(Pattern.quote("[prefix]"), data.getPrefix()));
                 eb.setColor(color.getRandomColor());
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Commands Help Menu", data.getSelfAvatar(event));
