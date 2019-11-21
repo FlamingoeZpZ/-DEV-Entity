@@ -99,8 +99,6 @@ public class RoleAdd extends ListenerAdapter {
                             });
                         });
                     });
-
-                    addRole(event, role, mentioned);
                     removeRoleAfterTimesUp(event, role, mentioned, args[3]);
                 }
             } else {

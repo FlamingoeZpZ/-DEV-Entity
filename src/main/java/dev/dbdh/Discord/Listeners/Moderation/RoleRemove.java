@@ -100,8 +100,6 @@ public class RoleRemove extends ListenerAdapter {
                             });
                         });
                     });
-
-                    removeRole(event, role, mentioned);
                     reAddRoleAfterTimesUp(event, role, mentioned, args[3]);
                 }
             } else {
