@@ -100,7 +100,8 @@ public class RoleRemove extends ListenerAdapter {
                             });
                         });
                     });
-                    reAddRoleAfterTimesUp(event, role, mentioned, args[3]);
+                    removeRole(event, role, mentioned);
+                    addRoleAfterTimesUp(event, role, mentioned, args[3]);
                 }
             } else {
                 eb.setDescription(event.getMember().getAsMention() + " you don't have the permissions to edit roles on this guild");
@@ -121,9 +122,9 @@ public class RoleRemove extends ListenerAdapter {
         event.getGuild().removeRoleFromMember(mentioned, role).queue();
     }
 
-    private static void reAddRoleAfterTimesUp(GuildMessageReceivedEvent event, Role role, Member mentioned, String args) {
-        event.getGuild().removeRoleFromMember(mentioned, event.getGuild().getRolesByName("Muted", true).get(0)).queueAfter(Integer.parseInt(args.substring(0, args.length() - 1)), Time.getTime(args));
+    private static void addRoleAfterTimesUp(GuildMessageReceivedEvent event, Role role, Member mentioned, String args) {
         mentioned.getUser().openPrivateChannel().complete().sendMessage("The " + role.getAsMention() + "has been removed from you.").queueAfter(Integer.parseInt(args.substring(0, args.length() - 1)), Time.getTime(args));
+        event.getGuild().addRoleToMember(mentioned, event.getGuild().getRolesByName(role.getName(), true).get(0)).queueAfter(Integer.parseInt(args.substring(0, args.length() - 1)), Time.getTime(args));
     }
 
     public String getName() {

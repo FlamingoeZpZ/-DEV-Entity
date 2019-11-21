@@ -99,6 +99,7 @@ public class RoleAdd extends ListenerAdapter {
                             });
                         });
                     });
+                    addRole(event, role, mentioned);
                     removeRoleAfterTimesUp(event, role, mentioned, args[3]);
                 }
             } else {
@@ -121,7 +122,7 @@ public class RoleAdd extends ListenerAdapter {
     }
 
     private static void removeRoleAfterTimesUp(GuildMessageReceivedEvent event, Role role, Member mentioned, String args) {
-        event.getGuild().removeRoleFromMember(mentioned, event.getGuild().getRolesByName("Muted", true).get(0)).queueAfter(Integer.parseInt(args.substring(0, args.length() - 1)), Time.getTime(args));
+        event.getGuild().addRoleToMember(mentioned, event.getGuild().getRolesByName(role.getName(), true).get(0)).queueAfter(Integer.parseInt(args.substring(0, args.length() - 1)), Time.getTime(args));
         mentioned.getUser().openPrivateChannel().complete().sendMessage("The " + role.getAsMention() + "has been removed from you.").queueAfter(Integer.parseInt(args.substring(0, args.length() - 1)), Time.getTime(args));
     }
 
