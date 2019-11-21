@@ -1,5 +1,6 @@
 package dev.dbdh.Discord.Listeners.Information;
 
+import dev.dbdh.Discord.Listeners.Fun.LookingToPlay;
 import dev.dbdh.Discord.Listeners.Fun.Screenshare;
 import dev.dbdh.Discord.Listeners.Moderation.*;
 import dev.dbdh.Discord.Listeners.Settings.SetPrefix;
@@ -27,6 +28,7 @@ public class Help extends ListenerAdapter {
                 Ban ban = new Ban();
                 Clear clear = new Clear();
                 Kick kick = new Kick();
+                LookingToPlay match = new LookingToPlay();
                 Mute mute = new Mute();
                 Screenshare screenshare = new Screenshare();
                 SetPrefix setprefix = new SetPrefix();
@@ -35,7 +37,7 @@ public class Help extends ListenerAdapter {
                 Unmute unmute = new Unmute();
 
                 eb.setTitle("⚙ Help");
-                eb.setDescription("Commands for Entity!\n\n**Fun Commands**\n```\n" + data.getPrefix() + "screenshare --  " + screenshare.getShortDescription() + "\n```\n**Moderation Commands**\n```\n" + data.getPrefix() + "addrole     --  " + addrole.getShortDescription() + "\n" + data.getPrefix() + "ban         --  " + ban.getShortDescription() + "\n" + data.getPrefix() + "clear       --  " + clear.getShortDescription() + "\n" + data.getPrefix() + "kick        --  " + kick.getShortDescription() + "\n" + data.getPrefix() + "mute        --  " + mute.getShortDescription() + "\n" + data.getPrefix() + "softban     --  " + softban.getShortDescription() + "\n" + data.getPrefix() + "tempmute    --  " + tempmute.getShortDescription() + "\n" + data.getPrefix() + "unmute      --  " + unmute.getShortDescription() + "\n```\n**Setting Commands**\n```\n" + data.getPrefix() + "setprefix   --  " + setprefix.getShortDescription() + "\n```\n\n**For command syntax help do**\n```\n" + data.getPrefix() + "help {command}\n```");
+                eb.setDescription("Commands for Entity!\n\n**Fun Commands**\n```\n {prefix}screenshare --  " + screenshare.getShortDescription() + "\n{prefix}match       -- " + match.getShortDescription() + "\n```\n**Moderation Commands**\n```\n{prefix}addrole     --  " + addrole.getShortDescription() + "\n{prefix}ban         --  " + ban.getShortDescription() + "\n{prefix}clear       --  " + clear.getShortDescription() + "\n{prefix}kick        --  " + kick.getShortDescription() + "\n{prefix}mute        --  " + mute.getShortDescription() + "\n{prefix}softban     --  " + softban.getShortDescription() + "\n{prefix}tempmute    --  " + tempmute.getShortDescription() + "\n{prefix}unmute      --  " + unmute.getShortDescription() + "\n```\n**Setting Commands**\n```\n{prefix}setprefix   --  " + setprefix.getShortDescription() + "\n```\n\n**For command syntax help do**\n```\n{prefix}help {command}\n```");
                 eb.setColor(color.getRandomColor());
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Commands Help Menu", data.getSelfAvatar(event));
@@ -89,6 +91,18 @@ public class Help extends ListenerAdapter {
                     eb.setColor(color.getRandomColor());
                     eb.setDescription(command.getDescription() +"\n\n **Required Roles:**\n" + command.getRequiredRoles()  + "\n\n **How to use the kick command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
                     eb.setFooter("Entity Kick Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                } else if(args[1].equalsIgnoreCase("match")){
+                    LookingToPlay command = new LookingToPlay();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the match command:**\n" + command.getCommandSyntax() + "\n**Platforms** \n```\nPC | PS4 | XBOX | SWITCH | MOBILE\n```\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
+                    eb.setFooter("Entity Match Command Help", data.getSelfAvatar(event));
 
                     event.getChannel().sendMessage(eb.build()).queue((message) -> {
                         message.delete().queueAfter(30, TimeUnit.SECONDS);

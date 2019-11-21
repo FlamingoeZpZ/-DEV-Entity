@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 
 public class LookingToPlay extends ListenerAdapter {
     //Jesus ExZi i didn't know you also looked through the chats xD
+    Data data = new Data();
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         Color color = new Color();
-        Data data = new Data();
         EmbedBuilder eb = new EmbedBuilder();
         String[] xboxAliases = {"xbox", "xboxone", "xbone", "xb"};
         String[] ps4Aliases = {"playstation", "ps4", "ps", "playstation4"};
@@ -102,4 +102,29 @@ public class LookingToPlay extends ListenerAdapter {
 
         }
     }
+
+    public String getName(){
+        return "Match";
+    }
+
+    public String getDescription() {
+        return "Pings the other members of the server also looking to play on the specified platform";
+    }
+
+    public String getShortDescription() {
+        return "Pings other members to create a match";
+    }
+
+    public String getRequiredRoles() {
+        return "Everyone";
+    }
+
+    public String getCommandSyntax() {
+        return "```\n" + data.getPrefix() + "match {platform}\n```";
+    }
+
+    public boolean isDisabled() {
+        return false;
+    }
+
 }
