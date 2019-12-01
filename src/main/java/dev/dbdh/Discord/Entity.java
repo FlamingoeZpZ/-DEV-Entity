@@ -40,7 +40,8 @@ public class Entity {
                 new AliasesHelp(),
                 new Help(),
                 new ListWarnings(),
-                new ReactionRoleAssign(),
+                new AuditLogTest(),
+                //new ReactionRoleAssign(),
 
                 //Misc Listeners
                 //new Censor(),
