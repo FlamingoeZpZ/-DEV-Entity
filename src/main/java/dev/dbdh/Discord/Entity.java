@@ -44,6 +44,7 @@ public class Entity {
 
                 //Misc Listeners
                 //new Censor(),
+                new DBCompare(),
                 new Join(),
                 new Leave(),
                 new NameUpdate(),
