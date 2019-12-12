@@ -25,7 +25,7 @@ public class DBCompare extends ListenerAdapter {
             db.connect();
             MongoCollection<Document> members = db.getCollection("members");
             for(Member member: event.getGuild().getMembers()){
-                if(members.find(eq("memberID", member.getUser().getId())).first() == null) {
+                if(members.find(eq("memberID", member.getUser().getId())).first() != null) {
                     eb.setDescription("There is a member missing from the database!\n\n```\nMember Name: " + member.getUser().getName() + "#" + member.getUser().getDiscriminator() + "\nMember ID: " + member.getUser().getId() + "\n```");
                     eb.setColor(color.errorRed);
                     eb.setFooter("Entity Missing Persons Report", data.getSelfAvatar(event));
