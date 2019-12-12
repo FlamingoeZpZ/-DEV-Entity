@@ -1,6 +1,7 @@
 package dev.dbdh.Discord.Utilities;
 
 import com.mongodb.client.MongoCollection;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateNameEvent;
@@ -259,5 +260,15 @@ public class EconomyUtilities {
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
         }
+    }
+
+    public void setRoleAssignMessageID(Message message){
+        db.connect();
+        MongoCollection<Document> guild = db.getCollection("guild");
+        Document guildDoc = guild.find(eq("roleAssignMessageID")).first();
+        Bson newMemberDoc = new Document("roleAssignMessageID", message.getId());
+        Bson updateMemberDoc = new Document("$set", newMemberDoc);
+        guild.findOneAndUpdate(guildDoc, updateMemberDoc);
+        db.close();
     }
 }
