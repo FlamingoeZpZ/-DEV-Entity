@@ -23,7 +23,7 @@ public class ReactionRoleUnassign extends ListenerAdapter {
                         //Killer
                         event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById("540744380416262185")).queue();
                         eb.setDescription("Successfully removed the Killer role");
-                        eb.setColor(color.getRandomColor());
+                        eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Role Removed", data.getSelfAvatar(event));
 
@@ -34,7 +34,7 @@ public class ReactionRoleUnassign extends ListenerAdapter {
                         //Survivor
                         event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById("540744386506653712")).queue();
                         eb.setDescription("Successfully removed the Survivor role");
-                        eb.setColor(color.getRandomColor());
+                        eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Role Removed", data.getSelfAvatar(event));
 
@@ -45,7 +45,7 @@ public class ReactionRoleUnassign extends ListenerAdapter {
                         //All the time
                         event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById("540755651731783680")).queue();
                         eb.setDescription("Successfully removed the All the time player role");
-                        eb.setColor(color.getRandomColor());
+                        eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Role Removed", data.getSelfAvatar(event));
 
@@ -56,7 +56,7 @@ public class ReactionRoleUnassign extends ListenerAdapter {
                         //Occasionally
                         event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById("540755676541222912")).queue();
                         eb.setDescription("Successfully removed the Occasional player role");
-                        eb.setColor(color.getRandomColor());
+                        eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Role Removed", data.getSelfAvatar(event));
 
@@ -67,7 +67,7 @@ public class ReactionRoleUnassign extends ListenerAdapter {
                         //Rarely
                         event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById("540755698255003699")).queue();
                         eb.setDescription("Successfully removed the Rare player role");
-                        eb.setColor(color.getRandomColor());
+                        eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Role Removed", data.getSelfAvatar(event));
 
@@ -78,7 +78,7 @@ public class ReactionRoleUnassign extends ListenerAdapter {
                         //NSFW
                         event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById("543652286279319552")).queue();
                         eb.setDescription("Successfully removed the 18+ role");
-                        eb.setColor(color.getRandomColor());
+                        eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Role Removed", data.getSelfAvatar(event));
 
@@ -89,7 +89,7 @@ public class ReactionRoleUnassign extends ListenerAdapter {
                         //Game
                         event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById("575326203901116474")).queue();
                         eb.setDescription("Successfully removed the Games role");
-                        eb.setColor(color.getRandomColor());
+                        eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Role Removed", data.getSelfAvatar(event));
 
@@ -100,7 +100,7 @@ public class ReactionRoleUnassign extends ListenerAdapter {
                         //Streamer Announcements
                         event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById("540759805481189379")).queue();
                         eb.setDescription("Successfully removed the Viewer role");
-                        eb.setColor(color.getRandomColor());
+                        eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Role Removed", data.getSelfAvatar(event));
 
@@ -111,7 +111,7 @@ public class ReactionRoleUnassign extends ListenerAdapter {
                         //Server Announcements
                         event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById("589450072488542219")).queue();
                         eb.setDescription("Successfully removed the Server Announcements role");
-                        eb.setColor(color.getRandomColor());
+                        eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Role Removed", data.getSelfAvatar(event));
 
@@ -122,7 +122,7 @@ public class ReactionRoleUnassign extends ListenerAdapter {
                         //Game Announcements
                         event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById("589450041542836243")).queue();
                         eb.setDescription("Successfully removed the Game Announcements role");
-                        eb.setColor(color.getRandomColor());
+                        eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Role Removed", data.getSelfAvatar(event));
 
@@ -133,7 +133,7 @@ public class ReactionRoleUnassign extends ListenerAdapter {
                         //Event Announcements
                         event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById("629135819826921493")).queue();
                         eb.setDescription("Successfully removed the Interested in Game Events role");
-                        eb.setColor(color.getRandomColor());
+                        eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Entity Role Removed", data.getSelfAvatar(event));
 
