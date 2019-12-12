@@ -40,7 +40,6 @@ public class Entity {
                 new AliasesHelp(),
                 new Help(),
                 new ListWarnings(),
-                new AuditLogTest(),
                 //new ReactionRoleAssign(),
 
                 //Misc Listeners
@@ -49,6 +48,7 @@ public class Entity {
                 new Leave(),
                 new NameUpdate(),
                 new Ready(),
+                new ReactionMessage(),
 
                 //Moderation Listeners
                 new Ban(),
