@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateNameEvent;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -57,6 +59,14 @@ public class Data {
     }
 
     public String getSelfAvatar(UserUpdateNameEvent event){
+        return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
+    }
+
+    public String getSelfAvatar(GuildMessageReactionAddEvent event){
+        return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
+    }
+
+    public String getSelfAvatar(GuildMessageReactionRemoveEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
 
