@@ -41,6 +41,7 @@ public class Entity {
                 new Help(),
                 new ListWarnings(),
                 new ReactionRoleAssign(),
+                new ReactionRoleUnassign(),
 
                 //Misc Listeners
                 //new Censor(),
