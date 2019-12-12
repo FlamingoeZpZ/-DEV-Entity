@@ -8,7 +8,7 @@ public class ReactionRoleAssign extends ListenerAdapter {
 
     public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event){
         if(!event.getMember().getUser().isBot()){
-            if(event.getChannel().getId().equals("638558586645118997")){
+            if(event.getChannel().getId().equals("638558586645118997") || event.getChannel().getId().equals("640329778280267826")){
                 Database db = new Database();
                 db.connect();
                 if(event.getMessageId().equals(db.getCollection("guild").find().first().getString("roleAssignMessageID"))){
