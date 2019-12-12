@@ -265,10 +265,10 @@ public class EconomyUtilities {
     public void setRoleAssignMessageID(Message message){
         db.connect();
         MongoCollection<Document> guild = db.getCollection("guild");
-        Document guildDoc = guild.find(eq("roleAssignMessageID")).first();
-        Bson newMemberDoc = new Document("roleAssignMessageID", message.getId());
-        Bson updateMemberDoc = new Document("$set", newMemberDoc);
-        guild.findOneAndUpdate(guildDoc, updateMemberDoc);
+        Document guildDoc = guild.find().first();
+        Bson newDoc = new Document("roleAssignMessageID", message.getId());
+        Bson updateDoc = new Document("$set", newDoc);
+        guild.findOneAndUpdate(guildDoc, updateDoc);
         db.close();
     }
 }
