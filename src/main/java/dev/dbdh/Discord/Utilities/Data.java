@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageEmbedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
@@ -70,6 +71,10 @@ public class Data {
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
 
+    public String getSelfAvatar(GuildMessageEmbedEvent event){
+        return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
+    }
+
     public String getSelfName(GuildMemberJoinEvent event){
         return event.getJDA().getSelfUser().getName();
     }
@@ -87,6 +92,10 @@ public class Data {
     }
 
     public TextChannel getLogChannel(GuildMemberLeaveEvent event){
+        return event.getGuild().getTextChannelById("635607577794969644");
+    }
+
+    public TextChannel getLogChannel(GuildMessageEmbedEvent event){
         return event.getGuild().getTextChannelById("635607577794969644");
     }
 }
