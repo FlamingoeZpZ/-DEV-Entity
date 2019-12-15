@@ -35,9 +35,10 @@ public class Help extends ListenerAdapter {
                 Softban softban = new Softban();
                 Tempmute tempmute = new Tempmute();
                 Unmute unmute = new Unmute();
+                Warn warn = new Warn();
 
                 eb.setTitle("⚙ Help");
-                eb.setDescription("Commands for Entity!\n\n**Fun Commands**\n```\n" + data.getPrefix() + "screenshare --  " + screenshare.getShortDescription() + "\n" + data.getPrefix() + "match       -- " + match.getShortDescription() + "\n```\n**Moderation Commands**\n```\n" + data.getPrefix() + "addrole     --  " + addrole.getShortDescription() + "\n" + data.getPrefix() + "ban         --  " + ban.getShortDescription() + "\n" + data.getPrefix() + "clear       --  " + clear.getShortDescription() + "\n" + data.getPrefix() + "kick        --  " + kick.getShortDescription() + "\n" + data.getPrefix() + "mute        --  " + mute.getShortDescription() + "\n" + data.getPrefix() + "softban     --  " + softban.getShortDescription() + "\n" + data.getPrefix() + "tempmute    --  " + tempmute.getShortDescription() + "\n" + data.getPrefix() + "unmute      --  " + unmute.getShortDescription() + "\n```\n**Setting Commands**\n```\n" + data.getPrefix() + "setprefix   --  " + setprefix.getShortDescription() + "\n```\n\n**For command syntax help do**\n```\n" + data.getPrefix() + "help {command}\n```");
+                eb.setDescription("Commands for Entity!\n\n**Fun Commands**\n```\n" + data.getPrefix() + "screenshare --  " + screenshare.getShortDescription() + "\n" + data.getPrefix() + "match       -- " + match.getShortDescription() + "\n```\n**Moderation Commands**\n```\n" + data.getPrefix() + "addrole     --  " + addrole.getShortDescription() + "\n" + data.getPrefix() + "ban         --  " + ban.getShortDescription() + "\n" + data.getPrefix() + "clear       --  " + clear.getShortDescription() + "\n" + data.getPrefix() + "kick        --  " + kick.getShortDescription() + "\n" + data.getPrefix() + "mute        --  " + mute.getShortDescription() + "\n" + data.getPrefix() + "softban     --  " + softban.getShortDescription() + "\n" + data.getPrefix() + "tempmute    --  " + tempmute.getShortDescription() + "\n" + data.getPrefix() + "unmute      --  " + unmute.getShortDescription() + "\n" + data.getPrefix() + "warn        " + warn.getShortDescription() + "\n```\n**Setting Commands**\n```\n" + data.getPrefix() + "setprefix   --  " + setprefix.getShortDescription() + "\n```\n\n**For command syntax help do**\n```\n" + data.getPrefix() + "help {command}\n```");
                 eb.setColor(color.getRandomColor());
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Commands Help Menu", data.getSelfAvatar(event));
@@ -175,6 +176,18 @@ public class Help extends ListenerAdapter {
                     eb.setColor(color.getRandomColor());
                     eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the unmute command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
                     eb.setFooter("Entity Unmute Command Help", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        message.delete().queueAfter(30, TimeUnit.SECONDS);
+                        event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                }  else if(args[1].equalsIgnoreCase("warn")){
+                    Warn command = new Warn();
+                    eb.setTitle(command.getName() + " Help");
+                    eb.setColor(color.getRandomColor());
+                    eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the warn command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
+                    eb.setFooter("Entity Warn Command Help", data.getSelfAvatar(event));
 
                     event.getChannel().sendMessage(eb.build()).queue((message) -> {
                         message.delete().queueAfter(30, TimeUnit.SECONDS);
