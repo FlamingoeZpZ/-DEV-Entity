@@ -11,7 +11,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class RoleAdd extends ListenerAdapter {
 
@@ -70,8 +72,9 @@ public class RoleAdd extends ListenerAdapter {
 
                     addRole(event, role, mentioned);
                 } else if (args.length > 3) {
+                    String roleName = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
                     Member mentioned = event.getMessage().getMentionedMembers().get(0);
-                    Role role = event.getGuild().getRolesByName(args[1], true).get(0);
+                    Role role = event.getGuild().getRolesByName(roleName, true).get(0);
 
                     eb.setDescription("Successfully added the role " + role.getAsMention() + " to the member " + mentioned.getAsMention() + "\n**Expires in:** " + Integer.parseInt(args[3].substring(0, args[3].length() - 1)) + " " + Time.getTime(args[3]).name());
                     eb.setColor(color.getRandomColor());
@@ -139,7 +142,7 @@ public class RoleAdd extends ListenerAdapter {
     }
 
     public String getCommandSyntax() {
-        return "```\n" + data.getPrefix() + "addrole {role} {@member} [time](time multiplier)\n```";
+        return "```\n" + data.getPrefix() + "addrole {@member} {role} [time](time multiplier)\n```";
     }
 
     public String getRequiredRoles() {
