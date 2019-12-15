@@ -69,7 +69,7 @@ public class Warn extends ListenerAdapter {
                     });
                 } else if (args.length >= 4) {
                     Member mentioned = event.getMessage().getMentionedMembers().get(0);
-                    String reason = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
+                    String reason = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                     db.connect();
                     MongoCollection<Document> members = db.getCollection("members");
                     BasicDBObject member = new BasicDBObject("memberId", mentioned.getUser().getId());
