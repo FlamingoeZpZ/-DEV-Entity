@@ -46,9 +46,9 @@ public class Warn extends ListenerAdapter {
                         eb.clear();
                     });
                 } else if (args.length < 3) {
-                    eb.setDescription("You haven't specified a reason for the warning");
+                    eb.setDescription("You haven't specified a severity level for the warning");
                     eb.setColor(color.getRandomColor());
-                    eb.setFooter("Insufficient Arguments | v Invalid Reason", data.getSelfAvatar(event));
+                    eb.setFooter("Insufficient Arguments | Missing Severity Level", data.getSelfAvatar(event));
                     eb.setTimestamp(Instant.now());
 
                     event.getChannel().sendMessage(eb.build()).queue((message) -> {
@@ -56,28 +56,39 @@ public class Warn extends ListenerAdapter {
                         message.delete().queueAfter(20, TimeUnit.SECONDS);
                         eb.clear();
                     });
-                } else if (args.length >= 3) {
+                } else if (args.length > 4) {
+                    eb.setDescription("You haven't specified a reason for the warning");
+                    eb.setColor(color.getRandomColor());
+                    eb.setFooter("Insufficient Arguments | Invalid Reason");
+                    eb.setTimestamp(Instant.now());
+
+                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                        event.getMessage().delete().queueAfter(20, TimeUnit.SECONDS);
+                        message.delete().queueAfter(20, TimeUnit.SECONDS);
+                        eb.clear();
+                    });
+                } else if (args.length >= 4) {
                     Member mentioned = event.getMessage().getMentionedMembers().get(0);
                     String reason = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
                     db.connect();
                     MongoCollection<Document> members = db.getCollection("members");
                     BasicDBObject member = new BasicDBObject("memberId", mentioned.getUser().getId());
-                    BasicDBObject newWarning = new BasicDBObject("reason", reason).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
+                    BasicDBObject newWarning = new BasicDBObject("reason", reason).append("severityLevel", args[2]).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
                     BasicDBObject updateDoc = new BasicDBObject("$push", new BasicDBObject("warnings", newWarning));
                     members.updateOne(member, updateDoc);
                     db.close();
 
-                    eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\n```");
+                    eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\nSeverity: " + args[2] + "\n```");
                     eb.setColor(color.getRandomColor());
                     eb.setFooter("Entity Warning", data.getSelfAvatar(event));
                     eb.setTimestamp(Instant.now());
 
-                    success.setDescription(event.getMember().getAsMention() + " has warned " + mentioned.getAsMention() + "\n\nReason:\n```\n" + reason + "\n```");
+                    success.setDescription(event.getMember().getAsMention() + " has warned " + mentioned.getAsMention() + "\n\nReason:\n```\n" + reason + "\nSeverity: " + args[2] + "\n```");
                     success.setColor(color.getRandomColor());
                     success.setFooter("Entity Warning", data.getSelfAvatar(event));
                     success.setTimestamp(Instant.now());
 
-                    warned.setDescription("You've been warned by " + event.getMember().getAsMention() + "\n\nReason:\n```\n" + reason + "\n```");
+                    warned.setDescription("You've been warned by " + event.getMember().getAsMention() + "\n\nReason:\n```\n" + reason + "\nSeverity: " + args[2] + "\n```");
                     warned.setColor(color.getRandomColor());
                     warned.setFooter("Entity Warning", data.getSelfAvatar(event));
                     warned.setTimestamp(Instant.now());
@@ -113,7 +124,7 @@ public class Warn extends ListenerAdapter {
     }
 
     public String getCommandSyntax() {
-        return "```\n" + data.getPrefix() + "warn {@member} [reason]\n```";
+        return "```\n" + data.getPrefix() + "warn {@member} {severity 1-5} [Descriptive reason for warning]\n```";
     }
 
     public boolean isDisabled() {
