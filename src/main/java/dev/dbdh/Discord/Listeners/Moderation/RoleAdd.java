@@ -39,9 +39,10 @@ public class RoleAdd extends ListenerAdapter {
                         event.getMessage().delete().queueAfter(15, TimeUnit.SECONDS);
                         eb.clear();
                     });
-                } else if (args.length > 2 && args.length < 4) {
+                } else if (args.length > 3 && args.length < 5) {
+                    String roleName = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
                     Member mentioned = event.getMessage().getMentionedMembers().get(0);
-                    Role role = event.getGuild().getRolesByName(args[1], true).get(0);
+                    Role role = event.getGuild().getRolesByName(roleName, true).get(0);
 
                     eb.setDescription("Successfully added the role " + role.getAsMention() + " to the member " + mentioned.getAsMention());
                     eb.setColor(color.getRandomColor());
@@ -71,12 +72,12 @@ public class RoleAdd extends ListenerAdapter {
                     });
 
                     addRole(event, role, mentioned);
-                } else if (args.length > 3) {
+                } else if (args.length > 4) {
                     String roleName = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
                     Member mentioned = event.getMessage().getMentionedMembers().get(0);
                     Role role = event.getGuild().getRolesByName(roleName, true).get(0);
 
-                    eb.setDescription("Successfully added the role " + role.getAsMention() + " to the member " + mentioned.getAsMention() + "\n**Expires in:** " + Integer.parseInt(args[3].substring(0, args[3].length() - 1)) + " " + Time.getTime(args[3]).name());
+                    eb.setDescription("Successfully added the role " + role.getAsMention() + " to the member " + mentioned.getAsMention() + "\n**Expires in:** " + Integer.parseInt(args[4].substring(0, args[3].length() - 1)) + " " + Time.getTime(args[3]).name());
                     eb.setColor(color.getRandomColor());
                     eb.setTimestamp(Instant.now());
                     eb.setFooter("Entity Role Add", data.getSelfAvatar(event));
