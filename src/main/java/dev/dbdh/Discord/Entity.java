@@ -28,7 +28,7 @@ public class Entity {
                 new Balance(),
                 new Daily(),
                 new EditCoins(),
-                new SuccessfulBump(),
+                //new SuccessfulBump(),
 
                 //Fun Listeners
                 new Chest(),
