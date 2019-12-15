@@ -56,7 +56,7 @@ public class Warn extends ListenerAdapter {
                         message.delete().queueAfter(20, TimeUnit.SECONDS);
                         eb.clear();
                     });
-                } else if (args.length > 4) {
+                } else if (args.length < 4) {
                     eb.setDescription("You haven't specified a reason for the warning");
                     eb.setColor(color.getRandomColor());
                     eb.setFooter("Insufficient Arguments | Invalid Reason");
