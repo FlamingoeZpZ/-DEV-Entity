@@ -91,10 +91,10 @@ public class Chest extends ListenerAdapter {
         UltraRare.add(new Item("Rainbow Map", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/e/e3/FulliconItems_rainbowMap.png", TYPE_MAP, RARITY_PINK, rng.nextInt(5)));
 
         Event.add(new Item("Chinese Firecracker", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/1/15/FulliconItems_chineseFirecracker.png", TYPE_EVENT, RARITY_EVENT, rng.nextInt(10) * -1));
-        Event.add(new Item("Alex's Toolbox", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/d/d5/FulliconItems_winterPartyStarter.png", TYPE_EVENT, RARITY_EVENT, rng.nextInt(10) * -1));
-        Event.add(new Item("Ranger MedKit", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/6/63/IconEventItem_partyPopper.png", TYPE_EVENT, RARITY_EVENT, rng.nextInt(10) * -1));
-        Event.add(new Item("Dull Key", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/0/03/FulliconItems_willOWisp.png", TYPE_EVENT, RARITY_EVENT, rng.nextInt(10) * -1));
-        Event.add(new Item("Utility Flashlight", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/a/a3/FulliconItems_allHallowsEveLunchbox.png", TYPE_EVENT, RARITY_EVENT, rng.nextInt(10) * -1));
+        Event.add(new Item("Winter Party Starter", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/d/d5/FulliconItems_winterPartyStarter.png", TYPE_EVENT, RARITY_EVENT, rng.nextInt(10) * -1));
+        Event.add(new Item("New Year Party Popper", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/6/63/IconEventItem_partyPopper.png", TYPE_EVENT, RARITY_EVENT, rng.nextInt(10) * -1));
+        Event.add(new Item("Will o' Wisp", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/0/03/FulliconItems_willOWisp.png", TYPE_EVENT, RARITY_EVENT, rng.nextInt(10) * -1));
+        Event.add(new Item("All Hallows' eve Lunchbox", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/a/a3/FulliconItems_allHallowsEveLunchbox.png", TYPE_EVENT, RARITY_EVENT, rng.nextInt(10) * -1));
 
         Epic.add(new Item("Ally's Cat???", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/d/d5/FulliconItems_winterPartyStarter.png", TYPE_EPIC, RARITY_EPIC, rng.nextInt(20) * -1));
         Epic.add(new Item("[̶͖̬̺̪̌̓́͑͠ŕ̵̨͋̓ę̶͈͇͉͖̭̱̈́́̆͝d̵̞̈̑̕͝a̴̭̲̱̯͗́͂̉c̷̨̠̱͆͐̏̊͘t̷̛̮̗̬͗̈́̕͠ͅě̸̡̯̗͚̜̂͜͝ḋ̷̳̎ Images̫", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/6/63/IconEventItem_partyPopper.png", TYPE_EPIC, RARITY_EPIC, rng.nextInt(10) * -1));
