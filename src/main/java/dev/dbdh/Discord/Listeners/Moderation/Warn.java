@@ -68,40 +68,53 @@ public class Warn extends ListenerAdapter {
                         eb.clear();
                     });
                 } else if (args.length >= 4) {
-                    Member mentioned = event.getMessage().getMentionedMembers().get(0);
-                    String reason = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
-                    db.connect();
-                    MongoCollection<Document> members = db.getCollection("members");
-                    BasicDBObject member = new BasicDBObject("memberId", mentioned.getUser().getId());
-                    BasicDBObject newWarning = new BasicDBObject("reason", reason).append("severityLevel", args[2]).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
-                    BasicDBObject updateDoc = new BasicDBObject("$push", new BasicDBObject("warnings", newWarning));
-                    members.updateOne(member, updateDoc);
-                    db.close();
+                    try{
+                        Integer severity = Integer.parseInt(args[2]);
+                                                Member mentioned = event.getMessage().getMentionedMembers().get(0);
+                        String reason = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
+                        db.connect();
+                        MongoCollection<Document> members = db.getCollection("members");
+                        BasicDBObject member = new BasicDBObject("memberId", mentioned.getUser().getId());
+                        BasicDBObject newWarning = new BasicDBObject("reason", reason).append("severityLevel", severity).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
+                        BasicDBObject updateDoc = new BasicDBObject("$push", new BasicDBObject("warnings", newWarning));
+                        members.updateOne(member, updateDoc);
+                        db.close();
 
-                    eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\nSeverity: " + args[2] + "\n```");
-                    eb.setColor(color.getRandomColor());
-                    eb.setFooter("Entity Warning", data.getSelfAvatar(event));
-                    eb.setTimestamp(Instant.now());
+                        eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\nSeverity: " + args[2] + "\n```");
+                        eb.setColor(color.getRandomColor());
+                        eb.setFooter("Entity Warning", data.getSelfAvatar(event));
+                        eb.setTimestamp(Instant.now());
 
-                    success.setDescription(event.getMember().getAsMention() + " has warned " + mentioned.getAsMention() + "\n\nReason:\n```\n" + reason + "\nSeverity: " + args[2] + "\n```");
-                    success.setColor(color.getRandomColor());
-                    success.setFooter("Entity Warning", data.getSelfAvatar(event));
-                    success.setTimestamp(Instant.now());
+                        success.setDescription(event.getMember().getAsMention() + " has warned " + mentioned.getAsMention() + "\n\nReason:\n```\n" + reason + "\nSeverity: " + args[2] + "\n```");
+                        success.setColor(color.getRandomColor());
+                        success.setFooter("Entity Warning", data.getSelfAvatar(event));
+                        success.setTimestamp(Instant.now());
 
-                    warned.setDescription("You've been warned by " + event.getMember().getAsMention() + "\n\nReason:\n```\n" + reason + "\nSeverity: " + args[2] + "\n```");
-                    warned.setColor(color.getRandomColor());
-                    warned.setFooter("Entity Warning", data.getSelfAvatar(event));
-                    warned.setTimestamp(Instant.now());
+                        warned.setDescription("You've been warned by " + event.getMember().getAsMention() + "\n\nReason:\n```\n" + reason + "\nSeverity: " + args[2] + "\n```");
+                        warned.setColor(color.getRandomColor());
+                        warned.setFooter("Entity Warning", data.getSelfAvatar(event));
+                        warned.setTimestamp(Instant.now());
 
-                    mentioned.getUser().openPrivateChannel().complete().sendMessage(warned.build()).queue((message) -> {
-                        warned.clear();
-                        event.getChannel().sendMessage(eb.build()).queue((message1) -> {
-                            eb.clear();
-                            message1.delete().queueAfter(30, TimeUnit.SECONDS);
-                            event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
-                            data.getLogChannel(event).sendMessage(success.build()).queue();
+                        mentioned.getUser().openPrivateChannel().complete().sendMessage(warned.build()).queue((message) -> {
+                            warned.clear();
+                            event.getChannel().sendMessage(eb.build()).queue((message1) -> {
+                                eb.clear();
+                                message1.delete().queueAfter(30, TimeUnit.SECONDS);
+                                event.getMessage().delete().queueAfter(30, TimeUnit.SECONDS);
+                                data.getLogChannel(event).sendMessage(success.build()).queue();
+                            });
                         });
-                    });
+                    } catch(NumberFormatException ex){
+                        eb.setDescription(args[2] + " is not a valid number. Please supply a number 1 - 5 respective to the level of offense,\n\n```\n" + data.getPrefix() + "warn {@member} {1 - 5} {descriptive reason for the warning}");
+                        eb.setColor(color.errorRed);
+                        eb.setTimestamp(Instant.now());
+                        eb.setFooter("Invalid Severity Level", data.getSelfAvatar(event));
+
+                        event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                           message.delete().queueAfter(20, TimeUnit.SECONDS);
+                           eb.clear();
+                        });
+                    }
                 }
             }
         }
