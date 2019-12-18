@@ -79,7 +79,8 @@ public class Help extends ListenerAdapter {
                     Clear command = new Clear();
                     eb.setTitle(command.getName() + " Help");
                     eb.setColor(color.getRandomColor());
-                    eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the clear command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");                    eb.setFooter("Entity Clear Command Help", data.getSelfAvatar(event));
+                    eb.setDescription(command.getDescription() + "\n\n **Required Roles:**\n" + command.getRequiredRoles() + "\n\n **How to use the clear command:**\n" + command.getCommandSyntax() + "\n**Is Disabled?** \n```\n" + command.isDisabled() + "\n```\n```\n{} | Required\n[] | Optional\n```");
+                    eb.setFooter("Entity Clear Command Help", data.getSelfAvatar(event));
 
                     event.getChannel().sendMessage(eb.build()).queue((message) -> {
                         message.delete().queueAfter(30, TimeUnit.SECONDS);
