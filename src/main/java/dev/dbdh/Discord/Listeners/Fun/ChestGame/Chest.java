@@ -129,7 +129,6 @@ public class Chest extends ListenerAdapter {
                     items.addAll(Event);
                     items.addAll(Epic);
                     items.addAll(Legendary);
-                    openChest(event, eb, items);
                     if (/*ecu.getChests(event, event.getMember().getUser().getId(), args[1]) < 1 || */RC.isDeveloper(event) || RC.isOwner(event)) {
                         if (/*ecu.isCooldownReady(event, event.getMember().getUser().getId(), "freeChest")*/ true) {
 
