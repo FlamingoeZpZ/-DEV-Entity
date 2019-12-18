@@ -2,6 +2,7 @@ package dev.dbdh.Discord;
 
 import dev.dbdh.Discord.Listeners.Economy.*;
 import dev.dbdh.Discord.Listeners.Fun.*;
+import dev.dbdh.Discord.Listeners.Fun.ChestGame.Chest;
 import dev.dbdh.Discord.Listeners.Information.*;
 import dev.dbdh.Discord.Listeners.Miscellaneous.*;
 import dev.dbdh.Discord.Listeners.Moderation.*;
