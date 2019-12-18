@@ -23,57 +23,57 @@ public class Item extends Chest{
                 drawChance = 40;
                 xpGain = -48;
                 goldGain = -96;
-                rarityString = "No item: ";
+                rarityString = "**No item:** ";
                 posOrNeg = false;
                 break;
             case RARITY_BROWN:
                 drawChance = 120;
                 xpGain = 24;
                 goldGain = 24;
-                rarityString = "a Common Item: ";
+                rarityString = "a **Common Item:** ";
                 break;
             case RARITY_YELLOW:
                 guaranteedPolish += 5;
                 drawChance = 80;
                 xpGain = 48;
                 goldGain = 24;
-                rarityString = "an Uncommon Item: ";
+                rarityString = "an **Uncommon Item:** ";
                 break;
             case RARITY_GREEN:
                 drawChance = 70;
                 xpGain = 48;
                 goldGain = 48;
-                rarityString = "a Rare Item: ";
+                rarityString = "a **Rare Item:** ";
                 break;
             case RARITY_PURPLE:
                 drawChance = 60;
                 xpGain = 48;
                 goldGain = 96;
-                rarityString = "a Very Rare Item: ";
+                rarityString = "a **Very Rare Item:** ";
                 break;
             case RARITY_PINK:
                 drawChance = 20;
                 xpGain = 192;
                 goldGain = 192;
-                rarityString = "an Ultra Rare Item: ";
+                rarityString = "an **Ultra Rare Item:** ";
                 break;
             case RARITY_EVENT:
                 drawChance = 10;
                 xpGain = 384;
                 goldGain = 192;
-                rarityString = "an Event Item: ";
+                rarityString = "an **Event Item:** ";
                 break;
             case RARITY_EPIC:
                 drawChance = 5;
                 xpGain = 384;
                 goldGain = 768;
-                rarityString = "an Epic Item: ";
+                rarityString = "an **Epic Item:** ";
                 break;
             case RARITY_LEGENDARY:
                 drawChance = 2;
                 xpGain = 768;
                 goldGain = 960;
-                rarityString = "a LEGENDARY ITEM: ";
+                rarityString = "a **LEGENDARY ITEM:** ";
                 break;
         }
         switch (type){
@@ -134,7 +134,7 @@ public class Item extends Chest{
             } else if (tier < 85) { // 40%
                 tierString = "Fixed";
             } else if (tier < 95) { // 10%
-                tierString = "Upgraded ";
+                tierString = "Upgraded";
                 goldGain *= 2;
                 xpGain *= 2;
             } else { //All other resources
@@ -142,7 +142,7 @@ public class Item extends Chest{
                 goldGain *= 4;
                 xpGain *= 4;
             }
-            this.name = name + " in " + tierString + " state. ";
+            this.name = name + " in  a **" + tierString + "** state. ";
         }
         this.drawChance = (posOrNeg)?drawChance:-drawChance;
     }

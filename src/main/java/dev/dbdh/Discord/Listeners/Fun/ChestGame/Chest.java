@@ -46,6 +46,7 @@ public class Chest extends ListenerAdapter {
         RoleCheck RC = new RoleCheck();
         EconomyUtilities ecu = new EconomyUtilities();
         EmbedBuilder eb = new EmbedBuilder();
+
         List<Item> items = new ArrayList<>();
         List<Item> Bad = new ArrayList<>();
         List<Item> Useless = new ArrayList<>();
@@ -133,7 +134,6 @@ public class Chest extends ListenerAdapter {
                         if (/*ecu.isCooldownReady(event, event.getMember().getUser().getId(), "freeChest")*/ true) {
 
                             eb.setDescription("You didn't have a basic chest available but your cooldown has ran out so here is a free chest");
-                            eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Entity Free Chest | Free Basic Chest every 5 minutes", data.getSelfAvatar(event));
                             items.addAll(Bad);
@@ -147,20 +147,11 @@ public class Chest extends ListenerAdapter {
                             items.addAll(Epic);
                             items.addAll(Legendary);
                             openChest(event, eb, items);
-                            event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                                eb.clear();
-                                message.delete().queueAfter(20, TimeUnit.SECONDS);
-                            });
                         } else {
                             eb.setDescription("You don't have a basic chest available and your cooldown is not ready yet. But you can buy chests in the shop");
                             eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Chest not available", data.getSelfAvatar(event));
-
-                            event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                                eb.clear();
-                                message.delete().queueAfter(20, TimeUnit.SECONDS);
-                            });
                         }
                     } else if (ecu.getChests(event, event.getMember().getUser().getId(), args[1]) >= 1) {
                         eb.setDescription("You opened a basic chest");
@@ -204,6 +195,7 @@ public class Chest extends ListenerAdapter {
 
     public static void openChest(GuildMessageReceivedEvent event, EmbedBuilder eb, List<Item> items) {
         List<Item> sortedItems = new ArrayList<>();
+        Color c = new Color();
         boolean ItemFound;
         int pos;
         int GennedNum;
@@ -244,13 +236,17 @@ public class Chest extends ListenerAdapter {
         for (Item sortedItem : sortedItems) {
             count += Math.abs(sortedItem.drawChance); // 9 + 8 + 4 + 6 + 11 + 12
             if (count >= GennedNum) { // -17 33
+                eb.setColor(c.deepRed);
                 if(isShiny && sortedItem.posOrNeg)
                 {
+                    eb.setColor(c.darkGreen);
                     sortedItem.goldGain *=2;
                     sortedItem.xpGain *= 2;
-                    eb.appendDescription("***" + event.getAuthor().getAsMention() + " FOUND " + sortedItem.rarityString + "SHINY" + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP***");
+                    eb.appendDescription("\n\n***" + event.getAuthor().getAsMention() + " FOUND " + sortedItem.rarityString + "SHINY" + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP***");
                 }
-                eb.appendDescription(event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
+                if(sortedItem.posOrNeg)
+                eb.setColor(c.darkGreen);
+                eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
                 eb.setImage(sortedItem.URL);
                 break;
             }
