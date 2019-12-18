@@ -129,7 +129,7 @@ public class Chest extends ListenerAdapter {
                     items.addAll(Epic);
                     items.addAll(Legendary);
                     openChest(event, eb, items);
-                    if (ecu.getChests(event, event.getMember().getUser().getId(), args[1]) < 1 || RC.isDeveloper(event) || RC.isOwner(event)) {
+                    if (/*ecu.getChests(event, event.getMember().getUser().getId(), args[1]) < 1 || */RC.isDeveloper(event) || RC.isOwner(event)) {
                         if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "freeChest")) {
 
                             eb.setDescription("You didn't have a basic chest available but your cooldown has ran out so here is a free chest");
