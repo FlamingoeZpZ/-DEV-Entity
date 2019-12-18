@@ -136,7 +136,17 @@ public class Chest extends ListenerAdapter {
                             eb.setColor(color.getRandomColor());
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Entity Free Chest | Free Basic Chest every 5 minutes", data.getSelfAvatar(event));
-
+                            items.addAll(Bad);
+                            items.addAll(Useless);
+                            items.addAll(Common);
+                            items.addAll(UnCommon);
+                            items.addAll(Rare);
+                            items.addAll(VeryRare);
+                            items.addAll(UltraRare);
+                            items.addAll(Event);
+                            items.addAll(Epic);
+                            items.addAll(Legendary);
+                            openChest(event, eb, items);
                             event.getChannel().sendMessage(eb.build()).queue((message) -> {
                                 eb.clear();
                                 message.delete().queueAfter(20, TimeUnit.SECONDS);
@@ -238,9 +248,9 @@ public class Chest extends ListenerAdapter {
                 {
                     sortedItem.goldGain *=2;
                     sortedItem.xpGain *= 2;
-                    eb.setDescription("***" + event.getAuthor().getAsMention() + " FOUND " + sortedItem.rarityString + "SHINY" + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP***");
+                    eb.appendDescription("***" + event.getAuthor().getAsMention() + " FOUND " + sortedItem.rarityString + "SHINY" + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP***");
                 }
-                eb.setDescription(event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
+                eb.appendDescription(event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
                 eb.setImage(sortedItem.URL);
                 break;
             }
