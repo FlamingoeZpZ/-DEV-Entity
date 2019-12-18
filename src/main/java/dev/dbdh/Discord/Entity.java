@@ -43,6 +43,7 @@ public class Entity {
                 new ListWarnings(),
                 new ReactionRoleAssign(),
                 new ReactionRoleUnassign(),
+                new Report(),
 
                 //Misc Listeners
                 //new Censor(),
