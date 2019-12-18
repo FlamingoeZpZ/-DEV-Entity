@@ -105,7 +105,7 @@ public class Warn extends ListenerAdapter {
                             });
                         });
                     } catch(NumberFormatException ex){
-                        eb.setDescription(args[2] + " is not a valid number. Please supply a number 1 - 5 respective to the level of offense,\n\n```\n" + data.getPrefix() + "warn {@member} {1 - 5} {descriptive reason for the warning}");
+                        eb.setDescription("`" + args[2] + "` is not a valid number. Please supply a number 1 - 5 respective to the level of offense,\n\n```\n" + data.getPrefix() + "warn {@member} {1 - 5} {descriptive reason for the warning}\n```");
                         eb.setColor(color.errorRed);
                         eb.setTimestamp(Instant.now());
                         eb.setFooter("Invalid Severity Level", data.getSelfAvatar(event));
