@@ -248,6 +248,7 @@ public class Chest extends ListenerAdapter {
                 eb.setColor(c.darkGreen);
                 eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
                 eb.setImage(sortedItem.URL);
+                event.getChannel().sendMessage(eb.build()).queue();
                 break;
             }
         }
