@@ -49,7 +49,7 @@ public class Report extends ListenerAdapter {
                     eb.clear();
                 });
             } else if (args.length > 3) {
-                String reason = Arrays.stream(args).collect(Collectors.joining(" "));
+                String reason = Arrays.stream(args).skip(2).collect(Collectors.joining(" "));
                 Member mentioned = event.getMessage().getMentionedMembers().get(0);
 
                 db.connect();
