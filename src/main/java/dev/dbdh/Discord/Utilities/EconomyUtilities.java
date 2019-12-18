@@ -217,7 +217,7 @@ public class EconomyUtilities {
         }
         return cooldownTime;
     }
-
+/*
     public boolean isCooldownReady(GuildMessageReceivedEvent event, String memberID, String type) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
@@ -251,7 +251,7 @@ public class EconomyUtilities {
         db.close();
         return false;
     }
-
+*/
     public void resetCooldown(GuildMessageReceivedEvent event, String memberID, String type){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
