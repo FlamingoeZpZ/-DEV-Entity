@@ -21,7 +21,7 @@ public class Daily extends ListenerAdapter {
         EconomyUtilities ecu = new EconomyUtilities();
         EmbedBuilder eb = new EmbedBuilder();
         if (args[0].equalsIgnoreCase(data.getPrefix() + "daily")) {
-            if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "daily")) {
+            if (/*ecu.isCooldownReady(event, event.getMember().getUser().getId(), "daily")*/ true) {
                 ecu.resetCooldown(event, event.getMember().getUser().getId(), "daily");
                 int upper = 250;
                 int lower = 5;
