@@ -262,7 +262,7 @@ public class EconomyUtilities {
             db.close();
         } else if(type.equalsIgnoreCase("daily")){
             Bson newMemberDoc = new Document("daily", System.currentTimeMillis());
-            Bson updateMemberDoc = new Document("cooldowns.$set", newMemberDoc);
+            Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
         } else if(type.equalsIgnoreCase("chase")){
