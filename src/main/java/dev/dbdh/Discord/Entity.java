@@ -14,6 +14,9 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import javax.security.auth.login.LoginException;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.net.UnknownHostException;
 
 public class Entity {
@@ -74,6 +77,11 @@ public class Entity {
                 new SetPrefix()
         );
 
+        try{
+            System.setOut(new PrintStream(new FileOutputStream("/root/Entity/Log.txt")));
+        } catch(FileNotFoundException ex){
+            System.out.println("Can't find the logging file");
+        }
         entity.build();
     }
 
