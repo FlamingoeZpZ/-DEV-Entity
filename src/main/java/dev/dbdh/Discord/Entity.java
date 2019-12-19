@@ -77,12 +77,6 @@ public class Entity {
                 // Settings Listeners
                 new SetPrefix()
         );
-
-        try{
-            System.setOut(new PrintStream(new FileOutputStream(new File("/root/Entity/Log.txt"))));
-        } catch(FileNotFoundException ex){
-            System.out.println("Can't find the logging file");
-        }
         entity.build();
     }
 
