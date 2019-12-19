@@ -70,7 +70,7 @@ public class Warn extends ListenerAdapter {
                 } else if (args.length >= 4) {
                     try{
                         Integer severity = Integer.parseInt(args[2]);
-                                                Member mentioned = event.getMessage().getMentionedMembers().get(0);
+                        Member mentioned = event.getMessage().getMentionedMembers().get(0);
                         String reason = Arrays.stream(args).skip(3).collect(Collectors.joining(" "));
                         db.connect();
                         MongoCollection<Document> members = db.getCollection("members");
@@ -80,7 +80,7 @@ public class Warn extends ListenerAdapter {
                         members.updateOne(member, updateDoc);
                         db.close();
 
-                        eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n " + reason + "\nSeverity: " + args[2] + "\n```");
+                        eb.setDescription("You have warned " + mentioned.getAsMention() + "\n\nReason:\n```\n" + reason + "\nSeverity: " + args[2] + "\n```");
                         eb.setColor(color.getRandomColor());
                         eb.setFooter("Entity Warning", data.getSelfAvatar(event));
                         eb.setTimestamp(Instant.now());
