@@ -209,11 +209,11 @@ public class EconomyUtilities {
         Document member = members.find(eq("memberId", memberID)).first();
         Document cooldowns = (Document) member.get("cooldowns");
         if(type.equalsIgnoreCase("freeChest")) {
-            cooldownTime = cooldowns.getLong("freeChest") + 300000L;
+            cooldownTime = cooldowns.getLong("freeBasicCooldown") + 300000L;
         } else if(type.equalsIgnoreCase("daily")){
-            cooldownTime = cooldowns.getLong("daily") + 86400000L;
+            cooldownTime = cooldowns.getLong("dailyCooldown") + 86400000L;
         } else if(type.equalsIgnoreCase("chase")){
-            cooldownTime = cooldowns.getLong("chase") + 300000L;
+            cooldownTime = cooldowns.getLong("chaseCooldown") + 300000L;
         }
         return cooldownTime;
     }
