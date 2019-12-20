@@ -222,9 +222,8 @@ public class EconomyUtilities {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Document cooldowns = (Document) member.get("cooldowns");
         if(type.equalsIgnoreCase("freeChest")) {
-            if ((cooldowns.getLong("freeChest") + 300000L) <= System.currentTimeMillis()) {
+            if ((member.getLong("freeBasicCooldown") + 300000L) <= System.currentTimeMillis()) {
                 db.close();
                 return true;
             } else {
@@ -232,7 +231,7 @@ public class EconomyUtilities {
                 return false;
             }
         } else if(type.equalsIgnoreCase("daily")){
-            if((cooldowns.getLong("daily") + 86400000L) <= System.currentTimeMillis()){
+            if((member.getLong("dailyCooldown") + 86400000L) <= System.currentTimeMillis()){
                 db.close();
                 return true;
             } else {
@@ -240,7 +239,7 @@ public class EconomyUtilities {
                 return false;
             }
         } else if(type.equalsIgnoreCase("chase")){
-            if((cooldowns.getLong("chase") + 300000L) <= System.currentTimeMillis()){
+            if((member.getLong("chaseCooldown") + 300000L) <= System.currentTimeMillis()){
                 db.close();
                 return true;
             } else {
@@ -256,17 +255,17 @@ public class EconomyUtilities {
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeChest")){
-            Bson newMemberDoc = new Document("freeChest", System.currentTimeMillis());
+            Bson newMemberDoc = new Document("freeBasicCooldown", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
         } else if(type.equalsIgnoreCase("daily")){
-            Bson newMemberDoc = new Document("daily", System.currentTimeMillis());
+            Bson newMemberDoc = new Document("dailyCooldown", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
         } else if(type.equalsIgnoreCase("chase")){
-            Bson newMemberDoc = new Document("chase", System.currentTimeMillis());
+            Bson newMemberDoc = new Document("chaseCooldown", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
