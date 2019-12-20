@@ -7,10 +7,10 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Daily extends ListenerAdapter {
@@ -38,8 +38,10 @@ public class Daily extends ListenerAdapter {
                     eb.clear();
                 });
             } else {
+                Instant instant = Instant.ofEpochSecond(ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown"));
+                Date date = Date.from(instant);
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM-dd-YYYY");
-                String formattedDate = formatter.format(Date.valueOf(LocalDate.from(Instant.ofEpochSecond(ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown")))));
+                String formattedDate = formatter.format(date);
                 eb.setDescription("Your daily cooldown is not ready.\nTry again at " + formattedDate);
                 eb.setColor(color.errorRed);
                 eb.setTimestamp(Instant.now());
