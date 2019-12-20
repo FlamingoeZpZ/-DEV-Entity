@@ -38,8 +38,8 @@ public class Daily extends ListenerAdapter {
                     eb.clear();
                 });
             } else {
-                Instant instant = Instant.ofEpochSecond(ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown"));
-                Date date = Date.from(instant);
+                Date date = new Date();
+                date.setTime((long)ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown"));
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM-dd-YYYY");
                 String formattedDate = formatter.format(date);
                 eb.setDescription("Your daily cooldown is not ready.\nTry again at " + formattedDate);
