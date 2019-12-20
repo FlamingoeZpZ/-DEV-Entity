@@ -207,13 +207,12 @@ public class EconomyUtilities {
         long cooldownTime = 0;
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Document cooldowns = (Document) member.get("cooldowns");
         if(type.equalsIgnoreCase("freeChest")) {
-            cooldownTime = cooldowns.getLong("freeBasicCooldown") + 300000L;
+            cooldownTime = member.getLong("freeBasicCooldown") + 300000L;
         } else if(type.equalsIgnoreCase("daily")){
-            cooldownTime = cooldowns.getLong("dailyCooldown") + 86400000L;
+            cooldownTime = member.getLong("dailyCooldown") + 86400000L;
         } else if(type.equalsIgnoreCase("chase")){
-            cooldownTime = cooldowns.getLong("chaseCooldown") + 300000L;
+            cooldownTime = member.getLong("chaseCooldown") + 300000L;
         }
         return cooldownTime;
     }
