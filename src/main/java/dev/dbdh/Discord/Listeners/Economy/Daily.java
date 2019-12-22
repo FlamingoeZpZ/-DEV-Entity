@@ -21,17 +21,23 @@ public class Daily extends ListenerAdapter {
         Data data = new Data();
         EconomyUtilities ecu = new EconomyUtilities();
         EmbedBuilder eb = new EmbedBuilder();
+        EmbedBuilder success = new EmbedBuilder();
         if (args[0].equalsIgnoreCase(data.getPrefix() + "daily")) {
             if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "daily")) {
                 ecu.resetCooldown(event, event.getMember().getUser().getId(), "daily");
                 int upper = 250;
                 int lower = 5;
-                int r = (int) (Math.random() * (upper - lower)) + lower;
-                ecu.addCoins(event, event.getMember().getUser().getId(), r);
-                eb.setDescription("You opened your daily and got " + r + " coins!");
+                int coins = (int) (Math.random() * (upper - lower)) + lower;
+                ecu.addCoins(event, event.getMember().getUser().getId(), coins);
+                eb.setDescription("You opened your daily and got " + coins + " coins!");
                 eb.setColor(color.getRandomColor());
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Daily Coins", data.getSelfAvatar(event));
+
+                success.setDescription(event.getAuthor().getAsMention() + " has claimed their daily coins allowance and recieved " + coins + " coins");
+                success.setColor(color.getRandomColor());
+                success.setTimestamp(Instant.now());
+                success.setFooter("Entity Daily Coin Allowance", data.getSelfAvatar(event));
 
                 event.getChannel().sendMessage(eb.build()).queue((message) -> {
                     message.delete().queueAfter(15, TimeUnit.SECONDS);
@@ -40,12 +46,11 @@ public class Daily extends ListenerAdapter {
             } else {
                 Date date = new Date();
                 String dateInString = String.valueOf(ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown"));
-                System.out.println(dateInString);
-                //String smallerDate = dateInString.substring(0, dateInString.length() - 4);
-                //date.setTime(Long.parseLong(smallerDate));
+                String smallerDate = dateInString.substring(0, dateInString.length() - 4);
+                date.setTime(Long.parseLong(smallerDate));
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM-dd-YYYY");
                 String formattedDate = formatter.format(date);
-                eb.setDescription("Your daily cooldown is not ready.\nTry again at " + formattedDate);
+                eb.setDescription("Your daily cooldown is not ready.\nTry again at " + formattedDate + " UTC");
                 eb.setColor(color.errorRed);
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Daily Cooldown not ready", data.getSelfAvatar(event));
