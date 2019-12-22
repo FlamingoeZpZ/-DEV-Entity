@@ -69,7 +69,7 @@ public class Join extends ListenerAdapter {
 
             Random random = new Random();
             int message = random.nextInt(messages.length);
-            eb.setDescription(messages[message].replace("[member]", event.getMember().getAsMention()));
+            eb.setDescription(messages[message].replace("[member]", event.getMember().getEffectiveName()));
             eb.setColor(color.getRandomColor());
             eb.setThumbnail(event.getMember().getUser().getEffectiveAvatarUrl());
             eb.setTimestamp(Instant.now());
