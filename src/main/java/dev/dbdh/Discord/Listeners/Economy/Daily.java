@@ -46,7 +46,7 @@ public class Daily extends ListenerAdapter {
             } else {
                 Date date = new Date();
                 String dateInString = String.valueOf(ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown"));
-                String smallerDate = dateInString.substring(0, dateInString.length() - 4);
+                String smallerDate = dateInString.substring(0, dateInString.length() - 3);
                 date.setTime(Long.parseLong(smallerDate));
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM-dd-YYYY");
                 String formattedDate = formatter.format(date);
