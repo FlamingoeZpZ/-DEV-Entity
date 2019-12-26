@@ -45,8 +45,7 @@ public class Daily extends ListenerAdapter {
                 });
             } else {
                 Date date = new Date();
-                String dateInString = String.valueOf(ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown"));
-                date.setTime(Long.parseLong(dateInString + "L"));
+                date.setTime(ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown"));
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM-dd-YYYY");
                 String formattedDate = formatter.format(date);
                 eb.setDescription("Your daily cooldown is not ready.\nTry again at " + formattedDate + " UTC");
