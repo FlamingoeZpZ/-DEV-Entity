@@ -77,7 +77,6 @@ public class Clear extends ListenerAdapter {
 
                             event.getChannel().sendMessage(eb.build()).queue((message) -> {
                                 message.delete().queueAfter(15, TimeUnit.SECONDS);
-                                event.getMessage().delete().queueAfter(15, TimeUnit.SECONDS);
                                 data.getLogChannel(event).sendMessage(success.build()).queue((message2) -> {
                                     success.clear();
                                 });
