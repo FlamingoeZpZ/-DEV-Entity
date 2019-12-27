@@ -9,7 +9,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class Unmute extends ListenerAdapter {
     Data data = new Data();
@@ -35,7 +37,8 @@ public class Unmute extends ListenerAdapter {
                         eb.clear();
                     });
                 } else if(args.length >= 2){
-                    Member mentioned = event.getMessage().getMentionedMembers().get(0);
+                    String name = Arrays.stream(args).skip(1).collect(Collectors.joining(" "));
+                    Member mentioned = event.getGuild().getMembersByName(name, true).get(0);
 
                     eb.setDescription("Successfully unmuted " + mentioned.getAsMention());
                     eb.setColor(color.getRandomColor());
