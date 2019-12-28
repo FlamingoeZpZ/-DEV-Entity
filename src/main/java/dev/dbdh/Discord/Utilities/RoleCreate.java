@@ -21,7 +21,7 @@ public class RoleCreate {
                 Permission.NICKNAME_CHANGE, Permission.MESSAGE_ADD_REACTION, Permission.ADMINISTRATOR).queue();
 
         for (TextChannel channel : event.getGuild().getTextChannels()) {
-            if (!channel.getParent().getId().equals("579392397189054465")) {
+            if (!channel.getParent().getId().equals("551547659140464671")) {
                 channel.getManager().putPermissionOverride(muteRole, EnumSet.of(Permission.MESSAGE_HISTORY, Permission.MESSAGE_READ), EnumSet.of(Permission.MESSAGE_WRITE)).queue();
             }
         }

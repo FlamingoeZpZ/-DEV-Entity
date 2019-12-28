@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import dev.dbdh.Discord.Utilities.Color;
-import dev.dbdh.Discord.Utilities.Data;
-import dev.dbdh.Discord.Utilities.RoleCheck;
-import dev.dbdh.Discord.Utilities.RoleCreate;
+import dev.dbdh.Discord.Utilities.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -93,7 +90,7 @@ public class Mute extends ListenerAdapter {
                         Role muteRole = event.getGuild().getRolesByName("Muted", true).get(0);
 
                         for (TextChannel channel : event.getGuild().getTextChannels()) {
-                            if(!channel.getParent().getId().equals("579392397189054465")){
+                            if(!channel.getParent().getId().equals("551547659140464671")){
                                 channel.getManager().putPermissionOverride(muteRole, EnumSet.of(Permission.MESSAGE_HISTORY, Permission.MESSAGE_READ), EnumSet.of(Permission.MESSAGE_WRITE)).queue();
                             }
                         }
@@ -188,7 +185,7 @@ public class Mute extends ListenerAdapter {
                             Role muteRole = event.getGuild().getRolesByName("Muted", true).get(0);
 
                             for (TextChannel channel : event.getGuild().getTextChannels()) {
-                                if(!channel.getParent().getId().equals("579392397189054465")){
+                                if(!channel.getParent().getId().equals("551547659140464671")){
                                     channel.getManager().putPermissionOverride(muteRole, EnumSet.of(Permission.MESSAGE_HISTORY, Permission.MESSAGE_READ), EnumSet.of(Permission.MESSAGE_WRITE)).queue();
                                 }
                             }
@@ -357,6 +354,15 @@ public class Mute extends ListenerAdapter {
                 });
             }
         }
+    }
+
+    private static void addRole(GuildMessageReceivedEvent event, Role role, Member mentioned) {
+        event.getGuild().addRoleToMember(mentioned, role).queue();
+    }
+
+    private static void removeRoleAfterTimesUp(GuildMessageReceivedEvent event, Role role, Member mentioned, String args) {
+        mentioned.getUser().openPrivateChannel().complete().sendMessage("The " + role.getAsMention() + "has been removed from you.").queueAfter(Integer.parseInt(args.substring(0, args.length() - 1)), Time.getTime(args));
+        event.getGuild().removeRoleFromMember(mentioned, event.getGuild().getRolesByName(role.getName(), true).get(0)).queueAfter(Integer.parseInt(args.substring(0, args.length() - 1)), Time.getTime(args));
     }
 
     public String getName() {
