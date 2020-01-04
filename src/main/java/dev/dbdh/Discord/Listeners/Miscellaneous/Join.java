@@ -56,16 +56,34 @@ public class Join extends ListenerAdapter {
 
         if (!event.getMember().getUser().isBot()) {
             Long unixTime = System.currentTimeMillis();
-            db.connect();
-            MongoCollection<Document> members = db.getCollection("members");
+            Database.connect();
+            MongoCollection<Document> members = Database.getCollection("members");
             if (members.find(eq("memberID", event.getMember().getUser().getId())).first() == null) {
-                Document perksActive = new Document(new BasicDBObject("aceInTheHole", 0).append("pharmacy", 0).append("plunderers", 0).append("timeWizard", 0).append("quickAndQuiet", 0 ).append("deadHard", 0).append("devisive" , 0));
-                Document chestsOwned = new Document(new BasicDBObject("basicChest", 0).append("shinyChest", 0).append("legendaryChest", 0).append("mythicChest", 0));
-                Document chestsOpened = new Document(new BasicDBObject("basicChest", 0).append("shinyChest", 0).append("legendaryChest", 0).append("mythicChest", 0));
-                Document memberInfo = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 2500L).append("perksActive", perksActive).append("chestsOwned", chestsOwned).append("chestsOpened", chestsOpened).append("eventWins", 0).append("dailyCooldown", unixTime).append("freeBasicCooldown", unixTime).append("chaseCooldown", unixTime));
+                Document items = new Document(
+                        new BasicDBObject("ACE_IN_THE_HOLETheHole", 0)
+                                .append("PHARMACY", 0)
+                                .append("PLUNDERS_INSTINCT", 0)
+                                .append("QUICK_AND_QUIET", 0)
+                                .append("DEAD_HARD", 0 )
+                                .append("DECISIVE_STRIKE", 0)
+                                .append("WHISPERS" , 0)
+                                .append("BARBEQUE_AND_CHILI", 0)
+                                .append("SLOPPY_BUTCHER", 0)
+                                .append("TENACITY", 0)
+                                .append("TINKERER", 0)
+                                .append("BORROWED_TIME", 0)
+                                .append("BASIC_CHEST", 10)
+                                .append("SAFETY_CHEST", 5)
+                                .append("GLITCH_CHEST", 5)
+                                .append("SHINY_CHEST", 1)
+                                .append("EPIC_CHEST", 0)
+                                .append("LEGENDARY_CHEST", 0)
+                                .append("GODLY_CHEST", 0));
+                Document chestsOpened = new Document(new BasicDBObject("BASIC_CHEST", 0).append("SAFETY_CHEST", 0).append("GLITCH_CHEST", 0).append("SHINY_CHEST", 0).append("EPIC_CHEST", 0).append("LEGENDARY_CHEST", 0).append("GODLY_CHEST", 0));
+                Document memberInfo = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId()).append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("balance", 100000L).append("items", items).append("chestsOpened", chestsOpened).append("eventWins", 0).append("dailyCooldown", unixTime).append("freeBasicCooldown", unixTime).append("chaseCooldown", unixTime));
                 members.insertOne(memberInfo);
             }
-            db.close();
+            Database.close();
 
             Random random = new Random();
             int message = random.nextInt(messages.length);

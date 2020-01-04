@@ -14,6 +14,10 @@ import static com.mongodb.client.model.Filters.eq;
 public class EconomyUtilities {
     Database db = new Database();
 
+    public final long freeChestCooldownMili = 300000; // 5 min
+    public final long dailyCooldownMili = 86400000; // 5 min
+    public final long chaseCooldownMili = 300000; // 5 min
+
     public void addCoins(GuildMessageReceivedEvent event, String memberID, Integer coins) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
@@ -151,13 +155,13 @@ public class EconomyUtilities {
         return chestCount;
     }
 
-    public void addPerkLevel(GuildMessageReceivedEvent event, String memberID, String perkName) {
+    public void addItem(GuildMessageReceivedEvent event, String memberID, String perkName) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
 
-        Integer perkLevel = Integer.parseInt(member.get("perksActive." + perkName).toString());
-        Bson newMemberDoc = new Document("perksActive." + perkName, perkLevel++); // use . to access objects in arrays ( BSON )
+        Integer perkLevel = Integer.parseInt(member.get("items." + perkName).toString());
+        Bson newMemberDoc = new Document("items." + perkName, perkLevel++); // use . to access objects in arrays ( BSON )
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
         db.close();
@@ -168,8 +172,8 @@ public class EconomyUtilities {
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
 
-        Integer perkLevel = Integer.parseInt(member.get("perksActive." + perkName).toString());
-        Bson newMemberDoc = new Document("perksActive." + perkName, perkLevel--); // use . to access objects in arrays ( BSON )
+        Integer perkLevel = Integer.parseInt(member.get("items." + perkName).toString());
+        Bson newMemberDoc = new Document("items." + perkName, perkLevel--); // use . to access objects in arrays ( BSON )
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
         db.close();
@@ -179,7 +183,7 @@ public class EconomyUtilities {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer perkLevel = Integer.parseInt(member.get("perksActive." + perkName).toString());
+        Integer perkLevel = Integer.parseInt(member.get("items." + perkName).toString());
         db.close();
         return perkLevel;
     }
@@ -208,21 +212,22 @@ public class EconomyUtilities {
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeChest")) {
-            cooldownTime = member.getLong("freeBasicCooldown") + 300000L;
+            cooldownTime = member.getLong("freeBasicCooldown") + freeChestCooldownMili;
         } else if(type.equalsIgnoreCase("daily")){
-            cooldownTime = member.getLong("dailyCooldown") + 86400000L;
+            cooldownTime = member.getLong("dailyCooldown") + dailyCooldownMili;
         } else if(type.equalsIgnoreCase("chase")){
-            cooldownTime = member.getLong("chaseCooldown") + 300000L;
+            cooldownTime = member.getLong("chaseCooldown") + chaseCooldownMili;
         }
         return cooldownTime;
     }
 
     public boolean isCooldownReady(GuildMessageReceivedEvent event, String memberID, String type) {
+
         db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        MongoCollection<Document> members = db.getCollection("members"); // make this segment public as a .getDBMember;
         Document member = members.find(eq("memberId", memberID)).first();
-        if(type.equalsIgnoreCase("freeChest")) {
-            if ((member.getLong("freeBasicCooldown") + 300000L) <= System.currentTimeMillis()) {
+        if(type.equalsIgnoreCase("freeChest")) { //It's getting the cooldown time > 0 and then adding free chest cooldown??? which is bigger than current time?
+            if ((member.getLong("freeBasicCooldown") + freeChestCooldownMili) <= System.currentTimeMillis()) {
                 db.close();
                 return true;
             } else {
@@ -230,7 +235,7 @@ public class EconomyUtilities {
                 return false;
             }
         } else if(type.equalsIgnoreCase("daily")){
-            if((member.getLong("dailyCooldown") + 86400000L) <= System.currentTimeMillis()){
+            if((member.getLong("dailyCooldown") + dailyCooldownMili) <= System.currentTimeMillis()){
                 db.close();
                 return true;
             } else {
@@ -238,7 +243,7 @@ public class EconomyUtilities {
                 return false;
             }
         } else if(type.equalsIgnoreCase("chase")){
-            if((member.getLong("chaseCooldown") + 300000L) <= System.currentTimeMillis()){
+            if((member.getLong("chaseCooldown") + chaseCooldownMili) <= System.currentTimeMillis()){
                 db.close();
                 return true;
             } else {

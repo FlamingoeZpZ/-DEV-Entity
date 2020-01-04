@@ -20,100 +20,100 @@ public class Item extends Chest{
         this.URL = URL;
         switch (rarity) {
             case RARITY_BAD:
-                drawChance = 40;
-                xpGain = -48;
-                goldGain = -96;
+                drawChance = 30;
+                xpGain = -240;
+                goldGain = -480;
                 rarityString = "**No item:** ";
                 posOrNeg = false;
                 break;
             case RARITY_BROWN:
                 drawChance = 120;
-                xpGain = 24;
-                goldGain = 24;
+                xpGain = 120;
+                goldGain = 240;
                 rarityString = "a **Common Item:** ";
                 break;
             case RARITY_YELLOW:
-                guaranteedPolish += 5;
+                guaranteedPolish += 10;
                 drawChance = 80;
-                xpGain = 48;
-                goldGain = 24;
+                xpGain = 240;
+                goldGain = 120;
                 rarityString = "an **Uncommon Item:** ";
                 break;
             case RARITY_GREEN:
                 drawChance = 70;
-                xpGain = 48;
-                goldGain = 48;
+                xpGain = 240;
+                goldGain = 240;
                 rarityString = "a **Rare Item:** ";
                 break;
             case RARITY_PURPLE:
                 drawChance = 60;
-                xpGain = 48;
-                goldGain = 96;
+                xpGain = 240;
+                goldGain = 480;
                 rarityString = "a **Very Rare Item:** ";
                 break;
             case RARITY_PINK:
-                drawChance = 20;
-                xpGain = 192;
-                goldGain = 192;
+                drawChance = 10;
+                xpGain = 960;
+                goldGain = 960;
                 rarityString = "an **Ultra Rare Item:** ";
                 break;
             case RARITY_EVENT:
-                drawChance = 10;
-                xpGain = 384;
-                goldGain = 192;
+                drawChance = 5;
+                xpGain = 1920;
+                goldGain = 960;
                 rarityString = "an **Event Item:** ";
                 break;
             case RARITY_EPIC:
-                drawChance = 5;
-                xpGain = 384;
-                goldGain = 768;
+                drawChance = 3;
+                xpGain = 1920;
+                goldGain = 3840;
                 rarityString = "an **Epic Item:** ";
                 break;
             case RARITY_LEGENDARY:
-                drawChance = 2;
-                xpGain = 768;
-                goldGain = 960;
+                drawChance = 1;
+                xpGain = 4800;
+                goldGain = 4800;
                 rarityString = "a **LEGENDARY ITEM:** ";
                 break;
         }
         switch (type){
             case TYPE_BAD:
-                xpGain *= 2;
-                goldGain *= 4;
+                xpGain *= 4;
+                goldGain *= 8;
                 break;
             case TYPE_TOOLBOX:
-                xpGain *= 4;
-                goldGain /= 2;
+                xpGain *= 8;
+                goldGain /= 4;
                 break;
             case TYPE_MEDKIT:
-                guaranteedPolish += 25;
+                guaranteedPolish += 40;
                 break;
             case TYPE_FLASHLIGHT:
-                xpGain /= 2;
-                goldGain *= 4;
+                xpGain /= 4;
+                goldGain *= 8;
                 break;
             case TYPE_MAP:
-                xpGain *= 6;
+                xpGain *= 12;
                 goldGain = 0;
-                guaranteedPolish -= 10;
+                guaranteedPolish -= 5;
                 break;
             case TYPE_KEY:
                 xpGain = 0;
-                goldGain *= 6;
-                guaranteedPolish += 10;
+                goldGain *= 12;
+                guaranteedPolish -= 5;
                 break;
             case TYPE_EVENT:
-                xpGain *= 2;
-                goldGain *= 2;
-                break;
-            case TYPE_EPIC:
                 xpGain *= 4;
                 goldGain *= 4;
+                break;
+            case TYPE_EPIC:
+                xpGain *= 8;
+                goldGain *= 8;
                 guaranteedPolish += 5;
                 break;
             case TYPE_LEGENDARY:
-                xpGain *= 8;
-                goldGain *= 8;
+                xpGain *= 16;
+                goldGain *= 16;
                 guaranteedPolish += 10;
                 break;
             case TYPE_MISC:
@@ -123,15 +123,20 @@ public class Item extends Chest{
         }
         tier = rng.nextInt(101) + guaranteedPolish;
         if(posOrNeg) {
-            if (tier < 15) { // 15%
+            if(tier < 5){ // 5%
+                tierString = "Shattered";
+                goldGain /= 12;
+                xpGain /= 12;
+            }
+            else if (tier < 15) { // 10%
                 tierString = "Broken";
                 goldGain /= 4;
                 xpGain /= 4;
-            } else if (tier < 40) { // 25%
+            } else if (tier < 60) { // 45%
                 tierString = "Damaged";
                 goldGain /= 2;
                 xpGain /= 2;
-            } else if (tier < 85) { // 40%
+            } else if (tier < 85) { // 25%
                 tierString = "Fixed";
             } else if (tier < 95) { // 10%
                 tierString = "Upgraded";

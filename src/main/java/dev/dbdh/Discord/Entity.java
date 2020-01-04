@@ -29,6 +29,8 @@ public class Entity {
 
         entity.addEventListeners(
                 // Economy Listeners
+                new buildShop(),
+                new Shop(),
                 new AddEveryoneToDatabase(),
                 new Balance(),
                 new Daily(),

@@ -22,7 +22,7 @@ public class LookingToPlay extends ListenerAdapter {
         String[] ps4Aliases = {"playstation", "ps4", "ps", "playstation4"};
         String[] pcAliases = {"computer", "laptop", "desktop", "pc"};
         String[] mobileAliases = {"mobile", "phone", "tablet", "iphone", "android"};
-        String[] switchAliases = {"Nintendo", "Switch", "ns"};
+        String[] switchAliases = {"nintendo", "Switch", "ns"};
         if (args[0].equalsIgnoreCase(data.getPrefix() + "match")) {
             if (args[0].equalsIgnoreCase(data.getPrefix() + "match")) {
                 if (args.length != 2) {
@@ -38,19 +38,19 @@ public class LookingToPlay extends ListenerAdapter {
                     if (event.getMember().getVoiceState().inVoiceChannel()) {
                         String voiceChannel = event.getMember().getVoiceState().getChannel().getName();
                         if (Arrays.stream(xboxAliases).anyMatch(args[1]::equalsIgnoreCase)) {
-                            event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on Xbox " + event.getGuild().getRoleById("606527228074786851").getAsMention() + "\nThey are in the " + voiceChannel + " voice channel").queue();
+                            event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on Xbox " + event.getGuild().getRoleById("606527228074786851").getAsMention() + "\nThey are in the **" + voiceChannel + "** voice channel").queue();
                             event.getGuild().addRoleToMember(event.getMember(), event.getGuild().getRoleById("606527228074786851")).queue();
                         } else if (Arrays.stream(ps4Aliases).anyMatch(args[1]::equalsIgnoreCase)) {
-                            event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on Playstation " + event.getGuild().getRoleById("606527283582468106").getAsMention() + "\nThey are in the " + voiceChannel + " voice channel").queue();
+                            event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on Playstation " + event.getGuild().getRoleById("606527283582468106").getAsMention() + "\nThey are in the **" + voiceChannel + "** voice channel").queue();
                             event.getGuild().addRoleToMember(event.getMember(), event.getGuild().getRoleById("606527283582468106")).queue();
                         } else if (Arrays.stream(pcAliases).anyMatch(args[1]::equalsIgnoreCase)) {
-                            event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on PC " + event.getGuild().getRoleById("541091501908951041").getAsMention() + "\nThey are in the " + voiceChannel + " voice channel").queue();
+                            event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on PC " + event.getGuild().getRoleById("541091501908951041").getAsMention() + "\nThey are in the **" + voiceChannel + "** voice channel").queue();
                             event.getGuild().addRoleToMember(event.getMember(), event.getGuild().getRoleById("541091501908951041")).queue();
                         } else if (Arrays.stream(mobileAliases).anyMatch(args[1]::equalsIgnoreCase)) {
-                            event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on Mobile " + event.getGuild().getRoleById("606531352690688035").getAsMention() + "\nThey are in the " + voiceChannel + " voice channel").queue();
+                            event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on Mobile " + event.getGuild().getRoleById("606531352690688035").getAsMention() + "\nThey are in the **" + voiceChannel + "** voice channel").queue();
                             event.getGuild().addRoleToMember(event.getMember(), event.getGuild().getRoleById("606531352690688035")).queue();
                         } else if (Arrays.stream(switchAliases).anyMatch(args[1]::equalsIgnoreCase)) {
-                            event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on Nintendo Switch " + event.getGuild().getRoleById("634878800185786378").getAsMention() + "\nThey are in the " + voiceChannel + " voice channel").queue();
+                            event.getChannel().sendMessage(event.getMember().getAsMention() + " is looking to play on Nintendo Switch " + event.getGuild().getRoleById("634878800185786378").getAsMention() + "\nThey are in the **" + voiceChannel + "** voice channel").queue();
                             event.getGuild().addRoleToMember(event.getMember(), event.getGuild().getRoleById("634878800185786378")).queue();
                         } else if (args[1].equalsIgnoreCase("stop")) {
                             event.getChannel().sendMessage("Stopped matchmaking").queue();

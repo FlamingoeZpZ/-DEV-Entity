@@ -25,17 +25,17 @@ public class Daily extends ListenerAdapter {
         if (args[0].equalsIgnoreCase(data.getPrefix() + "daily")) {
             if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "daily")) {
                 ecu.resetCooldown(event, event.getMember().getUser().getId(), "daily");
-                int upper = 250;
-                int lower = 5;
+                int upper = 1000;
+                int lower = 250;
                 int coins = (int) (Math.random() * (upper - lower)) + lower;
                 ecu.addCoins(event, event.getMember().getUser().getId(), coins);
                 eb.setDescription("You opened your daily and got " + coins + " coins!");
-                eb.setColor(color.getRandomColor());
+                eb.setColor(color.successGreen);
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Daily Coins", data.getSelfAvatar(event));
 
-                success.setDescription(event.getAuthor().getAsMention() + " has claimed their daily coins allowance and recieved " + coins + " coins");
-                success.setColor(color.getRandomColor());
+                success.setDescription(event.getAuthor().getAsMention() + " has claimed their daily coins allowance and received " + coins + " coins");
+                success.setColor(color.successGreen);
                 success.setTimestamp(Instant.now());
                 success.setFooter("Entity Daily Coin Allowance", data.getSelfAvatar(event));
 
@@ -49,9 +49,9 @@ public class Daily extends ListenerAdapter {
             } else {
                 Date date = new Date();
                 date.setTime(ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown"));
-                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm MM-dd-YYYY");
+                SimpleDateFormat formatter = new SimpleDateFormat("hh:mm MM-dd-yyyy"); //Hours:Minutes Months-Days-Years
                 String formattedDate = formatter.format(date);
-                eb.setDescription("Your daily cooldown is not ready.\nTry again at " + formattedDate + " UTC");
+                eb.setDescription("Your daily cooldown is not ready.\nTry again in: " + formattedDate);
                 eb.setColor(color.errorRed);
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Daily Cooldown not ready", data.getSelfAvatar(event));
