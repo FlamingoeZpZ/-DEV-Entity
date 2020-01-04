@@ -31,6 +31,7 @@ public class buildShop extends ListenerAdapter{
                 Database.connect();
                 MongoCollection<Document> shopItems = Database.getCollection("shopItems");
                 for(int i = 0; i < shopItems.estimatedDocumentCount() ; i++) {
+                    System.out.println("Build Shop : 34 -> " + i);
                     shopItems.findOneAndDelete(eq("ID", i)); // Literally just deletes them all one by one
                 }
                 List<Document> items = new ArrayList<Document>();

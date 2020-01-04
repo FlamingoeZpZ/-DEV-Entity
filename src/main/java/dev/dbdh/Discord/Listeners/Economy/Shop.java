@@ -96,6 +96,7 @@ public class Shop extends ListenerAdapter {
                 //eb.setImage(Question Mark ICON);
                 eb.setColor(color.errorRed);
             }
+            System.out.println("shop : 99 -> Success");
             eb.setFooter(data.getSelfAvatar(event) + " Shop for: " + event.getGuild().getName());
             event.getChannel().sendMessage(eb.build()).queue();
         }
