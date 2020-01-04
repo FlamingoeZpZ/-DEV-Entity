@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.util.Arrays;
 
@@ -32,6 +31,7 @@ public class Shop extends ListenerAdapter {
         Document member;
         Database.close();
         if (Arrays.stream(Al.shopAliases).anyMatch(command::equalsIgnoreCase)) {
+            System.out.println("Yes");
              member = members.find(eq("memberId", event.getMember().getId())).first();
             //(prefix)shop [item] [buy/sell] [amount]
             try {
@@ -96,9 +96,11 @@ public class Shop extends ListenerAdapter {
                 //eb.setImage(Question Mark ICON);
                 eb.setColor(color.errorRed);
             }
-            System.out.println("shop : 99 -> Success");
-            eb.setFooter(data.getSelfAvatar(event) + " Shop for: " + event.getGuild().getName());
-            event.getChannel().sendMessage(eb.build()).queue();
+            finally {
+                System.out.println("shop : 99 -> Success");
+                eb.setFooter(data.getSelfAvatar(event) + " Shop for: " + event.getGuild().getName());
+                event.getChannel().sendMessage(eb.build()).queue();
+            }
         }
     }
 }

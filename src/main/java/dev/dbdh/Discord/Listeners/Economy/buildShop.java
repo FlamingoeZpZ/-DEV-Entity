@@ -9,12 +9,10 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -30,7 +28,7 @@ public class buildShop extends ListenerAdapter{
             if(args[0].equalsIgnoreCase("Rebuild_Shop")){
                 Database.connect();
                 MongoCollection<Document> shopItems = Database.getCollection("shopItems");
-                for(int i = 0; i < shopItems.estimatedDocumentCount() ; i++) {
+                for(int i = 1; i <= shopItems.estimatedDocumentCount() ; i++) {
                     System.out.println("Build Shop : 34 -> " + i);
                     shopItems.findOneAndDelete(eq("ID", i)); // Literally just deletes them all one by one
                 }
