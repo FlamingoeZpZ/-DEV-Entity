@@ -29,9 +29,10 @@ public class Shop extends ListenerAdapter {
         MongoCollection<Document> shopItems = Database.getCollection("members");
         Document shopItem;
         Data data = new Data();
-        Document member = members.find(eq("memberId", event.getMember().getId())).first();
+        Document member;
         Database.close();
         if (Arrays.stream(Al.shopAliases).anyMatch(command::equalsIgnoreCase)) {
+             member = members.find(eq("memberId", event.getMember().getId())).first();
             //(prefix)shop [item] [buy/sell] [amount]
             try {
                 if(!args[1].isEmpty()){ //Searching item description

@@ -23,7 +23,7 @@ public class buildShop extends ListenerAdapter{
             Data data = new Data();
             EmbedBuilder eb = new EmbedBuilder();
             RoleCheck rc = new RoleCheck();
-            if(args[0].equalsIgnoreCase("Rebuild_Shop") && rc.isDeveloper(event)){
+            if(args[0].equalsIgnoreCase("Rebuild_Shop")){
                 Database.connect();
                 MongoCollection<Document> shopItems = Database.getCollection("shopItems");
                 List<Document> items = new ArrayList<Document>();
