@@ -17,9 +17,8 @@ public class Shop extends ListenerAdapter {
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String args[] = event.getMessage().getContentRaw().split("\\s+");
-        Aliases Al = new Aliases();
+        Aliases al = new Aliases();
         Color color = new Color(); // Why don't we have these public, then make them into a string kinda thing like if you do args[?].length it give the size of that term
-        String command = Data.getPrefix() + args[0];
         EconomyUtilities ecu = new EconomyUtilities();
         int pay = 0;
         EmbedBuilder eb = new EmbedBuilder();
@@ -30,7 +29,7 @@ public class Shop extends ListenerAdapter {
         Data data = new Data();
         Document member;
         Database.close();
-        if (Arrays.stream(Al.shopAliases).anyMatch(command::equalsIgnoreCase)) {
+        if (Arrays.stream(al.shopAliases).anyMatch((Data.getPrefix() + args[0])::equalsIgnoreCase)) {
             System.out.println("Yes");
              member = members.find(eq("memberId", event.getMember().getId())).first();
             //(prefix)shop [item] [buy/sell] [amount]
