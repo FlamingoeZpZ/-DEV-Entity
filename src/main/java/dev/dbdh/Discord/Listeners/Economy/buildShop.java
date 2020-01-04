@@ -56,8 +56,7 @@ public class buildShop extends ListenerAdapter{
                 eb.setColor(color.getRandomColor());
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Data Harvester", data.getSelfAvatar(event));
-
-                event.getChannel().sendMessage(eb.build()).queueAfter(20, TimeUnit.SECONDS, ((message) -> eb.clear()));
+                event.getChannel().sendMessage(eb.build()).queue();
                 Database.close();
             }
         }
