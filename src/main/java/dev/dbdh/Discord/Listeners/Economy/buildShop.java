@@ -9,10 +9,14 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static com.mongodb.client.model.Filters.eq;
 
 
 public class buildShop extends ListenerAdapter{
@@ -26,7 +30,9 @@ public class buildShop extends ListenerAdapter{
             if(args[0].equalsIgnoreCase("Rebuild_Shop")){
                 Database.connect();
                 MongoCollection<Document> shopItems = Database.getCollection("shopItems");
-                shopItems.dropIndexes();
+                for(int i = 0; i < shopItems.countDocuments(); i++) {
+                    shopItems.findOneAndDelete(eq("ID", i)); // Literally just deletes them all one by one
+                }
                 List<Document> items = new ArrayList<Document>();
                 items.add(new Document("ID" , 1).append("name", "ACE_IN_THE_HOLE").append("defaultPrice", 12000).append("description", "Increases XP gained from opening chests.").append("usage", "chest_perk"));
                 items.add(new Document("ID" , 2).append("name", "PHARMACY").append("defaultPrice", 20000).append("description", "Increases GOLD gained from opening chests.").append("usage", "chest_perk"));
