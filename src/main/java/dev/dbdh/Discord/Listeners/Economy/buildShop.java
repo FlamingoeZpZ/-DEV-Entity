@@ -26,6 +26,7 @@ public class buildShop extends ListenerAdapter{
             if(args[0].equalsIgnoreCase("Rebuild_Shop")){
                 Database.connect();
                 MongoCollection<Document> shopItems = Database.getCollection("shopItems");
+                shopItems.dropIndexes();
                 List<Document> items = new ArrayList<Document>();
                 items.add(new Document("ID" , 1).append("name", "ACE_IN_THE_HOLE").append("defaultPrice", 12000).append("description", "Increases XP gained from opening chests.").append("usage", "chest_perk"));
                 items.add(new Document("ID" , 2).append("name", "PHARMACY").append("defaultPrice", 20000).append("description", "Increases GOLD gained from opening chests.").append("usage", "chest_perk"));
