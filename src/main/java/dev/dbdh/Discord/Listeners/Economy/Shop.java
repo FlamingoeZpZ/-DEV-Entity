@@ -12,9 +12,6 @@ import java.util.Arrays;
 import static com.mongodb.client.model.Filters.eq;
 
 public class Shop extends ListenerAdapter {
-    Color color = new Color(); // Each shop has different colour identifiers
-    EmbedBuilder eb = new EmbedBuilder();
-
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String args[] = event.getMessage().getContentRaw().split("\\s+");
         Aliases al = new Aliases();
@@ -22,19 +19,18 @@ public class Shop extends ListenerAdapter {
         EconomyUtilities ecu = new EconomyUtilities();
         int pay = 0;
         EmbedBuilder eb = new EmbedBuilder();
-        Database.connect();
-        MongoCollection<Document> members = Database.getCollection("members");
-        MongoCollection<Document> shopItems = Database.getCollection("members");
-        Document shopItem;
-        Data data = new Data();
-        Document member;
-        Database.close();
         if (Arrays.stream(al.shopAliases).anyMatch((Data.getPrefix() + args[0])::equalsIgnoreCase)) {
-            System.out.println("Yes");
-             member = members.find(eq("memberId", event.getMember().getId())).first();
+            Database.connect();
+            MongoCollection<Document> members = Database.getCollection("members");
+            MongoCollection<Document> shopItems = Database.getCollection("members");
+            Document shopItem;
+            Data data = new Data();
+            Document member = members.find(eq("memberId", event.getMember().getId())).first();
+            Database.close();
+            event.getChannel().sendMessage("is true").queue();
             //(prefix)shop [item] [buy/sell] [amount]
             try {
-                if(!args[1].isEmpty()){ //Searching item description
+                if(args[1] != null){ //Searching item description
                     shopItem = shopItems.find(eq("ID", args[1])).first();
                     //eb.setImage(Images custom Icon);
                     eb.setTitle(event.getGuild().getName() + " shop - " + shopItem.getString("name"));
@@ -96,7 +92,7 @@ public class Shop extends ListenerAdapter {
                 eb.setColor(color.errorRed);
             }
             finally {
-                System.out.println("shop : 99 -> Success");
+                event.getChannel().sendMessage("should work").queue();
                 eb.setFooter(data.getSelfAvatar(event) + " Shop for: " + event.getGuild().getName());
                 event.getChannel().sendMessage(eb.build()).queue();
             }
