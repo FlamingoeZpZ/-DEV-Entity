@@ -19,8 +19,8 @@ public class Shop extends ListenerAdapter {
         EconomyUtilities ecu = new EconomyUtilities();
         int pay = 0;
         EmbedBuilder eb = new EmbedBuilder();
-        String arraysSteamBad = Data.getPrefix() + args[0];
-        if (Arrays.stream(al.shopAliases).anyMatch(arraysSteamBad::equalsIgnoreCase)) {
+
+        if (Arrays.stream(al.shopAliases).anyMatch(args[0].substring(2, args[0].length() - 1)::equalsIgnoreCase)) {
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
             MongoCollection<Document> shopItems = Database.getCollection("members");
