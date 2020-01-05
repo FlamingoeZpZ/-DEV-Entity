@@ -30,13 +30,12 @@ public class Shop extends ListenerAdapter {
 
             event.getChannel().sendMessage("went through").queue();
             //(prefix)shop [item] [buy/sell] [amount]
-                if(args.length > 1){ //Searching item description
+                if(args.length >= 2){ //Searching item description
 
                     shopItem = shopItems.find(eq("ID", args[1])).first();
-
                     //eb.setImage(Images custom Icon);
                     eb.setTitle(event.getGuild().getName() + " shop - " + shopItem.getString("name"));
-                    pay = (int)Math.pow(shopItem.getInteger("defaultPrice"),  (int)member.get("items." + shopItem.toString()) + 1); // divided by level
+                    pay = (int)Math.pow(shopItem.getInteger("defaultPrice"),  member.getInteger(member.get("items." + shopItem.toString())) + 1); // divided by level
 
                     eb.setDescription(shopItem.getString("description") + " Cost: " + pay);
                      eb.setColor(color.darkSlateBlue);
@@ -89,7 +88,7 @@ public class Shop extends ListenerAdapter {
 
                     for (int itemID = 1; itemID <= shopItems.countDocuments(); itemID++) { // For every item in the shop, it'll take the players current status, and the shop's current item
                         shopItem = shopItems.find(eq("ID", itemID)).first();
-                        eb.appendDescription(shopItem.getString("usage") + "\t\"" + shopItem.getString("name") + "\"\t" + shopItem.getInteger("ID") + "\t" + shopItem.getInteger("defaultPrice" + "$")/*Make function for calculation cost changes per lvl*/ + "\t" + member.get("item." + shopItem.getString("name")) + "\t" + shopItem.getInteger("max") + "\n");
+                        eb.appendDescription(shopItem.getString("usage") + "\t\"" + shopItem.getString("name") + "\"\tID: " + shopItem.getInteger("ID") + "\t" + shopItem.getInteger("defaultPrice" + "$")/*Make function for calculation cost changes per lvl*/ + "\t" + member.get("item." + shopItem.getString("name")) + "\t" + shopItem.getInteger("max") + "\n");
                     }
                     eb.setColor(color.yellow);
                 }
