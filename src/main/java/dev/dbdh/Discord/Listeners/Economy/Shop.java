@@ -31,7 +31,9 @@ public class Shop extends ListenerAdapter {
             event.getChannel().sendMessage("went through").queue();
             //(prefix)shop [item] [buy/sell] [amount]
                 if(args.length > 1){ //Searching item description
+                    Database.connect();
                     shopItem = shopItems.find(eq("ID", args[1])).first();
+                    Database.close();
                     //eb.setImage(Images custom Icon);
                     eb.setTitle(event.getGuild().getName() + " shop - " + shopItem.getString("name"));
                     pay = (int)Math.pow(shopItem.getInteger("defaultPrice"),  (int)member.get("items." + shopItem.toString()) + 1); // divided by level
@@ -40,7 +42,7 @@ public class Shop extends ListenerAdapter {
                      eb.setColor(color.darkSlateBlue);
                     event.getChannel().sendMessage("2 args" ).queue();
                 }
-                if(args.length >= 3 && args.length <=4 && args[2].equalsIgnoreCase("buy")&& pay != 0) { // No arg check, IT will be 3 args to get here there for we set amount to 0
+                if(args.length >= 3 && args.length <=4 && args[2].equalsIgnoreCase("buy")) { // No arg check, IT will be 3 args to get here there for we set amount to 0
                     event.getChannel().sendMessage("4 args").queue();
                     Database.connect();
                     shopItem = shopItems.find(eq("ID", args[1])).first();
