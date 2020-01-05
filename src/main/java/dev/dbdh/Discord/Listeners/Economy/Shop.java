@@ -20,7 +20,7 @@ public class Shop extends ListenerAdapter {
         int pay = 0;
         EmbedBuilder eb = new EmbedBuilder();
 
-        if (Arrays.stream(al.shopAliases).anyMatch(args[0].substring(2, args[0].length() - 1)::equalsIgnoreCase)) {
+        if (Arrays.stream(al.shopAliases).anyMatch(args[0].substring(1, args[0].length() - 1)::equalsIgnoreCase)) {
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
             MongoCollection<Document> shopItems = Database.getCollection("members");
@@ -28,7 +28,6 @@ public class Shop extends ListenerAdapter {
             Data data = new Data();
             Document member = members.find(eq("memberId", event.getMember().getId())).first();
             Database.close();
-            event.getChannel().sendMessage("is true").queue();
             //(prefix)shop [item] [buy/sell] [amount]
             try {
                 if(args[1] != null){ //Searching item description
@@ -92,11 +91,8 @@ public class Shop extends ListenerAdapter {
                 //eb.setImage(Question Mark ICON);
                 eb.setColor(color.errorRed);
             }
-            finally {
-                event.getChannel().sendMessage("should work").queue();
                 eb.setFooter(data.getSelfAvatar(event) + " Shop for: " + event.getGuild().getName());
                 event.getChannel().sendMessage(eb.build()).queue();
-            }
         }
     }
 }
