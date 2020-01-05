@@ -42,7 +42,9 @@ public class Shop extends ListenerAdapter {
                 }
                 if(args.length >= 3 && args.length <=4 && args[2].equalsIgnoreCase("buy")&& pay != 0) { // No arg check, IT will be 3 args to get here there for we set amount to 0
                     event.getChannel().sendMessage("4 args").queue();
+                    Database.connect();
                     shopItem = shopItems.find(eq("ID", args[1])).first();
+                    Database.close();
                     int i;
                     int k;
                     int total = 0;
