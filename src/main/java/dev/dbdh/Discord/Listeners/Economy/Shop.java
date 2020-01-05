@@ -89,7 +89,7 @@ public class Shop extends ListenerAdapter {
 
                     for (int itemID = 1; itemID <= shopItems.countDocuments(); itemID++) { // For every item in the shop, it'll take the players current status, and the shop's current item
                         shopItem = shopItems.find(eq("ID", itemID)).first();
-                        eb.appendDescription(shopItem.getString("usage") + "\t" + shopItem.getString("name") + "\t" + shopItem.getInteger("ID") + "\t" + shopItem.getInteger("defaultPrice")/*Make function for calculation cost changes per lvl*/ + "\t" + member.get("item." + shopItem.getString("name")) + "\t" + shopItem.getInteger("max") + "\n");
+                        eb.appendDescription(shopItem.getString("usage") + "\t\"" + shopItem.getString("name") + "\"\t" + shopItem.getInteger("ID") + "\t" + shopItem.getInteger("defaultPrice" + "$")/*Make function for calculation cost changes per lvl*/ + "\t" + member.get("item." + shopItem.getString("name")) + "\t" + shopItem.getInteger("max") + "\n");
                     }
                     eb.setColor(color.yellow);
                 }
