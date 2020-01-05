@@ -23,7 +23,7 @@ public class Shop extends ListenerAdapter {
         if (Arrays.stream(al.shopAliases).anyMatch(args[0]::equalsIgnoreCase)) {
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
-            MongoCollection<Document> shopItems = Database.getCollection("members");
+            MongoCollection<Document> shopItems = Database.getCollection("shopItems");
             Document shopItem;
             Data data = new Data();
             Document member = members.find(eq("memberId", event.getMember().getId())).first();
