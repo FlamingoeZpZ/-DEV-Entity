@@ -38,8 +38,10 @@ public class Shop extends ListenerAdapter {
 
                     eb.setDescription(shopItem.getString("description") + " Cost: " + pay);
                      eb.setColor(color.darkSlateBlue);
+                    event.getChannel().sendMessage("2 args").queue();
                 }
-                if(args.length > 2 && args[2].equalsIgnoreCase("buy")&& pay != 0) { // No arg check, IT will be 3 args to get here there for we set amount to 0
+                if(args.length >= 3 && args.length <=4 && args[2].equalsIgnoreCase("buy")&& pay != 0) { // No arg check, IT will be 3 args to get here there for we set amount to 0
+                    event.getChannel().sendMessage("4 args").queue();
                     shopItem = shopItems.find(eq("ID", args[1])).first();
                     int i;
                     int k;
@@ -72,6 +74,7 @@ public class Shop extends ListenerAdapter {
                     //Fill
                 }
             else { // NOT FULLY COMPLETE
+                    event.getChannel().sendMessage("args were improper").queue();
                 //What about a VIP upgrade that affects ALL Vips?
                     eb.setDescription(event.getGuild().getName() + " \"test\" shop usage:\n**" +
                      Data.getPrefix() + "shop [itemID] [buy/sell] [amount]**\n NOTICE: SELL DOES NOT CURRENTLY WORK" +
