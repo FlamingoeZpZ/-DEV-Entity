@@ -27,13 +27,13 @@ public class Shop extends ListenerAdapter {
             Document shopItem;
             Data data = new Data();
             Document member = members.find(eq("memberId", event.getMember().getId())).first();
-            Database.close();
+
             event.getChannel().sendMessage("went through").queue();
             //(prefix)shop [item] [buy/sell] [amount]
                 if(args.length > 1){ //Searching item description
-                    Database.connect();
+
                     shopItem = shopItems.find(eq("ID", args[1])).first();
-                    Database.close();
+
                     //eb.setImage(Images custom Icon);
                     eb.setTitle(event.getGuild().getName() + " shop - " + shopItem.getString("name"));
                     pay = (int)Math.pow(shopItem.getInteger("defaultPrice"),  (int)member.get("items." + shopItem.toString()) + 1); // divided by level
@@ -44,9 +44,9 @@ public class Shop extends ListenerAdapter {
                 }
                 if(args.length >= 3 && args.length <=4 && args[2].equalsIgnoreCase("buy")) { // No arg check, IT will be 3 args to get here there for we set amount to 0
                     event.getChannel().sendMessage("4 args").queue();
-                    Database.connect();
+
                     shopItem = shopItems.find(eq("ID", args[1])).first();
-                    Database.close();
+
                     int i;
                     int k;
                     int total = 0;
@@ -86,16 +86,18 @@ public class Shop extends ListenerAdapter {
                             "to learn more about an item, simply do: " + Data.getPrefix() + "shop [itemID]\n\n" +
                             "Usage\tName\tID\tCost\tCurrent\tMax\n" + // ADD PAGE TURNING SYSTEM
                             "Chest System\tBasic Chest\t1\tCOST\tCURRENT\tMAX\n");
-                    Database.connect();
+
                     for (int itemID = 0; itemID < shopItems.countDocuments(); itemID++) { // For every item in the shop, it'll take the players current status, and the shop's current item
                         shopItem = shopItems.find(eq("ID", itemID)).first();
                         eb.appendDescription(shopItem.getString("usage") + "\t" + shopItem.getString("name") + "\t" + shopItem.getInteger("ID") + "\t" + shopItem.getInteger("defaultPrice")/*Make function for calculation cost changes per lvl*/ + "\t" + member.get("item." + shopItem.getString("name")) + "\t" + shopItem.getInteger("max") + "\n");
                     }
-                    Database.close();
+
                     eb.setColor(color.yellow);
                 }
+                Database.close();
                 eb.setFooter(data.getSelfAvatar(event) + " Shop for: " + event.getGuild().getName());
                 event.getChannel().sendMessage(eb.build()).queue();
+
         }
     }
 }
