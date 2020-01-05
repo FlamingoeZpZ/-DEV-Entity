@@ -68,7 +68,7 @@ public class Shop extends ListenerAdapter {
                         eb.setDescription(shopItem.toString() + " could not be purchased due to a lack of money.\nYour Balance: " + ecu.getCoins(event, event.getMember().getId()) + "\t Cost: " + pay + ".");
                     }
                 }
-                else if(args[2].equalsIgnoreCase("sell") && pay != 0){
+                else if( args.length > 2 && args[2].equalsIgnoreCase("sell") && pay != 0){
                     //Fill
                 }
             else { // NOT FULLY COMPLETE
