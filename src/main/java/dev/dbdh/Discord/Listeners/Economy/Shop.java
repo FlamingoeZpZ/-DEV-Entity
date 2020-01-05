@@ -30,7 +30,6 @@ public class Shop extends ListenerAdapter {
             Database.close();
             event.getChannel().sendMessage("went through").queue();
             //(prefix)shop [item] [buy/sell] [amount]
-            try {
                 if(args.length > 1){ //Searching item description
                     shopItem = shopItems.find(eq("ID", args[1])).first();
                     //eb.setImage(Images custom Icon);
@@ -40,7 +39,7 @@ public class Shop extends ListenerAdapter {
                     eb.setDescription(shopItem.getString("description") + " Cost: " + pay);
                      eb.setColor(color.darkSlateBlue);
                 }
-                if(args[2].equalsIgnoreCase("buy")&& pay != 0) { // No arg check, IT will be 3 args to get here there for we set amount to 0
+                if(args.length > 2 && args[2].equalsIgnoreCase("buy")&& pay != 0) { // No arg check, IT will be 3 args to get here there for we set amount to 0
                     shopItem = shopItems.find(eq("ID", args[1])).first();
                     int i;
                     int k;
@@ -85,13 +84,6 @@ public class Shop extends ListenerAdapter {
                     }
                     eb.setColor(color.yellow);
                 }
-            }
-            catch(Exception e){
-                eb.setTitle("Unknown item ID");
-                eb.setDescription("Error: " + e);
-                //eb.setImage(Question Mark ICON);
-                eb.setColor(color.errorRed);
-            }
                 eb.setFooter(data.getSelfAvatar(event) + " Shop for: " + event.getGuild().getName());
                 event.getChannel().sendMessage(eb.build()).queue();
         }
