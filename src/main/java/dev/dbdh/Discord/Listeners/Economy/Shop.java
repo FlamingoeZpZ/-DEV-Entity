@@ -20,7 +20,7 @@ public class Shop extends ListenerAdapter {
         int pay = 0;
         EmbedBuilder eb = new EmbedBuilder();
 
-        if (Arrays.stream(al.shopAliases).anyMatch(args[0].substring(1, args[0].length() - 1)::equalsIgnoreCase)) {
+        if (Arrays.stream(al.shopAliases).anyMatch(args[0]::equalsIgnoreCase)) {
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
             MongoCollection<Document> shopItems = Database.getCollection("members");
@@ -28,6 +28,7 @@ public class Shop extends ListenerAdapter {
             Data data = new Data();
             Document member = members.find(eq("memberId", event.getMember().getId())).first();
             Database.close();
+            event.getChannel().sendMessage("went through").queue();
             //(prefix)shop [item] [buy/sell] [amount]
             try {
                 if(args[1] != null){ //Searching item description
