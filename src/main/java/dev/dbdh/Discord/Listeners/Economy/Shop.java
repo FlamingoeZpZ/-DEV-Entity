@@ -87,7 +87,7 @@ public class Shop extends ListenerAdapter {
                 }
             }
             catch(Exception e){
-                eb.setTitle("Unknown item ID: \"" + args[1] +"\"");
+                eb.setTitle("Unknown item ID");
                 eb.setDescription("Error: " + e);
                 //eb.setImage(Question Mark ICON);
                 eb.setColor(color.errorRed);
