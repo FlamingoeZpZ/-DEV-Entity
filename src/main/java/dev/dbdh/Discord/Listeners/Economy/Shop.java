@@ -31,7 +31,7 @@ public class Shop extends ListenerAdapter {
             event.getChannel().sendMessage("went through").queue();
             //(prefix)shop [item] [buy/sell] [amount]
             try {
-                if(args[1] != null){ //Searching item description
+                if(args.length > 1){ //Searching item description
                     shopItem = shopItems.find(eq("ID", args[1])).first();
                     //eb.setImage(Images custom Icon);
                     eb.setTitle(event.getGuild().getName() + " shop - " + shopItem.getString("name"));
