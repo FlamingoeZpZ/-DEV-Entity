@@ -35,7 +35,7 @@ public class Shop extends ListenerAdapter {
                     shopItem = shopItems.find(eq("ID", args[1])).first();
                     //eb.setImage(Images custom Icon);
                     eb.setTitle(event.getGuild().getName() + " shop - " + shopItems.find(eq("ID", args[1])).first());
-                    pay = (int)Math.pow(shopItem.getInteger("defaultPrice"),  member.get("items." + shopItem.toString()) + 1); // divided by level
+                    pay = (int)Math.pow(shopItem.getInteger("defaultPrice"),  (int)member.get("items." + shopItem.toString()) + 1); // divided by level
 
                     eb.setDescription(shopItem.getString("description") + " Cost: " + pay);
                      eb.setColor(color.darkSlateBlue);
