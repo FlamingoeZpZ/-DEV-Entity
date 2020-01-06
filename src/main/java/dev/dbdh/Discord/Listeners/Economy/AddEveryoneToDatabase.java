@@ -25,7 +25,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
         Database db = new Database();
         EmbedBuilder eb = new EmbedBuilder();
         RoleCheck rc = new RoleCheck();
-        if(args[0].equalsIgnoreCase("I_CRAVE_DATA_PLEASE_FEED_ME_DATA") && rc.isDeveloper(event)){
+        if(args[0].equalsIgnoreCase("I_CRAVE_DATA_PLEASE_FEED_ME_DATA")){
             Long unixTime = System.currentTimeMillis();
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
