@@ -39,7 +39,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                 catch (Exception e){
                     test = false;
                 }
-                if (test) {
+                if (!test) {
                         Document items = new Document(
                                 new BasicDBObject("ACE_IN_THE_HOLETheHole", 0)
                                 .append("PHARMACY", 0)
@@ -80,17 +80,17 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                                         .append("chaseCooldown", unixTime));
                         members.insertOne(memberInfo);
                     }
+                    Database.close();
+                    eb.setDescription("Added " + count + " members to the Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
+                    eb.setColor(color.getRandomColor());
+                    eb.setTimestamp(Instant.now());
+                    eb.setFooter("Entity Data Harvester", data.getSelfAvatar(event));
+
+                    event.getChannel().sendMessage(eb.build()).queueAfter(5, TimeUnit.SECONDS, ((message) -> {
+                        eb.clear();
+                    }));
                 }
             }
-            Database.close();
-            eb.setDescription("Added " + count + " members to the Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
-            eb.setColor(color.getRandomColor());
-            eb.setTimestamp(Instant.now());
-            eb.setFooter("Entity Data Harvester", data.getSelfAvatar(event));
-
-            event.getChannel().sendMessage(eb.build()).queueAfter(5, TimeUnit.SECONDS, ((message) -> {
-                eb.clear();
-            }));
         }
     }
 }
