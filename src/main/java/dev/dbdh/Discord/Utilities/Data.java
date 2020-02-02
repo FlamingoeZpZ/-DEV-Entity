@@ -74,6 +74,18 @@ public class Data {
     public String getSelfAvatar(GuildMessageEmbedEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
+    public String intToTime(int milliInt){
+        String phrase = "";
+        milliInt /= 1000;
+        phrase += (milliInt % 60) + " seconds, ";
+        milliInt /= 60;
+        phrase += (milliInt % 60) + " minutes, ";
+        milliInt /= 60;
+        phrase += (milliInt % 24) + " hours and";
+        milliInt /= 24;
+        phrase += milliInt + " days";
+        return phrase;
+    }
 
     public String getSelfName(GuildMemberJoinEvent event){
         return event.getJDA().getSelfUser().getName();
