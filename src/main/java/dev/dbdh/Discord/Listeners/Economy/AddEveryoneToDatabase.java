@@ -32,14 +32,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
             for(Member member : event.getGuild().getMembers()) { // For each member in the servers members
                 if (!member.getUser().isBot()) {
                 count++;
-                boolean test;
-                try{
-                    test = members.find(eq("memberID", member.getId())).first().isEmpty();
-                }
-                catch (Exception e){
-                    test = false;
-                }
-                if (!test) {
+                if (members.find(eq("memberID", member.getId())).first().containsValue("memberName")) {
                         Document items = new Document(
                                 new BasicDBObject("ACE_IN_THE_HOLETheHole", 0)
                                 .append("PHARMACY", 0)
@@ -81,16 +74,17 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                         members.insertOne(memberInfo);
                     }
 
-                    eb.setDescription("Added " + count + " members to the Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
-                    eb.setColor(color.getRandomColor());
-                    eb.setTimestamp(Instant.now());
-                    eb.setFooter("Entity Data Harvester", data.getSelfAvatar(event));
-
-                    event.getChannel().sendMessage(eb.build()).queueAfter(5, TimeUnit.SECONDS, ((message) -> {
-                        eb.clear();
-                    }));
                 }
             }
+
+            eb.setDescription("Added " + count + " members to the Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
+            eb.setColor(color.getRandomColor());
+            eb.setTimestamp(Instant.now());
+            eb.setFooter("Entity Data Harvester", data.getSelfAvatar(event));
+
+            event.getChannel().sendMessage(eb.build()).queueAfter(5, TimeUnit.SECONDS, ((message) -> {
+                eb.clear();
+            }));
             Database.close();
         }
     }
