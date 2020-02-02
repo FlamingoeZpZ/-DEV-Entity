@@ -80,7 +80,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                                         .append("chaseCooldown", unixTime));
                         members.insertOne(memberInfo);
                     }
-                    Database.close();
+
                     eb.setDescription("Added " + count + " members to the Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
                     eb.setColor(color.getRandomColor());
                     eb.setTimestamp(Instant.now());
@@ -91,6 +91,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                     }));
                 }
             }
+            Database.close();
         }
     }
 }
