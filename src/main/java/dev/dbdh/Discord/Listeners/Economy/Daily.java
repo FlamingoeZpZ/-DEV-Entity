@@ -39,27 +39,27 @@ public class Daily extends ListenerAdapter {
                 success.setTimestamp(Instant.now());
                 success.setFooter("Entity Daily Coin Allowance", data.getSelfAvatar(event));
 
-                event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                    data.getLogChannel(event).sendMessage(success.build()).queue((msg) -> success.clear());
-                    message.delete().queueAfter(15, TimeUnit.SECONDS);
-                    eb.clear();
-                });
+             //   event.getChannel().sendMessage(eb.build()).queue((message) -> {
+             //       data.getLogChannel(event).sendMessage(success.build()).queue((msg) -> success.clear());
+            //        message.delete().queueAfter(15, TimeUnit.SECONDS);
+            //       eb.clear();
+            //    });
             } else {
                int date = ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown");
                String phrase = "Your daily cooldown is not ready.\nTry again in:\n"
                 + (date / 24 / 60 / 60 / 1000) + " Days, "
-                +(date / 60 / 60 / 1000) + " Hours, "
-                + (date / 60 / 1000) + " minutes and "
-                + (date / 1000) + " seconds. ";
+                + ((date / 60 / 60 / 1000 ) - (date / 24 / 60 / 60 / 1000) ) + " Hours, "
+                + ((date / 60 / 1000) - (date / 60 / 60 / 1000 ))+ " minutes and "
+                + ((date / 1000) - (date / 60 / 1000))+ " seconds. ";
                 eb.setDescription(phrase);
                 eb.setColor(color.errorRed);
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Daily Cooldown not ready", data.getSelfAvatar(event));
 
-                event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                    message.delete().queueAfter(15, TimeUnit.SECONDS);
-                    eb.clear();
-                });
+               // event.getChannel().sendMessage(eb.build()).queue((message) -> {
+               //     message.delete().queueAfter(15, TimeUnit.SECONDS);
+               //     eb.clear();
+              //  });
             }
         }
     }
