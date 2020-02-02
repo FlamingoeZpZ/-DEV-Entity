@@ -220,9 +220,9 @@ public class EconomyUtilities {
         if(type.equalsIgnoreCase("freeBasicCooldown")) {
             cooldownTime = (int)(member.getLong("freeBasicCooldown") + freeChestCooldownMili - System.currentTimeMillis());
         } else if(type.equalsIgnoreCase("dailyCooldown")){
-            cooldownTime = (int)(member.getLong("dailyCooldown") + freeChestCooldownMili - System.currentTimeMillis());
+            cooldownTime = (int)(member.getLong("dailyCooldown") + dailyCooldownMili - System.currentTimeMillis());
         } else if(type.equalsIgnoreCase("chaseCooldown")){
-            cooldownTime = (int)(member.getLong("chaseCooldown") + freeChestCooldownMili - System.currentTimeMillis());
+            cooldownTime = (int)(member.getLong("chaseCooldown") + chaseCooldownMili - System.currentTimeMillis());
         }
         //if(cooldownTime < 0)
             //cooldownTime = 0;
