@@ -45,11 +45,12 @@ public class Daily extends ListenerAdapter {
                     eb.clear();
                 });
             } else {
-               int date = ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown") / 24 / 60 / 60 / 1000;
-               String phrase = "Your daily cooldown is not ready.\nTry again in:\n" + date + " Days, ";
-                phrase += (date / 60 / 60 / 1000) + " Hours, ";
-                phrase += (date / 60 / 1000) + " minutes and ";
-                phrase += (date / 1000) + " seconds. ";
+               int date = ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown");
+               String phrase = "Your daily cooldown is not ready.\nTry again in:\n"
+                + (date / 24 / 60 / 60 / 1000) + " Days, "
+                +(date / 60 / 60 / 1000) + " Hours, "
+                + (date / 60 / 1000) + " minutes and "
+                + (date / 1000) + " seconds. ";
                 eb.setDescription(phrase);
                 eb.setColor(color.errorRed);
                 eb.setTimestamp(Instant.now());
