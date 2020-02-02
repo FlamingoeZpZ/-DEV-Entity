@@ -1,5 +1,6 @@
 package dev.dbdh.Discord.Utilities;
 
+import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -23,7 +24,9 @@ public class Database {
     public static MongoCollection<Document> getCollection(String collection) {
         return db.getCollection(collection);
     }
-
+    public static DBCollection Collection(String collection) {
+        return db.getc;
+    }
     public static void close() {
         client.close();
     }

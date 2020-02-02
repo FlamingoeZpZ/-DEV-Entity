@@ -1,6 +1,8 @@
 package dev.dbdh.Discord.Listeners.Economy;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.client.MongoCollection;
 import dev.dbdh.Discord.Utilities.Color;
 import dev.dbdh.Discord.Utilities.Data;
@@ -24,6 +26,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
         Data data = new Data();
         EmbedBuilder eb = new EmbedBuilder();
         RoleCheck rc = new RoleCheck();
+        Database db = new Database();
         if(args[0].equalsIgnoreCase("I_CRAVE_DATA_PLEASE_FEED_ME_DATA") && rc.isDeveloper(event)){
             Long unixTime = System.currentTimeMillis();
             Database.connect();
@@ -32,18 +35,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
             for(Member member : event.getGuild().getMembers()) { // For each member in the servers members
                 if (!member.getUser().isBot()) {
                 count++;
-                boolean test;
-                try{
-                    test = members.countDocuments(eq("memberID", member.getId())) > 0;
-                    String p = (test)?"true":"false"; // The amount of documents is 0.
-                    //event.getChannel().sendMessage(p).queue();
-                    //test = !members.find(eq("memberID", member.getId())).first().isEmpty();// will always be true or break
-                    event.getChannel().sendMessage(member.getId()).queue();
-                }
-                catch (Exception e){
-                    test = true;
-                }
-                if (!test) {
+                if (!members.find().first().containsValue(member.getUser().getId())) {
                         Document items = new Document(
                                 new BasicDBObject("ACE_IN_THE_HOLETheHole", 0)
                                 .append("PHARMACY", 0)
