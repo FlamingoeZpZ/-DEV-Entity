@@ -9,6 +9,8 @@ import net.dv8tion.jda.api.events.user.update.UserUpdateNameEvent;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.time.Instant;
+
 import static com.mongodb.client.model.Filters.eq;
 
 public class EconomyUtilities {
@@ -210,19 +212,20 @@ public class EconomyUtilities {
         members.deleteOne(member);
         db.close();
     }
-
-    public long getCooldown(GuildMessageReceivedEvent event, String memberID, String type){
+    public int getCooldown(GuildMessageReceivedEvent event, String memberID, String type){
         Database.connect();
-        long cooldownTime = 0;
+        int cooldownTime = 0;
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeChest")) {
-            cooldownTime = member.getLong("freeBasicCooldown") - System.currentTimeMillis();
+            cooldownTime = (int)(member.getLong("freeBasicCooldown") + freeChestCooldownMili - System.currentTimeMillis());
         } else if(type.equalsIgnoreCase("daily")){
-            cooldownTime = member.getLong("dailyCooldown") - System.currentTimeMillis();
+            cooldownTime = (int)(member.getLong("dailyCooldown") + freeChestCooldownMili - System.currentTimeMillis());
         } else if(type.equalsIgnoreCase("chase")){
-            cooldownTime = member.getLong("chaseCooldown") - System.currentTimeMillis();
+            cooldownTime = (int)(member.getLong("chaseCooldown") + freeChestCooldownMili - System.currentTimeMillis());
         }
+        if(cooldownTime < 0)
+            cooldownTime = 0;
         return cooldownTime;
     }
 
