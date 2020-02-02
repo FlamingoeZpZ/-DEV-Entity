@@ -76,13 +76,19 @@ public class Data {
     }
     public String intToTime(int milliInt){
         String phrase = "";
-        phrase += (milliInt % 60) + " seconds, ";
+        int s = milliInt;
         milliInt /= 60;
-        phrase += (milliInt % 60) + " minutes, ";
+        int m = milliInt;
         milliInt /= 60;
-        phrase += (milliInt % 24) + " hours and ";
+        int h = milliInt;
         milliInt /= 24;
-        phrase += milliInt + " days";
+        phrase += milliInt + " days, ";
+        phrase += (h % 24) + " hours, ";
+        phrase += (m % 60) + " minutes and ";
+        phrase += (s % 60) + " seconds";
+
+
+
         return phrase;
     }
 
