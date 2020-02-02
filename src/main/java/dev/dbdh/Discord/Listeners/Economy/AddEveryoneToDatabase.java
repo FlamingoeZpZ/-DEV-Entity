@@ -35,7 +35,14 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
             for(Member member : event.getGuild().getMembers()) { // For each member in the servers members
                 if (!member.getUser().isBot()) {
                 count++;
-                if (!members.find().first().containsValue(member.getUser().getId())) {
+                boolean test;
+                try{
+                    test = !members.find().first().containsValue(member.getUser().getId());
+                }
+                catch (Exception e){
+                    test = false;
+                }
+                if (test) {
                         Document items = new Document(
                                 new BasicDBObject("ACE_IN_THE_HOLETheHole", 0)
                                 .append("PHARMACY", 0)
