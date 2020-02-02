@@ -94,7 +94,6 @@ public class Data {
     public TextChannel getLogChannel(GuildMemberLeaveEvent event){
         return event.getGuild().getTextChannelById("635607577794969644");
     }
-
     public TextChannel getLogChannel(GuildMessageEmbedEvent event){
         return event.getGuild().getTextChannelById("635607577794969644");
     }

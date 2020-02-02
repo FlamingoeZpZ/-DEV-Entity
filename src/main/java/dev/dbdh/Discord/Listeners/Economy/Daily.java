@@ -40,9 +40,7 @@ public class Daily extends ListenerAdapter {
                 success.setFooter("Entity Daily Coin Allowance", data.getSelfAvatar(event));
 
                 event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                    data.getLogChannel(event).sendMessage(success.build()).queue((msg) -> {
-                        success.clear();
-                    });
+                    data.getLogChannel(event).sendMessage(success.build()).queue((msg) -> success.clear());
                     message.delete().queueAfter(15, TimeUnit.SECONDS);
                     eb.clear();
                 });

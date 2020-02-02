@@ -107,8 +107,8 @@ public class Chest extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(data.getPrefix() + "chest")) {
             if (event.getMessage().getChannel().equals(event.getGuild().getTextChannelById("635558839147823115"))) {
-                if (args.length < 2) {
-                    eb.setDescription("You need to specify what type of chest you would like to open. `Basic | Shiny | Legendary | Mythic`");
+                if (args.length != 2) {
+                    eb.setDescription("You need to specify what type of chest you would like to open.\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`");
                     eb.setColor(color.getRandomColor());
                     eb.setTimestamp(Instant.now());
                     eb.setFooter("Insufficient Arguments", data.getSelfAvatar(event));
@@ -117,7 +117,8 @@ public class Chest extends ListenerAdapter {
                         message.delete().queue();
                     });
                 }
-            } else if (args.length == 2) {
+            } else{
+                int chestCount = ecu.getItemCount(event.getMember().getUser().getId(), args[1]);
                 if (args[1].equalsIgnoreCase("basic")) {
                     items.addAll(Bad);
                     items.addAll(Useless);
@@ -129,6 +130,7 @@ public class Chest extends ListenerAdapter {
                     items.addAll(Event);
                     items.addAll(Epic);
                     items.addAll(Legendary);
+                    //chestCount = );
                     if (/*ecu.getChests(event, event.getMember().getUser().getId(), args[1]) < 1 || */true) {
                         if (/*ecu.isCooldownReady(event, event.getMember().getUser().getId(), "freeChest")*/ true) {
 
@@ -152,9 +154,10 @@ public class Chest extends ListenerAdapter {
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Chest not available", data.getSelfAvatar(event));
                         }
-                    } else if (ecu.getChests(event, event.getMember().getUser().getId(), args[1]) >= 1) {
+                    } else if (ecu.getItemCount(event.getMember().getUser().getId(), args[1]) >= 1) {
                         eb.setDescription("You opened a basic chest");
                     }
+
                 } else if (args[1].equalsIgnoreCase("glitch")|| RC.isDeveloper(event) || RC.isOwner(event)) {
                     items.addAll(Bad);
                     items.addAll(Useless);

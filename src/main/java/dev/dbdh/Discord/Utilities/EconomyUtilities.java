@@ -14,63 +14,61 @@ import static com.mongodb.client.model.Filters.eq;
 public class EconomyUtilities {
     Database db = new Database();
 
-    public final long freeChestCooldownMili = 300000; // 5 min
-    public final long dailyCooldownMili = 86400000; // 5 min
-    public final long chaseCooldownMili = 300000; // 5 min
+    private final long freeChestCooldownMili = 300000; // 5 min
+    private final long dailyCooldownMili = 86400000; // 5 min
+    private final long chaseCooldownMili = 300000; // 5 min
 
     public void addCoins(GuildMessageReceivedEvent event, String memberID, Integer coins) {
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer balance = Integer.parseInt(member.get("balance").toString());
+        int balance = Integer.parseInt(member.get("balance").toString());
         Bson newMemberDoc = new Document("balance", balance + coins);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
-        db.close();
+        Database.close();
     }
 
     public void addCoins(GuildMessageEmbedEvent event, String memberID, Integer coins) {
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer balance = Integer.parseInt(member.get("balance").toString());
+        int balance = Integer.parseInt(member.get("balance").toString());
         Bson newMemberDoc = new Document("balance", balance + coins);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
-        db.close();
+        Database.close();
     }
 
     public void removeCoins(GuildMessageReceivedEvent event, String memberID, Integer coins) {
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-
-        Integer balance = Integer.parseInt(member.get("balance").toString());
+        int balance = Integer.parseInt(member.get("balance").toString());
         Bson newMemberDoc = new Document("balance", balance - coins);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
-
-        db.close();
+        Database.close();
     }
 
     public Integer getCoins(GuildMessageReceivedEvent event, String memberID) {
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer balance = Integer.parseInt(member.get("balance").toString());
-        db.close();
+        int balance = Integer.parseInt(member.get("balance").toString());
+        Database.close();
         return balance;
     }
 
     public void addLevel(GuildMessageReceivedEvent event, String memberID, Integer level) {
-        db.connect();
+        Database.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer currentlevel = Integer.parseInt(member.get("level").toString());
+        int currentlevel = Integer.parseInt(member.get("level").toString());
         Bson newMemberDoc = new Document("level", currentlevel + level);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
-        db.close();
+        Database.close();
     }
 
     public void removeLevel(GuildMessageReceivedEvent event, String memberID, Integer level) {
@@ -123,35 +121,42 @@ public class EconomyUtilities {
         db.close();
         return currentXP;
     }
-
-    public void addChest(GuildMessageReceivedEvent event, String memberID, String type, Integer count) {
+    //Is used like a default
+    public void addItem(String memberID, String name){
+        addItem(memberID, name, 1);
+    }
+    public void addItem(String memberID, String name, int count) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer chestCount = member.getInteger("chestsOwned." + type);
-        Bson newMemberDoc = new Document("chestsOwned." + type, chestCount + count);
+        int chestCount = member.getInteger("items." + name);
+        Bson newMemberDoc = new Document("items." + name, chestCount + count);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
         db.close();
     }
+    //Is used like a default
+    public void removeItem(String memberID, String name){
+        removeItem(memberID, name, 1);
+    }
 
-    public void removeChest(GuildMessageReceivedEvent event, String memberID, String type, Integer count) {
+    public void removeItem(String memberID, String name, int count) {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer chestCount = member.getInteger("chestsOwned." + type);
-        Bson newMemberDoc = new Document("chestsOwned." + type, chestCount - count);
+        int chestCount = member.getInteger("items." + name);
+        Bson newMemberDoc = new Document("items." + name, chestCount - count);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
         db.close();
     }
-
-    public Integer getChests(GuildMessageReceivedEvent event, String memberID, String type) {
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+    //Accesses the Databases terms in the "Items" Array
+    public Integer getItemCount(String memberID, String itemName) {
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer chestCount = member.getInteger("chestsOwned." + type);
-        db.close();
+        Integer chestCount = member.getInteger("items." + itemName);
+        Database.close();
         return chestCount;
     }
 
@@ -207,51 +212,51 @@ public class EconomyUtilities {
     }
 
     public long getCooldown(GuildMessageReceivedEvent event, String memberID, String type){
-        db.connect();
+        Database.connect();
         long cooldownTime = 0;
-        MongoCollection<Document> members = db.getCollection("members");
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeChest")) {
-            cooldownTime = member.getLong("freeBasicCooldown") + freeChestCooldownMili;
+            cooldownTime = member.getLong("freeBasicCooldown") - System.currentTimeMillis();
         } else if(type.equalsIgnoreCase("daily")){
-            cooldownTime = member.getLong("dailyCooldown") + dailyCooldownMili;
+            cooldownTime = member.getLong("dailyCooldown") - System.currentTimeMillis();
         } else if(type.equalsIgnoreCase("chase")){
-            cooldownTime = member.getLong("chaseCooldown") + chaseCooldownMili;
+            cooldownTime = member.getLong("chaseCooldown") - System.currentTimeMillis();
         }
         return cooldownTime;
     }
 
     public boolean isCooldownReady(GuildMessageReceivedEvent event, String memberID, String type) {
 
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members"); // make this segment public as a .getDBMember;
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members"); // make this segment public as a .getDBMember;
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeChest")) { //It's getting the cooldown time > 0 and then adding free chest cooldown??? which is bigger than current time?
             if ((member.getLong("freeBasicCooldown") + freeChestCooldownMili) <= System.currentTimeMillis()) {
-                db.close();
+                Database.close();
                 return true;
             } else {
-                db.close();
+                Database.close();
                 return false;
             }
         } else if(type.equalsIgnoreCase("daily")){
             if((member.getLong("dailyCooldown") + dailyCooldownMili) <= System.currentTimeMillis()){
-                db.close();
+                Database.close();
                 return true;
             } else {
-                db.close();
+                Database.close();
                 return false;
             }
         } else if(type.equalsIgnoreCase("chase")){
             if((member.getLong("chaseCooldown") + chaseCooldownMili) <= System.currentTimeMillis()){
-                db.close();
+                Database.close();
                 return true;
             } else {
-                db.close();
+                Database.close();
                 return false;
             }
         }
-        db.close();
+        Database.close();
         return false;
     }
     public void resetCooldown(GuildMessageReceivedEvent event, String memberID, String type){
