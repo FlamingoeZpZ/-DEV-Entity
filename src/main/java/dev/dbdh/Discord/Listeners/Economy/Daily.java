@@ -39,24 +39,26 @@ public class Daily extends ListenerAdapter {
                 success.setTimestamp(Instant.now());
                 success.setFooter("Entity Daily Coin Allowance", data.getSelfAvatar(event));
 
-             //   event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                event.getChannel().sendMessage(eb.build()).queue(); //-> {
              //       data.getLogChannel(event).sendMessage(success.build()).queue((msg) -> success.clear());
             //        message.delete().queueAfter(15, TimeUnit.SECONDS);
             //       eb.clear();
             //    });
             } else {
-               int date = ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown");
-               String phrase = "Your daily cooldown is not ready.\nTry again in:\n"
-                + (date / 24 / 60 / 60 / 1000) + " Days, "
-                + ((date / 60 / 60 / 1000 ) - (date / 24 / 60 / 60 / 1000) ) + " Hours, "
-                + ((date / 60 / 1000) - (date / 60 / 60 / 1000 ))+ " minutes and "
-                + ((date / 1000) - (date / 60 / 1000))+ " seconds. ";
+               int date = ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown") / 1000;
+               String phrase = "Your daily cooldown is not ready. Try again in:\n" + date+ " seconds, ";
+                date /= 60;
+                phrase += date + " minutes, ";
+                date /= 60;
+                phrase += date+ " hours and ";
+                date /= 24;
+                phrase += date + " days. ";
                 eb.setDescription(phrase);
                 eb.setColor(color.errorRed);
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Daily Cooldown not ready", data.getSelfAvatar(event));
 
-               // event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                event.getChannel().sendMessage(eb.build()).queue(); //-> {
                //     message.delete().queueAfter(15, TimeUnit.SECONDS);
                //     eb.clear();
               //  });
