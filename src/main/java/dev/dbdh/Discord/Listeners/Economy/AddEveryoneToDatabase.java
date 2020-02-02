@@ -34,10 +34,14 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                 count++;
                 boolean test;
                 try{
-                    test = members.find(eq("memberID", member.getId())).first().containsValue("memberName"); // will always be true or break
+                    test = members.countDocuments(eq("memberID", member.getId())) > 0;
+                    String p = (test)?"true":"false";
+                    event.getChannel().sendMessage(p).queue();
+                    test = members.find(eq("memberID", member.getId())).first().isEmpty();// will always be true or break
+                    event.getChannel().sendMessage(member.getId()).queue();
                 }
                 catch (Exception e){
-                    test = false;
+                    test = true;
                 }
                 if (!test) {
                         Document items = new Document(
@@ -48,7 +52,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                                 .append("DEAD_HARD", 0 )
                                 .append("DECISIVE_STRIKE", 0)
                                 .append("WHISPERS" , 0)
-                                .append("BARBEQUE_AND_CHILI", 0)
+                                .append("BARBECUE_AND_CHILI", 0)
                                 .append("SLOPPY_BUTCHER", 0)
                                 .append("TENACITY", 0)
                                 .append("TINKERER", 0)
