@@ -34,10 +34,10 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                 count++;
                 boolean test;
                 try{
-                    test = members.find(eq("memberID", member.getId())).first().containsValue("memberName");
+                    test = members.find(eq("memberID", member.getId())).first().containsValue("memberName"); // will always be true or break
                 }
                 catch (Exception e){
-                    test = true;
+                    test = false;
                 }
                 if (!test) {
                         Document items = new Document(
