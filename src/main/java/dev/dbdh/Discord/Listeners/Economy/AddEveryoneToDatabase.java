@@ -35,9 +35,9 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                 boolean test;
                 try{
                     test = members.countDocuments(eq("memberID", member.getId())) > 0;
-                    String p = (test)?"true":"false";
-                    event.getChannel().sendMessage(p).queue();
-                    test = members.find(eq("memberID", member.getId())).first().isEmpty();// will always be true or break
+                    String p = (test)?"true":"false"; // The amount of documents is 0.
+                    //event.getChannel().sendMessage(p).queue();
+                    test = !members.find(eq("memberID", member.getId())).first().isEmpty();// will always be true or break
                     event.getChannel().sendMessage(member.getId()).queue();
                 }
                 catch (Exception e){
