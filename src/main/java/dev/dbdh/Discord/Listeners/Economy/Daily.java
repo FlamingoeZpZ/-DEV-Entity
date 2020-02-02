@@ -46,7 +46,7 @@ public class Daily extends ListenerAdapter {
             //    });
             } else {
                int time = ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown") / 1000;
-                eb.setDescription("Your daily cooldown is not ready. Try again in:\n" + data.intToTime(time));
+                eb.setDescription("Your daily cooldown is not ready. Try again in:\n" + time);
                 eb.setColor(color.errorRed);
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Daily Cooldown not ready", data.getSelfAvatar(event));

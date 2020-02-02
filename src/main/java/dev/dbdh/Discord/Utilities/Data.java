@@ -81,7 +81,7 @@ public class Data {
         milliInt /= 60;
         phrase += (milliInt % 60) + " minutes, ";
         milliInt /= 60;
-        phrase += (milliInt % 24) + " hours and";
+        phrase += (milliInt % 24) + " hours and ";
         milliInt /= 24;
         phrase += milliInt + " days";
         return phrase;
