@@ -24,9 +24,6 @@ public class Database {
     public static MongoCollection<Document> getCollection(String collection) {
         return db.getCollection(collection);
     }
-    public static DBCollection Collection(String collection) {
-        return db.getc;
-    }
     public static void close() {
         client.close();
     }
