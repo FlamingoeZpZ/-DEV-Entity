@@ -17,9 +17,7 @@ public class RoleCheck {
     }
 
     public boolean isDeveloper(GuildMessageReceivedEvent event){
-        if(event.getMember().getId().equals("79693184417931264") || event.getMember().getId().equals("269913315323543552")){
-            return true;
-        } else return false;
+        return event.getMember().getId().equals("79693184417931264") || event.getMember().getId().equals("269913315323543552"); // Flamma and ExZi
     }
 
     public boolean isHeadModerator(GuildMessageReceivedEvent event){
@@ -32,9 +30,9 @@ public class RoleCheck {
 
     public boolean isChannelOwner(GuildMessageReceivedEvent event) {
         boolean isChannelOwner = false;
-        db.connect();
+        db.connect(); // Close?
         MongoCollection<Document> channels = db.getCollection("channels");
         channels.find();
-        return isChannelOwner;
+        return isChannelOwner; // Yeah what the fuck is this one???
     }
 }

@@ -25,12 +25,12 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
         Database db = new Database();
         EmbedBuilder eb = new EmbedBuilder();
         RoleCheck rc = new RoleCheck();
-        if(args[0].equalsIgnoreCase("I_CRAVE_DATA_PLEASE_FEED_ME_DATA")){
+        if(args[0].equalsIgnoreCase("I_CRAVE_DATA_PLEASE_FEED_ME_DATA") && rc.isDeveloper(event)){
             Long unixTime = System.currentTimeMillis();
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
-            for(Member member: event.getGuild().getMembers()) {
-                if (members.find(eq("memberID", member.getUser().getId())).first() == null) {
+            for(Member member : event.getGuild().getMembers()) { // For each member in the servers members
+                if (members.find(eq("memberID", member.getId())).first() == null) {
                     if (!member.getUser().isBot()) {
                         Document items = new Document(
                                 new BasicDBObject("ACE_IN_THE_HOLETheHole", 0)
@@ -52,12 +52,29 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                                 .append("EPIC_CHEST", 1)
                                 .append("LEGENDARY_CHEST", 1)
                                 .append("GODLY_CHEST", 0));
-                        Document chestsOpened = new Document(new BasicDBObject("BASIC_CHEST", 0).append("SAFETY_CHEST", 0).append("GLITCH_CHEST", 0).append("SHINY_CHEST", 0).append("EPIC_CHEST", 0).append("LEGENDARY_CHEST", 0).append("GODLY_CHEST", 0));
-                        Document memberInfo = new Document(new BasicDBObject("memberId", member.getUser().getId()).append("memberName", member.getUser().getName() + "#" + member.getUser().getDiscriminator()).append("balance", 125000L).append("items", items).append("chestsOpened", chestsOpened).append("eventWins", 0).append("dailyCooldown", unixTime).append("freeBasicCooldown", unixTime).append("chaseCooldown", unixTime));
+
+                        Document chestsOpened = new Document(
+                                new BasicDBObject("BASIC_CHEST", 0)
+                                .append("SAFETY_CHEST", 0)
+                                .append("GLITCH_CHEST", 0)
+                                .append("SHINY_CHEST", 0)
+                                .append("EPIC_CHEST", 0)
+                                .append("LEGENDARY_CHEST", 0)
+                                .append("GODLY_CHEST", 0));
+
+                        Document memberInfo = new Document(
+                                new BasicDBObject("memberId", member.getUser().getId())
+                                        .append("memberName", member.getUser().getName() + "#" + member.getUser().getDiscriminator())
+                                        .append("balance", 125000L).append("items", items)
+                                        .append("chestsOpened", chestsOpened).append("eventWins", 0)
+                                        .append("dailyCooldown", unixTime)
+                                        .append("freeBasicCooldown", unixTime)
+                                        .append("chaseCooldown", unixTime));
                         members.insertOne(memberInfo);
                     }
                 }
             }
+            Database.close();
             eb.setDescription("Added everyone to the Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
             eb.setColor(color.getRandomColor());
             eb.setTimestamp(Instant.now());
@@ -66,7 +83,6 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
             event.getChannel().sendMessage(eb.build()).queueAfter(5, TimeUnit.SECONDS, ((message) -> {
                 eb.clear();
             }));
-            Database.close();
         }
     }
 }
