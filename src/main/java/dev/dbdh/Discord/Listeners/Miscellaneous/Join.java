@@ -3,6 +3,7 @@ package dev.dbdh.Discord.Listeners.Miscellaneous;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
+import dev.dbdh.Discord.Listeners.Moderation.RoleAdd;
 import dev.dbdh.Discord.Utilities.Color;
 import dev.dbdh.Discord.Utilities.Counter;
 import dev.dbdh.Discord.Utilities.Data;
@@ -22,8 +23,8 @@ public class Join extends ListenerAdapter {
         Counter counter = new Counter();
         Color color = new Color();
         Data data = new Data();
-        Database db = new Database();
         EmbedBuilder eb = new EmbedBuilder();
+        EmbedBuilder privateEB = new EmbedBuilder();
 
         String[] messages = {
                 "[member] just joined the server - glhf!",
@@ -55,6 +56,16 @@ public class Join extends ListenerAdapter {
         };
 
         if (!event.getMember().getUser().isBot()) {
+            event.getGuild().addRoleToMember(event.getMember(), event.getGuild().getRoleById("543233340749250560")).queue();
+            privateEB.setTitle("Welcome to: " + event.getGuild().getName() + "!");
+            privateEB.setColor(Color.forestGreen);
+            privateEB.setThumbnail(event.getMember().getUser().getEffectiveAvatarUrl());
+            privateEB.setDescription("We hope you enjoy your stay here, " + event.getMember().getNickname()
+                    + "!\n I will be your tour guide, I am a custom coded bot designed by, " + event.getGuild().getMemberById("79693184417931264").getNickname() +  " and " + event.getGuild().getMemberById("235502382358724611").getNickname() + "!\nIf you want to assign roles, see " + event.getGuild().getTextChannelById("638558586645118997").getAsMention() + "\n If you want to start looking for someone to play, simply @LookingtoPlay(console) or do !~match (console) Examples: @lookingtoplayPC or !~match PC\nIf You're interested in developing a JDA (Java Discord API) bot of your own, DM one of my developers!\n If you want to learn more about what I can do, type " + Data.getPrefix() +"help in either your DM's or any chat.\nIf you need help feel free to contact an admin!");
+            privateEB.setImage(event.getGuild().getIconUrl());
+            privateEB.setFooter("If you have any issues with the server, please let one of the senior admins or higher and we will investigate immediately!", data.getSelfAvatar(event) );
+            privateEB.setTimestamp(Instant.now());
+            event.getUser().openPrivateChannel().complete().sendMessage(privateEB.build()).queue((message) -> privateEB.clear());
             Long unixTime = System.currentTimeMillis();
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
