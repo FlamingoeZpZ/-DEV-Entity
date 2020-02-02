@@ -22,7 +22,6 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         Color color = new Color();
         Data data = new Data();
-        Database db = new Database();
         EmbedBuilder eb = new EmbedBuilder();
         RoleCheck rc = new RoleCheck();
         if(args[0].equalsIgnoreCase("I_CRAVE_DATA_PLEASE_FEED_ME_DATA") && rc.isDeveloper(event)){
@@ -31,9 +30,16 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
             MongoCollection<Document> members = Database.getCollection("members");
             int count = 0;
             for(Member member : event.getGuild().getMembers()) { // For each member in the servers members
+                if (!member.getUser().isBot()) {
                 count++;
-                if (members.find(eq("memberID", member.getId())).first() == null) {
-                    if (!member.getUser().isBot()) {
+                boolean test;
+                try{
+                    test = members.find(eq("memberID", member.getId())).first().isEmpty();
+                }
+                catch (Exception e){
+                    test = false;
+                }
+                if (test) {
                         Document items = new Document(
                                 new BasicDBObject("ACE_IN_THE_HOLETheHole", 0)
                                 .append("PHARMACY", 0)
