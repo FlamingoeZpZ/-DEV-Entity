@@ -43,35 +43,35 @@ public class Data {
         return i;
     }
 
-    public TextChannel getJoinChannel(GuildMemberJoinEvent event){
+    public static TextChannel getJoinChannel(GuildMemberJoinEvent event){
         return event.getGuild().getTextChannelById("640005609760227371");
     }
 
-    public String getSelfAvatar(GuildMemberJoinEvent event){
+    public static String getSelfAvatar(GuildMemberJoinEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
 
-    public String getSelfAvatar(GuildMemberLeaveEvent event){
+    public static String getSelfAvatar(GuildMemberLeaveEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
 
-    public String getSelfAvatar(GuildMessageReceivedEvent event){
+    public static String getSelfAvatar(GuildMessageReceivedEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
 
-    public String getSelfAvatar(UserUpdateNameEvent event){
+    public static String getSelfAvatar(UserUpdateNameEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
 
-    public String getSelfAvatar(GuildMessageReactionAddEvent event){
+    public static String getSelfAvatar(GuildMessageReactionAddEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
 
-    public String getSelfAvatar(GuildMessageReactionRemoveEvent event){
+    public static String getSelfAvatar(GuildMessageReactionRemoveEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
 
-    public String getSelfAvatar(GuildMessageEmbedEvent event){
+    public static String getSelfAvatar(GuildMessageEmbedEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
     public String intToTime(int milliInt){
@@ -95,26 +95,28 @@ public class Data {
         return phrase;
     }
 
-    public String getSelfName(GuildMemberJoinEvent event){
+    public static String getSelfName(GuildMemberJoinEvent event){
         return event.getJDA().getSelfUser().getName();
     }
-
-    public String getGuildName(GuildMemberJoinEvent event){
+    public static String getSelfName(GuildMessageReceivedEvent event){
+        return event.getJDA().getSelfUser().getName();
+    }
+    public static String getGuildName(GuildMemberJoinEvent event){
         return event.getGuild().getName();
     }
 
-    public TextChannel getLogChannel(GuildMessageReceivedEvent event){
+    public static TextChannel getLogChannel(GuildMessageReceivedEvent event){
         return event.getGuild().getTextChannelById("635607577794969644");
     }
 
-    public TextChannel getLogChannel(GuildMemberJoinEvent event){
+    public static TextChannel getLogChannel(GuildMemberJoinEvent event){
         return event.getGuild().getTextChannelById("635607577794969644");
     }
 
-    public TextChannel getLogChannel(GuildMemberLeaveEvent event){
+    public static TextChannel getLogChannel(GuildMemberLeaveEvent event){
         return event.getGuild().getTextChannelById("635607577794969644");
     }
-    public TextChannel getLogChannel(GuildMessageEmbedEvent event){
+    public static TextChannel getLogChannel(GuildMessageEmbedEvent event){
         return event.getGuild().getTextChannelById("635607577794969644");
     }
 }

@@ -17,12 +17,11 @@ public class Daily extends ListenerAdapter {
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
-        Color color = new Color();
         Data data = new Data();
         EconomyUtilities ecu = new EconomyUtilities();
         EmbedBuilder eb = new EmbedBuilder();
         EmbedBuilder success = new EmbedBuilder();
-        if (args[0].equalsIgnoreCase(data.getPrefix() + "daily")) {
+        if (args[0].equalsIgnoreCase(Data.getPrefix() + "daily")) {
             if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "daily")) {
                 ecu.resetCooldown(event, event.getMember().getUser().getId(), "daily");
                 int upper = 1000;
@@ -30,14 +29,14 @@ public class Daily extends ListenerAdapter {
                 int coins = (int) (Math.random() * (upper - lower)) + lower;
                 ecu.addCoins(event, event.getMember().getUser().getId(), coins);
                 eb.setDescription("You opened your daily and got " + coins + " coins!");
-                eb.setColor(color.successGreen);
+                eb.setColor(Color.successGreen);
                 eb.setTimestamp(Instant.now());
-                eb.setFooter("Entity Daily Coins", data.getSelfAvatar(event));
+                eb.setFooter("Entity Daily Coins", Data.getSelfAvatar(event));
 
                 success.setDescription(event.getAuthor().getAsMention() + " has claimed their daily coins allowance and received " + coins + " coins");
-                success.setColor(color.successGreen);
+                success.setColor(Color.successGreen);
                 success.setTimestamp(Instant.now());
-                success.setFooter("Entity Daily Coin Allowance", data.getSelfAvatar(event));
+                success.setFooter("Entity Daily Coin Allowance", Data.getSelfAvatar(event));
 
                 event.getChannel().sendMessage(eb.build()).queue(); //-> {
              //       data.getLogChannel(event).sendMessage(success.build()).queue((msg) -> success.clear());
@@ -45,11 +44,11 @@ public class Daily extends ListenerAdapter {
             //       eb.clear();
             //    });
             } else {
-               int time = ecu.getCooldown(event, event.getMember().getUser().getId(), "dailyCooldown") / 1000;
+               int time = ecu.getCooldown(event.getMember().getUser().getId(), "dailyCooldown") / 1000;
                 eb.setDescription("Your daily cooldown is not ready. Try again in:\n" + data.intToTime(time));
-                eb.setColor(color.errorRed);
+                eb.setColor(Color.errorRed);
                 eb.setTimestamp(Instant.now());
-                eb.setFooter("Entity Daily Cooldown not ready", data.getSelfAvatar(event));
+                eb.setFooter("Entity Daily Cooldown not ready", Data.getSelfAvatar(event));
 
                 event.getChannel().sendMessage(eb.build()).queue(); //-> {
                //     message.delete().queueAfter(15, TimeUnit.SECONDS);

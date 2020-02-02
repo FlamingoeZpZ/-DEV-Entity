@@ -29,7 +29,9 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
             Long unixTime = System.currentTimeMillis();
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
+            int count = 0;
             for(Member member : event.getGuild().getMembers()) { // For each member in the servers members
+                count++;
                 if (members.find(eq("memberID", member.getId())).first() == null) {
                     if (!member.getUser().isBot()) {
                         Document items = new Document(
@@ -75,7 +77,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                 }
             }
             Database.close();
-            eb.setDescription("Added everyone to the Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
+            eb.setDescription("Added " + count + " members to the Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
             eb.setColor(color.getRandomColor());
             eb.setTimestamp(Instant.now());
             eb.setFooter("Entity Data Harvester", data.getSelfAvatar(event));

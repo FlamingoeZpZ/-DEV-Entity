@@ -1,18 +1,19 @@
 package dev.dbdh.Discord.Listeners.Fun.ChestGame;
 
-import dev.dbdh.Discord.Utilities.Color;
-import dev.dbdh.Discord.Utilities.Data;
-import dev.dbdh.Discord.Utilities.EconomyUtilities;
-import dev.dbdh.Discord.Utilities.RoleCheck;
+import com.mongodb.client.MongoCollection;
+import dev.dbdh.Discord.Utilities.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.bson.Document;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class Chest extends ListenerAdapter {
 
@@ -106,37 +107,32 @@ public class Chest extends ListenerAdapter {
         Legendary.add(new Item("Handsome Jack's Mask?", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/a/a3/FulliconItems_allHallowsEveLunchbox.png", TYPE_LEGENDARY, RARITY_LEGENDARY, 0));
 
         if (args[0].equalsIgnoreCase(data.getPrefix() + "chest")) {
-            if (event.getMessage().getChannel().equals(event.getGuild().getTextChannelById("635558839147823115"))) {
-                if (args.length != 2) {
-                    eb.setDescription("You need to specify what type of chest you would like to open.\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`");
-                    eb.setColor(color.getRandomColor());
-                    eb.setTimestamp(Instant.now());
-                    eb.setFooter("Insufficient Arguments", data.getSelfAvatar(event));
+            Database.connect();
+            if(ecu.isMemberInDB(event.getMember().getId())) {
+                if (event.getMessage().getChannel().equals(event.getGuild().getTextChannelById("632350945891581992"))) {
+                    if (args.length > 3) {
+                        eb.setDescription("You need to be more specific these are the possible chests\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameter] (Optional Parameter) !~chest [chestname] (amount defaults to 1)\n for a bio of each chest, do !~shop and find your chests ID\n" +
+                                "chests owned:\n" +
+                                "Basic Chests: " + ecu.getItemCount(event.getMember().getId(), "BASIC_CHEST") + " You may claim 1 for free every 5 minutes.\n" +
+                                "Safety Chests: " + ecu.getItemCount(event.getMember().getId(), "SAFETY_CHEST") + "\n" +
+                                "Glitch Chests: " + ecu.getItemCount(event.getMember().getId(), "GLITCH_CHEST") + "\n" +
+                                "Shiny Chests: " + ecu.getItemCount(event.getMember().getId(), "SHINY_CHEST") + "\n" +
+                                "Epic Chests: " + ecu.getItemCount(event.getMember().getId(), "EPIC_CHEST") + "\n" +
+                                "Legendary Chests: " + ecu.getItemCount(event.getMember().getId(), "LEGENDARY_CHEST") + "\n" +
+                                "Godly Chests: " + ecu.getItemCount(event.getMember().getId(), "GODLY_CHEST"));
 
-                    event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                        message.delete().queue();
-                    });
-                }
-            } else{
-                int chestCount = ecu.getItemCount(event.getMember().getUser().getId(), args[1]);
-                if (args[1].equalsIgnoreCase("basic")) {
-                    items.addAll(Bad);
-                    items.addAll(Useless);
-                    items.addAll(Common);
-                    items.addAll(UnCommon);
-                    items.addAll(Rare);
-                    items.addAll(VeryRare);
-                    items.addAll(UltraRare);
-                    items.addAll(Event);
-                    items.addAll(Epic);
-                    items.addAll(Legendary);
-                    //chestCount = );
-                    if (/*ecu.getChests(event, event.getMember().getUser().getId(), args[1]) < 1 || */true) {
-                        if (/*ecu.isCooldownReady(event, event.getMember().getUser().getId(), "freeChest")*/ true) {
+                        eb.setColor(Color.errorRed);
+                        eb.setTimestamp(Instant.now());
+                        eb.setFooter("Insufficient Arguments -- Chest Game", data.getSelfAvatar(event));
 
-                            eb.setDescription("You didn't have a basic chest available but your cooldown has ran out so here is a free chest");
-                            eb.setTimestamp(Instant.now());
-                            eb.setFooter("Entity Free Chest | Free Basic Chest every 5 minutes", data.getSelfAvatar(event));
+                    } else {
+                        int chestCount;
+                        if(args.length == 1)
+                            chestCount = ecu.getItemCount(event.getMember().getUser().getId(), "basic");
+                        else
+                            chestCount = ecu.getItemCount(event.getMember().getUser().getId(), args[1]); // The amount of chests the person has
+
+                        if (args[1].equalsIgnoreCase("basic")) {
                             items.addAll(Bad);
                             items.addAll(Useless);
                             items.addAll(Common);
@@ -147,51 +143,68 @@ public class Chest extends ListenerAdapter {
                             items.addAll(Event);
                             items.addAll(Epic);
                             items.addAll(Legendary);
-                            openChest(event, eb, items);
-                        } else {
-                            eb.setDescription("You don't have a basic chest available and your cooldown is not ready yet. But you can buy chests in the shop");
-                            eb.setColor(color.getRandomColor());
-                            eb.setTimestamp(Instant.now());
-                            eb.setFooter("Chest not available", data.getSelfAvatar(event));
-                        }
-                    } else if (ecu.getItemCount(event.getMember().getUser().getId(), args[1]) >= 1) {
-                        eb.setDescription("You opened a basic chest");
-                    }
+                            if (chestCount == 0) {
+                                if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "freeChest")) {
+                                    eb.setDescription("You didn't have a basic chest available but your cooldown has ran out so here is a free chest");
+                                    openChest(event, eb, items);
+                                } else {
+                                    eb.setDescription("You don't have a basic chest available and your cooldown is not ready yet.\nPlease wait: " + ecu.getCooldown(event.getMember().getId(), "freeBasicCooldown") + " or you can buy chests in the shop (!~shop)");
+                                    eb.setColor(color.getRandomColor());
+                                    eb.setTimestamp(Instant.now());
+                                    eb.setFooter("Chest not available", Data.getSelfAvatar(event));
+                                }
+                            } else if (ecu.getItemCount(event.getMember().getUser().getId(), args[1]) >= 1) {
+                                eb.setTimestamp(Instant.now());
+                                eb.setDescription("You opened a basic chest");
+                                eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes !~chest or !~chest basic", Data.getSelfAvatar(event));
+                            }
 
-                } else if (args[1].equalsIgnoreCase("glitch")|| RC.isDeveloper(event) || RC.isOwner(event)) {
-                    items.addAll(Bad);
-                    items.addAll(Useless);
-                    items.addAll(Common);
-                    items.addAll(UnCommon);
-                    items.addAll(Rare);
-                    items.addAll(VeryRare);
-                    items.addAll(UltraRare);
-                    items.addAll(Event);
-                    items.addAll(Epic);
-                    openChest(event, eb, items);
-                } else if (args[1].equalsIgnoreCase("shiny")|| RC.isDeveloper(event) || RC.isOwner(event)) {
-                    items.addAll(Bad);
-                    items.addAll(Useless);
-                    items.addAll(Common);
-                    items.addAll(UnCommon);
-                    items.addAll(Rare);
-                    items.addAll(VeryRare);
-                    items.addAll(UltraRare);
-                    items.addAll(Event);
-                    items.addAll(Epic);
-                     isShiny = true;
-                    openChest(event, eb, items);
-                } else if (args[1].equalsIgnoreCase("epic")|| RC.isDeveloper(event) || RC.isOwner(event)) {
-                    items.addAll(Event);
-                    items.addAll(Epic);
-                    items.addAll(Legendary);
-                    openChest(event, eb, items);
-                } else if (args[1].equalsIgnoreCase("legendary")|| RC.isDeveloper(event) || RC.isOwner(event)) {
-                    items.addAll(Epic);
-                    items.addAll(Legendary);
-                    openChest(event, eb, items);
+                        } else if (args[1].equalsIgnoreCase("glitch") || RC.isDeveloper(event) || RC.isOwner(event)) {
+                            items.addAll(Bad);
+                            items.addAll(Useless);
+                            items.addAll(Common);
+                            items.addAll(UnCommon);
+                            items.addAll(Rare);
+                            items.addAll(VeryRare);
+                            items.addAll(UltraRare);
+                            items.addAll(Event);
+                            items.addAll(Epic);
+                            openChest(event, eb, items);
+                        } else if (args[1].equalsIgnoreCase("shiny") || RC.isDeveloper(event) || RC.isOwner(event)) {
+                            items.addAll(Bad);
+                            items.addAll(Useless);
+                            items.addAll(Common);
+                            items.addAll(UnCommon);
+                            items.addAll(Rare);
+                            items.addAll(VeryRare);
+                            items.addAll(UltraRare);
+                            items.addAll(Event);
+                            items.addAll(Epic);
+                            isShiny = true;
+                            openChest(event, eb, items);
+                        } else if (args[1].equalsIgnoreCase("epic") || RC.isDeveloper(event) || RC.isOwner(event)) {
+                            items.addAll(Event);
+                            items.addAll(Epic);
+                            items.addAll(Legendary);
+                            openChest(event, eb, items);
+                        } else if (args[1].equalsIgnoreCase("legendary") || RC.isDeveloper(event) || RC.isOwner(event)) {
+                            items.addAll(Epic);
+                            items.addAll(Legendary);
+                            openChest(event, eb, items);
+                        }
+                    }
                 }
             }
+            else
+                {
+                eb.setTitle("UH OH! DATABASE ERROR!");
+                eb.setDescription("There was an error and we could not find you in our data base!\n We have now added you to the database... Sorry for the inconvenience! Please take this meme as compensation...");
+                eb.setColor(Color.errorRed);
+                eb.setImage("https://us.v-cdn.net/6030815/uploads/editor/n5/xf83dvvsxoh5.png");
+                eb.setFooter("Please don't kill us... Love " + Data.getSelfName(event), Data.getSelfAvatar(event));
+            }
+            Database.close();
+            event.getChannel().sendMessage(eb.build()).queue();
         }
     }
 

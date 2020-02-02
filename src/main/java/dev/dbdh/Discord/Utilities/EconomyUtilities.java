@@ -1,6 +1,7 @@
 package dev.dbdh.Discord.Utilities;
 
 import com.mongodb.client.MongoCollection;
+import dev.dbdh.Discord.Listeners.Fun.ChestGame.Chest;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageEmbedEvent;
@@ -19,6 +20,8 @@ public class EconomyUtilities {
     private final long freeChestCooldownMili = 300000; // 5 min
     private final long dailyCooldownMili = 86400000; // 5 min
     private final long chaseCooldownMili = 300000; // 5 min
+    private final int PERKS = 0;
+    private final int CHESTS= 1;
 
     public void addCoins(GuildMessageReceivedEvent event, String memberID, Integer coins) {
         Database.connect();
@@ -153,11 +156,22 @@ public class EconomyUtilities {
         db.close();
     }
     //Accesses the Databases terms in the "Items" Array
-    public Integer getItemCount(String memberID, String itemName) {
+    public int getItemCount(String memberID, String itemName) {
+        return getItemCount(memberID,  itemName, 0);
+    }
+    public int getItemCount(String memberID, String itemName, int itemType) {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer chestCount = member.getInteger("items." + itemName);
+        int chestCount = 0;
+        switch (itemType) {
+            case PERKS:
+                 chestCount = member.getInteger("items." + itemName.toUpperCase());
+                break;
+            case CHESTS:
+                 chestCount = member.getInteger("items." + itemName.toUpperCase() + "_CHEST");
+                break;
+        }
         Database.close();
         return chestCount;
     }
@@ -212,7 +226,7 @@ public class EconomyUtilities {
         members.deleteOne(member);
         db.close();
     }
-    public int getCooldown(GuildMessageReceivedEvent event, String memberID, String type){
+    public int getCooldown(String memberID, String type){
         Database.connect();
         int cooldownTime = 0;
         MongoCollection<Document> members = Database.getCollection("members");
@@ -224,9 +238,21 @@ public class EconomyUtilities {
         } else if(type.equalsIgnoreCase("chaseCooldown")){
             cooldownTime = (int)(member.getLong("chaseCooldown") + chaseCooldownMili - System.currentTimeMillis());
         }
-        //if(cooldownTime < 0)
-            //cooldownTime = 0;
+        Database.close();
         return cooldownTime;
+    }
+
+    public boolean isMemberInDB(String memberID){
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
+        try {
+            members.find(eq("memberId", memberID)).first();
+        }
+        catch (Exception e){
+            return  false;
+        }
+        Database.close();
+        return true;
     }
 
     public boolean isCooldownReady(GuildMessageReceivedEvent event, String memberID, String type) {
