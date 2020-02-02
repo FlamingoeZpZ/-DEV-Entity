@@ -82,8 +82,11 @@ public class Data {
         milliInt /= 60;
         int h = milliInt;
         milliInt /= 24;
+        if(milliInt > 0)
         phrase += milliInt + " days, ";
+        if(h % 24 > 0)
         phrase += (h % 24) + " hours, ";
+        if(s % 60 > 0)
         phrase += (m % 60) + " minutes and ";
         phrase += (s % 60) + " seconds";
 
