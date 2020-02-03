@@ -32,17 +32,17 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
             int count = 0;
+            boolean test;
             for(Member member : event.getGuild().getMembers()) { // For each member in the servers members
                 if (!member.getUser().isBot()) {
                 count++;
-                boolean test;
                 try{
-                    test = !members.find().first().containsValue(member.getUser().getId());
+                    test = members.find().first().containsValue(member.getUser().getId());
                 }
                 catch (Exception e){
                     test = false;
                 }
-                if (test) {
+                if (!test) {
                         Document items = new Document(
                                 new BasicDBObject("ACE_IN_THE_HOLETheHole", 0)
                                 .append("PHARMACY", 0)
