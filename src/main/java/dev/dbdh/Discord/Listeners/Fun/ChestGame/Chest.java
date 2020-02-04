@@ -38,6 +38,7 @@ public class Chest extends ListenerAdapter {
     final int RARITY_EVENT = 6;
     final int RARITY_EPIC = 7;
     final int RARITY_LEGENDARY = 8;
+
     public static boolean isShiny;
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 
@@ -127,12 +128,13 @@ public class Chest extends ListenerAdapter {
 
                     } else {
                         int chestCount;
+                        //Segment determines which chest to retrieve, if only !~chest has been specified, it will ALWAYS return a basic chest
                         if(args.length == 1)
                             chestCount = ecu.getItemCount(event.getMember().getUser().getId(), "basic");
                         else
                             chestCount = ecu.getItemCount(event.getMember().getUser().getId(), args[1]); // The amount of chests the person has
 
-                        if (args[1].equalsIgnoreCase("basic")) {
+                        if (args[1].equalsIgnoreCase("basic") || RC.isDeveloper(event) || RC.isOwner(event)) {
                             items.addAll(Bad);
                             items.addAll(Useless);
                             items.addAll(Common);
@@ -144,22 +146,29 @@ public class Chest extends ListenerAdapter {
                             items.addAll(Epic);
                             items.addAll(Legendary);
                             if (chestCount == 0) {
+                                //Make the free chest a random chest between like 5 different options w/ exponential odds
                                 if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "freeChest")) {
-                                    eb.setDescription("You didn't have a basic chest available but your cooldown has ran out so here is a free chest");
-                                    openChest(event, eb, items);
+                                    eb.setDescription("You have redeemed your free chest!");
+                                    ecu.openChest(event, eb, items, true, "basic");
                                 } else {
                                     eb.setDescription("You don't have a basic chest available and your cooldown is not ready yet.\nPlease wait: " + ecu.getCooldown(event.getMember().getId(), "freeBasicCooldown") + " or you can buy chests in the shop (!~shop)");
-                                    eb.setColor(color.getRandomColor());
-                                    eb.setTimestamp(Instant.now());
-                                    eb.setFooter("Chest not available", Data.getSelfAvatar(event));
+                                    eb.setColor(Color.red);
                                 }
                             } else if (ecu.getItemCount(event.getMember().getUser().getId(), args[1]) >= 1) {
-                                eb.setTimestamp(Instant.now());
-                                eb.setDescription("You opened a basic chest");
-                                eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes !~chest or !~chest basic", Data.getSelfAvatar(event));
+                                ecu.openChest(event, eb, items, "basic");
+                                eb.setDescription("You opened a basic chest! Remaining amount: " + (chestCount - 1));
                             }
-
-                        } else if (args[1].equalsIgnoreCase("glitch") || RC.isDeveloper(event) || RC.isOwner(event)) {
+                        } else if (args[1].equalsIgnoreCase("safety") || RC.isDeveloper(event) || RC.isOwner(event)) {
+                            items.addAll(Common);
+                            items.addAll(UnCommon);
+                            items.addAll(Rare);
+                            items.addAll(VeryRare);
+                            items.addAll(UltraRare);
+                            items.addAll(Event);
+                            ecu.openChest(event, eb, items, "safety");
+                            eb.setDescription("You opened a safety chest! Remaining amount: " + (chestCount - 1));
+                        }
+                         else if (args[1].equalsIgnoreCase("glitch") || RC.isDeveloper(event) || RC.isOwner(event)) {
                             items.addAll(Bad);
                             items.addAll(Useless);
                             items.addAll(Common);
@@ -169,7 +178,8 @@ public class Chest extends ListenerAdapter {
                             items.addAll(UltraRare);
                             items.addAll(Event);
                             items.addAll(Epic);
-                            openChest(event, eb, items);
+                            ecu.openChest(event, eb, items, "glitch");
+                            eb.setDescription("You opened a glitch chest! Remaining amount: " + (chestCount - 1));
                         } else if (args[1].equalsIgnoreCase("shiny") || RC.isDeveloper(event) || RC.isOwner(event)) {
                             items.addAll(Bad);
                             items.addAll(Useless);
@@ -181,17 +191,27 @@ public class Chest extends ListenerAdapter {
                             items.addAll(Event);
                             items.addAll(Epic);
                             isShiny = true;
-                            openChest(event, eb, items);
+                            ecu.openChest(event, eb, items, "shiny");
+                            eb.setDescription("You opened a shiny chest! Remaining amount: " + (chestCount - 1));
                         } else if (args[1].equalsIgnoreCase("epic") || RC.isDeveloper(event) || RC.isOwner(event)) {
                             items.addAll(Event);
                             items.addAll(Epic);
                             items.addAll(Legendary);
-                            openChest(event, eb, items);
+                            ecu.openChest(event, eb, items, "epic");
+                            eb.setDescription("You opened an epic chest! Remaining amount: " + (chestCount - 1));
                         } else if (args[1].equalsIgnoreCase("legendary") || RC.isDeveloper(event) || RC.isOwner(event)) {
                             items.addAll(Epic);
                             items.addAll(Legendary);
-                            openChest(event, eb, items);
+                            ecu.openChest(event, eb, items, "legendary");
+                            eb.setDescription("You opened a legendary chest! Remaining amount: " + (chestCount - 1));
                         }
+                    else if (args[1].equalsIgnoreCase("godly") || RC.isDeveloper(event) || RC.isOwner(event)) {
+                        items.addAll(Legendary);
+                        ecu.openChest(event, eb, items, "godly");
+                        eb.setDescription("You opened a godly chest! Remaining amount: " + (chestCount - 1));
+                    }
+                        eb.setTimestamp(Instant.now());
+                        eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes !~chest or !~chest basic", Data.getSelfAvatar(event));
                     }
                 }
             }
@@ -208,64 +228,4 @@ public class Chest extends ListenerAdapter {
         }
     }
 
-    public static void openChest(GuildMessageReceivedEvent event, EmbedBuilder eb, List<Item> items) {
-        List<Item> sortedItems = new ArrayList<>();
-        Color c = new Color();
-        boolean ItemFound;
-        int pos;
-        int GennedNum;
-        int maxRange = 1;
-        int minRange = 0;
-        int count;
-        //sorts the items
-        for (Item item : items) {
-            if (item.posOrNeg) {
-                maxRange += item.drawChance;
-            } else {
-                minRange += item.drawChance;
-            }
-            if (!sortedItems.isEmpty()) { // If the list is not empty
-                ItemFound = false;
-                pos = 0;
-                for (Item sI : sortedItems) {
-                    if (item.drawChance < sI.drawChance) {
-                        ItemFound = true;
-                        break;
-                    } // If it's smaller we break at the index and add it
-                    else if (item.drawChance > sortedItems.get(sortedItems.size() - 1).drawChance) { // if it's bigger than the last index, we skip all the steps
-                        break;
-                    }
-                    pos++;
-                }
-                if (ItemFound) sortedItems.add(pos, item);
-                else sortedItems.add(item);
-            } else {
-                sortedItems.add(item);
-            }
-        }
-        GennedNum = rng.nextInt(maxRange - minRange) + minRange;
-        if(!isShiny)
-            isShiny = GennedNum == rng.nextInt(maxRange);
-        count = minRange;
-        //Gets the range and spits out a random number
-        for (Item sortedItem : sortedItems) {
-            count += Math.abs(sortedItem.drawChance); // 9 + 8 + 4 + 6 + 11 + 12
-            if (count >= GennedNum) { // -17 33
-                eb.setColor(c.deepRed);
-                if(isShiny && sortedItem.posOrNeg)
-                {
-                    eb.setColor(c.darkGreen);
-                    sortedItem.goldGain *=2;
-                    sortedItem.xpGain *= 2;
-                    eb.appendDescription("\n\n***" + event.getAuthor().getAsMention() + " FOUND " + sortedItem.rarityString + "SHINY" + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP***");
-                }
-                if(sortedItem.posOrNeg)
-                eb.setColor(c.darkGreen);
-                eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
-                eb.setImage(sortedItem.URL);
-                event.getChannel().sendMessage(eb.build()).queue();
-                break;
-            }
-        }
-    }
 }

@@ -76,7 +76,10 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                         Document memberInfo = new Document(
                                 new BasicDBObject("memberId", member.getUser().getId())
                                         .append("memberName", member.getUser().getName() + "#" + member.getUser().getDiscriminator())
-                                        .append("balance", 125000L).append("items", items)
+                                        .append("level", 1)
+                                        .append("balance", 125000L)
+                                        .append("experience", 0L)
+                                        .append("items", items)
                                         .append("chestsOpened", chestsOpened).append("eventWins", 0)
                                         .append("dailyCooldown", unixTime)
                                         .append("freeBasicCooldown", unixTime)

@@ -12,8 +12,8 @@ public class Item extends Chest{
     public int xpGain;
     public String type;
     public String rarityString;
-    private int tier;
-    boolean posOrNeg = true;
+    public int tier;
+    public boolean posOrNeg = true;
     Item(String name, String URL, int type, int rarity, int guaranteedPolish){
         Random rng = new Random();
         this.name = name;

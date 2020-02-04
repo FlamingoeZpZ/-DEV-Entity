@@ -2,6 +2,8 @@ package dev.dbdh.Discord.Utilities;
 
 import com.mongodb.client.MongoCollection;
 import dev.dbdh.Discord.Listeners.Fun.ChestGame.Chest;
+import dev.dbdh.Discord.Listeners.Fun.ChestGame.Item;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageEmbedEvent;
@@ -11,6 +13,9 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -96,34 +101,48 @@ public class EconomyUtilities {
         return currentLevel;
     }
 
-    public void addXP(GuildMessageReceivedEvent event, String memberID, Integer xp) {
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+    public void addXP(GuildMessageReceivedEvent event, String memberID, int xp) {
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer currentXP = Integer.parseInt(member.get("xp").toString());
-        Bson newMemberDoc = new Document("xp", currentXP + xp);
-        Bson updateMemberDoc = new Document("$set", newMemberDoc);
-        members.findOneAndUpdate(member, updateMemberDoc);
-        db.close();
+        int XPChange = Integer.parseInt(member.get("xp").toString()) + xp;
+        int currentLevel = getLevel(event, memberID);
+        int levelCost;
+        while (true) {
+            levelCost = (int)(Math.pow(currentLevel * 100, 2) * 1.8);
+            if (XPChange >= levelCost) {
+
+                XPChange -= levelCost;
+            }
+            else
+                break;
+        }
+        Bson newMemberLevelDoc = new Document("level", ++currentLevel);
+        Bson updateMemberLevelDoc = new Document("$set", newMemberLevelDoc);
+        members.findOneAndUpdate(member, updateMemberLevelDoc);
+        Bson newMemberXPDoc = new Document("xp", XPChange);
+        Bson updateMemberXPDoc = new Document("$set", newMemberXPDoc);
+        members.findOneAndUpdate(member, updateMemberXPDoc);
+        Database.close();
     }
 
     public void removeXP(GuildMessageReceivedEvent event, String memberID, Integer xp) {
-        db.connect();
+        Database.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer currentXP = Integer.parseInt(member.get("xp").toString());
+        int currentXP = Integer.parseInt(member.get("xp").toString());
         Bson newMemberDoc = new Document("xp", currentXP - xp);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
-        db.close();
+        Database.close();
     }
 
-    public Integer getXP(GuildMessageReceivedEvent event, String memberID) {
-        db.connect();
+    public int getXP(GuildMessageReceivedEvent event, String memberID) {
+        Database.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        Integer currentXP = Integer.parseInt(member.get("xp").toString());
-        db.close();
+        int currentXP = Integer.parseInt(member.get("xp").toString());
+        Database.close();
         return currentXP;
     }
     //Is used like a default
@@ -318,5 +337,92 @@ public class EconomyUtilities {
         Bson updateDoc = new Document("$set", newDoc);
         guild.findOneAndUpdate(guildDoc, updateDoc);
         db.close();
+    }
+    public void openChest(GuildMessageReceivedEvent event, EmbedBuilder eb, List<Item> items, String chestType){
+        openChest(event, eb, items, false, chestType, 10);
+    }
+    public void openChest(GuildMessageReceivedEvent event, EmbedBuilder eb, List<Item> items, boolean freeChest, String chestType, int repeatChance) {
+        Random rng = new Random();
+        List<Item> sortedItems = new ArrayList<>();
+        boolean isShiny;
+        boolean ItemFound;
+        int pos;
+        int GennedNum;
+        int maxRange = 1;
+        int minRange = 0;
+        int count;
+        //sorts the items
+        for (Item item : items) {
+            if (item.posOrNeg) {
+                maxRange += item.drawChance;
+            } else {
+                minRange += item.drawChance;
+            }
+            if (!sortedItems.isEmpty()) { // If the list is not empty
+                ItemFound = false;
+                pos = 0;
+                for (Item sI : sortedItems) {
+                    if (item.drawChance < sI.drawChance) {
+                        ItemFound = true;
+                        break;
+                    } // If it's smaller we break at the index and add it
+                    else if (item.drawChance > sortedItems.get(sortedItems.size() - 1).drawChance) { // if it's bigger than the last index, we skip all the steps
+                        break;
+                    }
+                    pos++;
+                }
+                if (ItemFound) sortedItems.add(pos, item);
+                else sortedItems.add(item);
+            } else {
+                sortedItems.add(item);
+            }
+        }
+        while (repeatChance < rng.nextInt(100)) {
+            repeatChance = (repeatChance / 2) - 5;
+        GennedNum = rng.nextInt(maxRange - minRange) + minRange;
+        isShiny = GennedNum == rng.nextInt(maxRange); // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
+        count = minRange; // sets the count to the bottom of the list
+        //Gets the range and spits out a random number
+        for (Item sortedItem : sortedItems) {
+            count += Math.abs(sortedItem.drawChance); // 9 + 8 + 4 + 6 + 11 + 12
+            if (count >= GennedNum) { // adds together all terms from least to most until count is bigger than genned num
+                eb.setColor(Color.deepRed);
+                if (isShiny) {
+                    eb.setColor(Color.gold);
+                    sortedItem.goldGain *= 4;
+                    sortedItem.xpGain *= 4;
+                    eb.appendDescription("\n\n***" + event.getAuthor().getAsMention() + " FOUND " + sortedItem.rarityString + "SHINY" + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP***");
+                } else if (sortedItem.posOrNeg) {
+                    eb.setColor(Color.darkGreen);
+                    eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
+                    eb.setImage(sortedItem.URL);
+                    event.getChannel().sendMessage(eb.build()).queue();
+                } else {
+                    eb.setColor(Color.deepRed);
+                    eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " lost " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
+                    eb.setImage(sortedItem.URL);
+                    event.getChannel().sendMessage(eb.build()).queue();
+                }
+                addXP(event, event.getMember().getId(), sortedItem.xpGain);
+                addCoins(event, event.getMember().getId(), sortedItem.goldGain);
+                break;
+            }
+        }
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
+        Document member = members.find(eq("memberId", event.getMember().getId())).first();
+        if (!freeChest) {
+            int chests = Integer.parseInt(member.get("items." + chestType.toUpperCase() + "_CHEST").toString());
+            Bson newMemberchestsDoc = new Document("items." + chestType.toUpperCase() + "_CHEST", --chests);
+            Bson updateMemberchestsDoc = new Document("$set", newMemberchestsDoc);
+            members.findOneAndUpdate(member, updateMemberchestsDoc);
+        }
+        freeChest = true;
+        int openedchests = Integer.parseInt(member.get("chestsOpened." + chestType.toUpperCase() + "_CHEST").toString());
+        Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", --openedchests);
+        Bson updateMemberopenedchestsDoc = new Document("$set", newMemberopenedchestsDoc);
+        members.findOneAndUpdate(member, updateMemberopenedchestsDoc);
+        Database.close();
+    }
     }
 }
