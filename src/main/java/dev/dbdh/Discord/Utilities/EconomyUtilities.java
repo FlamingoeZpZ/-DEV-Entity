@@ -181,7 +181,7 @@ public class EconomyUtilities {
     public int getItemCount(String memberID, String itemName, int itemType) {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
-        Document member = members.find(eq("memberId", memberID)).first();
+        Document member = members.find(eq("memberId", "235502382358724611")).first();
         int items = 0;
         switch (itemType) {
             case PERKS:
