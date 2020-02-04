@@ -338,13 +338,10 @@ public class EconomyUtilities {
         guild.findOneAndUpdate(guildDoc, updateDoc);
         db.close();
     }
-    public void openChest(GuildMessageReceivedEvent event, EmbedBuilder eb, List<Item> items, String chestType){
-        openChest(event, eb, items, false, chestType, 10);
-    }
-    public void openChest(GuildMessageReceivedEvent event, EmbedBuilder eb, List<Item> items, boolean freeChest, String chestType, int repeatChance) {
+    public void openChest(GuildMessageReceivedEvent event, EmbedBuilder eb, List<Item> items, boolean freeChest, String chestType, int repeatChance, boolean forceShiny) {
         Random rng = new Random();
         List<Item> sortedItems = new ArrayList<>();
-        boolean isShiny;
+        boolean isShiny = false;
         boolean ItemFound;
         int pos;
         int GennedNum;
@@ -380,6 +377,7 @@ public class EconomyUtilities {
         while (repeatChance < rng.nextInt(100)) {
             repeatChance = (repeatChance / 2) - 5;
         GennedNum = rng.nextInt(maxRange - minRange) + minRange;
+        if(forceShiny)
         isShiny = GennedNum == rng.nextInt(maxRange); // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
         count = minRange; // sets the count to the bottom of the list
         //Gets the range and spits out a random number
@@ -387,7 +385,7 @@ public class EconomyUtilities {
             count += Math.abs(sortedItem.drawChance); // 9 + 8 + 4 + 6 + 11 + 12
             if (count >= GennedNum) { // adds together all terms from least to most until count is bigger than genned num
                 eb.setColor(Color.deepRed);
-                if (isShiny) {
+                if (isShiny || forceShiny) {
                     eb.setColor(Color.gold);
                     sortedItem.goldGain *= 4;
                     sortedItem.xpGain *= 4;

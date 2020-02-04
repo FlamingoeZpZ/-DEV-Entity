@@ -149,13 +149,13 @@ public class Chest extends ListenerAdapter {
                                 //Make the free chest a random chest between like 5 different options w/ exponential odds
                                 if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "freeChest")) {
                                     eb.setDescription("You have redeemed your free chest!");
-                                    ecu.openChest(event, eb, items, true, "basic");
+                                    ecu.openChest(event, eb, items, true, "basic", 10, false);
                                 } else {
                                     eb.setDescription("You don't have a basic chest available and your cooldown is not ready yet.\nPlease wait: " + ecu.getCooldown(event.getMember().getId(), "freeBasicCooldown") + " or you can buy chests in the shop (!~shop)");
                                     eb.setColor(Color.red);
                                 }
                             } else if (ecu.getItemCount(event.getMember().getUser().getId(), args[1]) >= 1) {
-                                ecu.openChest(event, eb, items, "basic");
+                                ecu.openChest(event, eb, items, false,"basic", 10, false);
                                 eb.setDescription("You opened a basic chest! Remaining amount: " + (chestCount - 1));
                             }
                         } else if (args[1].equalsIgnoreCase("safety") || RC.isDeveloper(event) || RC.isOwner(event)) {
@@ -165,7 +165,7 @@ public class Chest extends ListenerAdapter {
                             items.addAll(VeryRare);
                             items.addAll(UltraRare);
                             items.addAll(Event);
-                            ecu.openChest(event, eb, items, "safety");
+                            ecu.openChest(event, eb, items,false, "safety", 10, false);
                             eb.setDescription("You opened a safety chest! Remaining amount: " + (chestCount - 1));
                         }
                          else if (args[1].equalsIgnoreCase("glitch") || RC.isDeveloper(event) || RC.isOwner(event)) {
@@ -178,7 +178,7 @@ public class Chest extends ListenerAdapter {
                             items.addAll(UltraRare);
                             items.addAll(Event);
                             items.addAll(Epic);
-                            ecu.openChest(event, eb, items, "glitch");
+                            ecu.openChest(event, eb, items, false, "glitch", 60, false);
                             eb.setDescription("You opened a glitch chest! Remaining amount: " + (chestCount - 1));
                         } else if (args[1].equalsIgnoreCase("shiny") || RC.isDeveloper(event) || RC.isOwner(event)) {
                             items.addAll(Bad);
@@ -190,24 +190,23 @@ public class Chest extends ListenerAdapter {
                             items.addAll(UltraRare);
                             items.addAll(Event);
                             items.addAll(Epic);
-                            isShiny = true;
-                            ecu.openChest(event, eb, items, "shiny");
+                            ecu.openChest(event, eb, items, false, "shiny", 20, true);
                             eb.setDescription("You opened a shiny chest! Remaining amount: " + (chestCount - 1));
                         } else if (args[1].equalsIgnoreCase("epic") || RC.isDeveloper(event) || RC.isOwner(event)) {
                             items.addAll(Event);
                             items.addAll(Epic);
                             items.addAll(Legendary);
-                            ecu.openChest(event, eb, items, "epic");
+                            ecu.openChest(event, eb, items, false, "epic", 15, false);
                             eb.setDescription("You opened an epic chest! Remaining amount: " + (chestCount - 1));
                         } else if (args[1].equalsIgnoreCase("legendary") || RC.isDeveloper(event) || RC.isOwner(event)) {
                             items.addAll(Epic);
                             items.addAll(Legendary);
-                            ecu.openChest(event, eb, items, "legendary");
+                            ecu.openChest(event, eb, items, false,"legendary", 30, false);
                             eb.setDescription("You opened a legendary chest! Remaining amount: " + (chestCount - 1));
                         }
                     else if (args[1].equalsIgnoreCase("godly") || RC.isDeveloper(event) || RC.isOwner(event)) {
                         items.addAll(Legendary);
-                        ecu.openChest(event, eb, items, "godly");
+                        ecu.openChest(event, eb, items, false, "godly", 40, true);
                         eb.setDescription("You opened a godly chest! Remaining amount: " + (chestCount - 1));
                     }
                         eb.setTimestamp(Instant.now());
