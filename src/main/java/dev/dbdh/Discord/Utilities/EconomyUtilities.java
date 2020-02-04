@@ -182,17 +182,19 @@ public class EconomyUtilities {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        int chestCount = 0;
+        int items = 0;
         switch (itemType) {
             case PERKS:
-                 chestCount = Integer.parseInt(member.get("items." + itemName.toUpperCase()).toString());
+                items = member.getInteger("items." + itemName.toUpperCase());
                 break;
             case CHESTS:
-                 chestCount = Integer.parseInt(member.get("items." + itemName.toUpperCase() + "_CHEST").toString());
+                itemName = itemName.toUpperCase();
+                System.out.println("items."+itemName+"_CHEST >>" + memberID);
+                items = member.getInteger("items." +  itemName + "_CHEST");
                 break;
         }
         Database.close();
-        return chestCount;
+        return items;
     }
 
     public void addItem(GuildMessageReceivedEvent event, String memberID, String perkName) {
