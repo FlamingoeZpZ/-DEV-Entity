@@ -185,10 +185,10 @@ public class EconomyUtilities {
         int chestCount = 0;
         switch (itemType) {
             case PERKS:
-                 chestCount = member.getInteger("items." + itemName.toUpperCase());
+                 chestCount = Integer.parseInt(member.get("items." + itemName.toUpperCase()).toString());
                 break;
             case CHESTS:
-                 chestCount = member.getInteger("items." + itemName.toUpperCase() + "_CHEST");
+                 chestCount = Integer.parseInt(member.get("items." + itemName.toUpperCase() + "_CHEST").toString());
                 break;
         }
         Database.close();
