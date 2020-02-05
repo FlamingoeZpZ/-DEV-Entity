@@ -189,7 +189,7 @@ public class EconomyUtilities {
                 break;
             case CHESTS:
                 System.out.println("items."+itemName+"_CHEST >>" + memberID);
-                items = member.getInteger(eq("items." + itemName.toUpperCase() + "_CHEST ");
+                items = member.getInteger(eq("items." + itemName.toUpperCase() + "_CHEST "));
                 break;
         }
         Database.close();
