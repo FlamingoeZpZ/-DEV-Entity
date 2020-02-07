@@ -181,15 +181,13 @@ public class EconomyUtilities {
     public int getItemCount(String memberID, String itemName, int itemType) {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
-        Document member = members.find(eq("memberId", memberID)).first();
         int items = 0;
         switch (itemType) {
             case PERKS:
-                items = Integer.parseInt(member.get("items." + itemName.toUpperCase() + "_CHEST ").toString());
+                items = Integer.parseInt(members.find(eq("members.items", itemName.toUpperCase())).toString());
                 break;
             case CHESTS:
-                System.out.println("items."+itemName+"_CHEST >>" + memberID);
-                items = Integer.parseInt(member.get("items." + itemName.toUpperCase() + "_CHEST ").toString());
+                items = Integer.parseInt(members.find(eq("members.items", itemName.toUpperCase() + "_CHEST")).toString());
                 break;
         }
         Database.close();
