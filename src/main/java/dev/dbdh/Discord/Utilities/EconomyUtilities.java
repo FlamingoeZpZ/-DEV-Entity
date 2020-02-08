@@ -186,10 +186,10 @@ public class EconomyUtilities {
         int items = 0;
         switch (itemType) {
             case PERKS:
-                items = itemsDoc.getDouble(itemName.toUpperCase()).intValue();
+                System.out.println(itemName.toUpperCase() + ", " +  memberID);
                 break;
             case CHESTS:
-                items = itemsDoc.getDouble(itemName.toUpperCase() + "_CHEST").intValue();
+                System.out.println(itemName.toUpperCase() + "_CHEST, " + memberID);
                 break;
         }
         Database.close();
