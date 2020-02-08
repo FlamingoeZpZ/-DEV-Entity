@@ -105,7 +105,7 @@ public class EconomyUtilities {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        int XPChange = (member.getInteger("freeBasicCooldown") + xp);
+        int XPChange = member.getInteger("experience") + xp;
         int currentLevel = getLevel(event, memberID);
         int levelCost;
         while (true) {
