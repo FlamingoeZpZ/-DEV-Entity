@@ -251,11 +251,14 @@ public class EconomyUtilities {
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeBasicCooldown")) {
-            cooldownTime = (int)(member.getLong("freeBasicCooldown") + freeChestCooldownMili - System.currentTimeMillis());
+            String test = "freeBasicCooldown";
+            cooldownTime = (int)(member.getLong(test) + freeChestCooldownMili - System.currentTimeMillis());
         } else if(type.equalsIgnoreCase("dailyCooldown")){
-            cooldownTime = (int)(member.getLong("dailyCooldown") + dailyCooldownMili - System.currentTimeMillis());
+            String test = "dailyCooldown";
+            cooldownTime = (int)(member.getLong(test) + dailyCooldownMili - System.currentTimeMillis());
         } else if(type.equalsIgnoreCase("chaseCooldown")){
-            cooldownTime = (int)(member.getLong("chaseCooldown") + chaseCooldownMili - System.currentTimeMillis());
+            String test = "chaseCooldown";
+            cooldownTime = (int)(member.getLong(test) + chaseCooldownMili - System.currentTimeMillis());
         }
         Database.close();
         return cooldownTime;
