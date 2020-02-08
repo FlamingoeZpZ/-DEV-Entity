@@ -23,7 +23,7 @@ public class RoleCheck {
     }
 
     public boolean isHeadModerator(GuildMessageReceivedEvent event){
-        return event.getMember().getRoles().contains(event.getGuild().getRoleById("608869497998278657"));
+        return event.getMember().getRoles().contains(event.getGuild().getRoleById("608869497998278657")) || event.getMember().getRoles().contains(event.getGuild().getRoleById("661056789886009347"));
     }
 
     public boolean isModerator(GuildMessageReceivedEvent event){

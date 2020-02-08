@@ -408,17 +408,19 @@ public class EconomyUtilities {
             }
         }
         Database.connect();
-        MongoCollection<Document> members = Database.getCollection("members");
-        Document member = members.find(eq("memberId", event.getMember().getId())).first();
+            MongoCollection<Document> members = Database.getCollection("members");
+            Document member = members.find(eq("memberId", event.getMember().getId())).first();
+            Document itemsDoc = (Document) member.get("items");
+            Document openedDoc = (Document) member.get("items");
         if (!freeChest) {
-            int chests = Integer.parseInt(member.get("items." + chestType.toUpperCase() + "_CHEST").toString());
+            int chests = itemsDoc.getInteger(chestType.toUpperCase() + "_CHEST");
             Bson newMemberchestsDoc = new Document("items." + chestType.toUpperCase() + "_CHEST", --chests);
             Bson updateMemberchestsDoc = new Document("$set", newMemberchestsDoc);
             members.findOneAndUpdate(member, updateMemberchestsDoc);
         }
         freeChest = true;
-        int openedchests = Integer.parseInt(member.get("chestsOpened." + chestType.toUpperCase() + "_CHEST").toString());
-        Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", --openedchests);
+        int openedchests = openedDoc.getInteger(chestType.toUpperCase() + "_CHEST");
+        Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", ++openedchests);
         Bson updateMemberopenedchestsDoc = new Document("$set", newMemberopenedchestsDoc);
         members.findOneAndUpdate(member, updateMemberopenedchestsDoc);
         Database.close();
