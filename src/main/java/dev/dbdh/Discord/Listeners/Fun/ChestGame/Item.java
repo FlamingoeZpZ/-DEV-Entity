@@ -9,7 +9,7 @@ public class Item extends Chest{
     public String tierString;
     public int drawChance;
     public int goldGain;
-    public int xpGain;
+    public long xpGain;
     public String type;
     public String rarityString;
     public int tier;

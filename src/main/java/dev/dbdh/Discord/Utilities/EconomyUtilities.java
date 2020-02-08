@@ -101,23 +101,23 @@ public class EconomyUtilities {
         return currentLevel;
     }
 
-    public void addXP(GuildMessageReceivedEvent event, String memberID, int xp) {
+    public void addXP(GuildMessageReceivedEvent event, String memberID, long xp) {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        int XPChange = member.getInteger("experience") + xp;
+        long XPChange = member.getLong("freeBasicCooldown") + xp;
         int currentLevel = getLevel(event, memberID);
         int levelCost;
         while (true) {
             levelCost = (int)(Math.pow(currentLevel * 100, 2) * 1.8);
             if (XPChange >= levelCost) {
-
+                ++currentLevel; //Adds level but in doing so, increases cost
                 XPChange -= levelCost;
             }
             else
                 break;
         }
-        Bson newMemberLevelDoc = new Document("level", ++currentLevel);
+        Bson newMemberLevelDoc = new Document("level", currentLevel);
         Bson updateMemberLevelDoc = new Document("$set", newMemberLevelDoc);
         members.findOneAndUpdate(member, updateMemberLevelDoc);
         Bson newMemberXPDoc = new Document("xp", XPChange);
