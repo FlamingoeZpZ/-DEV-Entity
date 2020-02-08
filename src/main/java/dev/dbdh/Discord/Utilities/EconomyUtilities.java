@@ -182,13 +182,14 @@ public class EconomyUtilities {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
+        Document itemsDoc = (Document) member.get("items");
         int items = 0;
         switch (itemType) {
             case PERKS:
-                items = member.getInteger("items." + itemName.toUpperCase());
+                items = itemsDoc.getDouble(itemName.toUpperCase()).intValue();
                 break;
             case CHESTS:
-                items = member.getInteger("items." + itemName.toUpperCase() + "_CHEST");
+                items = itemsDoc.getDouble(itemName.toUpperCase() + "_CHEST").intValue();
                 break;
         }
         Database.close();
@@ -251,14 +252,11 @@ public class EconomyUtilities {
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeBasicCooldown")) {
-            String test = "freeBasicCooldown";
-            cooldownTime = (int)(member.getLong(test) + freeChestCooldownMili - System.currentTimeMillis());
+            cooldownTime = (int)(member.getLong("freeBasicCooldown") + freeChestCooldownMili - System.currentTimeMillis());
         } else if(type.equalsIgnoreCase("dailyCooldown")){
-            String test = "dailyCooldown";
-            cooldownTime = (int)(member.getLong(test) + dailyCooldownMili - System.currentTimeMillis());
+            cooldownTime = (int)(member.getLong("dailyCooldown") + dailyCooldownMili - System.currentTimeMillis());
         } else if(type.equalsIgnoreCase("chaseCooldown")){
-            String test = "chaseCooldown";
-            cooldownTime = (int)(member.getLong(test) + chaseCooldownMili - System.currentTimeMillis());
+            cooldownTime = (int)(member.getLong("chaseCooldown") + chaseCooldownMili - System.currentTimeMillis());
         }
         Database.close();
         return cooldownTime;
