@@ -105,7 +105,7 @@ public class EconomyUtilities {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        long XPChange = member.getLong("freeBasicCooldown") + xp;
+        long XPChange = getXP(event, memberID);
         int currentLevel = getLevel(event, memberID);
         int levelCost;
         while (true) {
@@ -120,7 +120,7 @@ public class EconomyUtilities {
         Bson newMemberLevelDoc = new Document("level", currentLevel);
         Bson updateMemberLevelDoc = new Document("$set", newMemberLevelDoc);
         members.findOneAndUpdate(member, updateMemberLevelDoc);
-        Bson newMemberXPDoc = new Document("xp", XPChange);
+        Bson newMemberXPDoc = new Document("experience", XPChange);
         Bson updateMemberXPDoc = new Document("$set", newMemberXPDoc);
         members.findOneAndUpdate(member, updateMemberXPDoc);
         Database.close();
@@ -137,13 +137,13 @@ public class EconomyUtilities {
         Database.close();
     }
 
-    public int getXP(GuildMessageReceivedEvent event, String memberID) {
+    public long getXP(GuildMessageReceivedEvent event, String memberID) {
         Database.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        int currentXP = Integer.parseInt(member.get("xp").toString());
+        long XP = member.getLong("freeBasicCooldown");
         Database.close();
-        return currentXP;
+        return XP;
     }
     //Is used like a default
     public void addItem(String memberID, String name){
@@ -375,7 +375,8 @@ public class EconomyUtilities {
                 sortedItems.add(item);
             }
         }
-        while (repeatChance < rng.nextInt(100)) {
+        int randomNum =rng.nextInt(100);
+        while (repeatChance > randomNum) {
             repeatChance = (repeatChance / 2) - 5;
         GennedNum = rng.nextInt(maxRange - minRange) + minRange;
         if(forceShiny)
@@ -404,6 +405,7 @@ public class EconomyUtilities {
                 }
                 addXP(event, event.getMember().getId(), sortedItem.xpGain);
                 addCoins(event, event.getMember().getId(), sortedItem.goldGain);
+                eb.clear(); // Note: Spam embedding appending into multiple opens?
                 break;
             }
         }
@@ -424,6 +426,7 @@ public class EconomyUtilities {
         Bson updateMemberopenedchestsDoc = new Document("$set", newMemberopenedchestsDoc);
         members.findOneAndUpdate(member, updateMemberopenedchestsDoc);
         Database.close();
+        randomNum = rng.nextInt(100);
     }
     }
 }
