@@ -378,7 +378,7 @@ public class EconomyUtilities {
             }
         }
         int randomNum =rng.nextInt(100);
-        do{ 
+        do{
             repeatChance = (repeatChance / 2) - 5;
             GennedNum = rng.nextInt(maxRange - minRange) + minRange;
             if(forceShiny)
