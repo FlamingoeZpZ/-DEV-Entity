@@ -40,7 +40,7 @@ public class Ready extends ListenerAdapter {
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Long unixTime = System.currentTimeMillis();
-        eb.setDescription("The following members joined while the bot was down/broken. I have added them to the database.");
+        eb.setDescription("The following members joined while the bot was down/broken. I have added them to the database. If nothing is here then no members have joined while the bot was down.");
         eb.setColor(color.getRandomColor());
         eb.setTimestamp(Instant.now());
         eb.setFooter("Non-existant member", data.getSelfAvatar(event));
