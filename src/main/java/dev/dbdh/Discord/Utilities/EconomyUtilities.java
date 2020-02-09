@@ -408,23 +408,19 @@ public class EconomyUtilities {
                     }
                     addXP(event, event.getMember().getId(), sortedItem.xpGain);
                     addCoins(event, event.getMember().getId(), sortedItem.goldGain);
-                    eb.clear(); // Note: Spam embedding appending into multiple opens?
+                     // Note: Spam embedding appending into multiple opens?
                     break;
                 }
             }
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
             Document member = members.find(eq("memberId", event.getMember().getId())).first();
-            Document itemsDoc = (Document) member.get("items");
-            Document openedDoc = (Document) member.get("chestsOpened");
-            if (!freeChest) {
-                int chests = itemsDoc.getInteger(chestType.toUpperCase() + "_CHEST");
-                Bson newMemberchestsDoc = new Document("items." + chestType.toUpperCase() + "_CHEST", --chests);
-                Bson updateMemberchestsDoc = new Document("$set", newMemberchestsDoc);
-                members.findOneAndUpdate(member, updateMemberchestsDoc);
-            }
+            if (!freeChest)
+                removeChest(chestType, event);
             freeChest = true;
+            Document openedDoc = (Document) member.get("chestsOpened");
             int openedchests = openedDoc.getInteger(chestType.toUpperCase() + "_CHEST");
+            event.getChannel().sendMessage(openedchests + "< prv chests | Name >" + chestType.toUpperCase()).queue();
             Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", ++openedchests);
             Bson updateMemberopenedchestsDoc = new Document("$set", newMemberopenedchestsDoc);
             members.findOneAndUpdate(member, updateMemberopenedchestsDoc);
@@ -432,5 +428,19 @@ public class EconomyUtilities {
             randomNum = rng.nextInt(100);
         }
         while (repeatChance > randomNum);
+        eb.clear();
+    }
+    private int removeChest(String chestType, GuildMessageReceivedEvent event){
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
+        Document member = members.find(eq("memberId", event.getMember().getId())).first();
+        Document itemsDoc = (Document) member.get("items");
+        int chests = itemsDoc.getInteger(chestType.toUpperCase() + "_CHEST");
+        event.getChannel().sendMessage(chests + "< prv chests | Name >" + chestType.toUpperCase()).queue();
+        Bson newMemberchestsDoc = new Document("items." + chestType.toUpperCase() + "_CHEST", --chests);
+        Bson updateMemberchestsDoc = new Document("$set", newMemberchestsDoc);
+        members.findOneAndUpdate(member, updateMemberchestsDoc);
+        Database.close();
+        return chests;
     }
 }
