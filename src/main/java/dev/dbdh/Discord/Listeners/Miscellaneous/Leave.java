@@ -17,11 +17,11 @@ public class Leave extends ListenerAdapter {
         EconomyUtilities ecu = new EconomyUtilities();
         EmbedBuilder eb = new EmbedBuilder();
         if(!event.getMember().getUser().isBot()){
-            ecu.removeMemberFromDatabase(event, event.getMember().getUser().getId());
-            eb.setDescription("Removed " + event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator() + " from the database.");
+            //ecu.removeMemberFromDatabase(event, event.getMember().getUser().getId());
+            eb.setDescription(event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator() + " left the server.");
             eb.setColor(color.errorRed);
             eb.setTimestamp(Instant.now());
-            eb.setFooter("Member Left | Removed from database", data.getSelfAvatar(event));
+            eb.setFooter("Member Left", data.getSelfAvatar(event));
             data.getLogChannel(event).sendMessage(eb.build()).queue((message) ->{
                 eb.clear();
             });

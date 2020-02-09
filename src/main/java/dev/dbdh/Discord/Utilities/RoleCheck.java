@@ -9,7 +9,9 @@ public class RoleCheck {
     Database db = new Database();
 
     public boolean isOwner(GuildMessageReceivedEvent event){
-        return event.getMember().getRoles().contains(event.getGuild().getRoleById("552572692163985408"));
+        if(event.getMember().getRoles().contains(event.getGuild().getRoleById("552572692163985408")) || event.getMember().getRoles().contains(event.getGuild().getRoleById("661056789886009347"))){
+            return true;
+        } else return false;
     }
 
     public boolean isAdministrator(GuildMessageReceivedEvent event){
@@ -23,7 +25,10 @@ public class RoleCheck {
     }
 
     public boolean isHeadModerator(GuildMessageReceivedEvent event){
-        return event.getMember().getRoles().contains(event.getGuild().getRoleById("608869497998278657")) || event.getMember().getRoles().contains(event.getGuild().getRoleById("661056789886009347"));
+        if(event.getMember().getRoles().contains(event.getGuild().getRoleById("608869497998278657")) || event.getMember().getRoles().contains(event.getGuild().getRoleById("661057156950261771"))){
+            return true;
+        } else return false;
+
     }
 
     public boolean isModerator(GuildMessageReceivedEvent event){
@@ -31,7 +36,7 @@ public class RoleCheck {
     }
 
     public boolean isChannelOwner(GuildMessageReceivedEvent event) {
-        boolean isChannelOwner = false; // wat
+        boolean isChannelOwner = false; //
         db.connect();
         MongoCollection<Document> channels = db.getCollection("channels");
         channels.find();
