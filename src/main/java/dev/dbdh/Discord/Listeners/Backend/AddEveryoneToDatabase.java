@@ -99,17 +99,17 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                     eb.clear();
                 }));
                 Database.close();
-            }
-        }else {
-            eb.setDescription("You don't have the permissions to use this command");
-            eb.setColor(color.errorRed);
-            eb.setTimestamp(Instant.now());
-            eb.setFooter("Insufficient Permissions", data.getSelfAvatar(event));
+            }else {
+                eb.setDescription("You don't have the permissions to use this command");
+                eb.setColor(color.errorRed);
+                eb.setTimestamp(Instant.now());
+                eb.setFooter("Insufficient Permissions", data.getSelfAvatar(event));
 
-            event.getChannel().sendMessage(eb.build()).queue((message) -> {
-                eb.clear();
-                message.delete().queueAfter(15, TimeUnit.SECONDS);
-            });
+                event.getChannel().sendMessage(eb.build()).queue((message) -> {
+                    eb.clear();
+                    message.delete().queueAfter(15, TimeUnit.SECONDS);
+                });
+            }
         }
     }
 }
