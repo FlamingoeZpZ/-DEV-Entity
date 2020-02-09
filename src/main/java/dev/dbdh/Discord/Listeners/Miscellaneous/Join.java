@@ -61,7 +61,7 @@ public class Join extends ListenerAdapter {
             MongoCollection<Document> members = Database.getCollection("members");
             if (members.find(eq("memberID", event.getUser().getId())).first() == null) {
                 Document items = new Document(
-                        new BasicDBObject("ACE_IN_THE_HOLETheHole", 0)
+                        new BasicDBObject("ACE_IN_THE_HOLE", 0)
                                 .append("PHARMACY", 0)
                                 .append("PLUNDERS_INSTINCT", 0)
                                 .append("QUICK_AND_QUIET", 0)
