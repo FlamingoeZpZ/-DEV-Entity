@@ -76,6 +76,10 @@ public class Data {
     public static String getSelfAvatar(GuildMessageEmbedEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
+
+    public static String getSelfAvatar(ReadyEvent event) {
+        return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
+    }
     public String intToTime(long milliInt){
         String phrase = "";
         long s = milliInt;
