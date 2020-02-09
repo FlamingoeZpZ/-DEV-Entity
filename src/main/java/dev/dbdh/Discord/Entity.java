@@ -1,5 +1,8 @@
 package dev.dbdh.Discord;
 
+import dev.dbdh.Discord.Listeners.Backend.AddEveryoneToDatabase;
+import dev.dbdh.Discord.Listeners.Backend.NameUpdate;
+import dev.dbdh.Discord.Listeners.Backend.Nonexistant;
 import dev.dbdh.Discord.Listeners.Economy.*;
 import dev.dbdh.Discord.Listeners.Fun.*;
 import dev.dbdh.Discord.Listeners.Fun.ChestGame.Chest;
@@ -15,10 +18,6 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import javax.security.auth.login.LoginException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.net.UnknownHostException;
 
 public class Entity {
@@ -29,10 +28,13 @@ public class Entity {
         entity.setActivity(Activity.watching("Loading Bars"));
 
         entity.addEventListeners(
+                //Backend Listeners
+                new AddEveryoneToDatabase(),
+                new NameUpdate(),
+                new Nonexistant(),
                 // Economy Listeners
                 new buildShop(),
                 new Shop(),
-                new AddEveryoneToDatabase(),
                 new Balance(),
                 new Daily(),
                 new EditCoins(),
@@ -55,10 +57,8 @@ public class Entity {
 
                 //Misc Listeners
                 //new Censor(),
-                new DBCompare(),
                 new Join(),
                 new Leave(),
-                new NameUpdate(),
                 new Ready(),
                 new ReactionMessage(),
 
