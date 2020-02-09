@@ -132,14 +132,12 @@ public class Chest extends ListenerAdapter {
                         //Segment determines which chest to retrieve, if only !~chest has been specified, it will ALWAYS return a basic chest
                         if (args.length == 1){
                             chestCount = ecu.getItemCount(event.getMember().getUser().getId(), "basic", 1);
-                            item = "BASIC";
+                            item = "basic";
                         }
                         else {
                             item = args[1];
                             chestCount = ecu.getItemCount(event.getMember().getUser().getId(), args[1], 1); // The amount of chests the person has
                         }
-
-
                         if (item.equalsIgnoreCase("basic") || RC.isDeveloper(event) || RC.isOwner(event)) {
                             items.addAll(Bad);
                             items.addAll(Useless);

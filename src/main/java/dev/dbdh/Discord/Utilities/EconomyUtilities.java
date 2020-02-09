@@ -186,10 +186,10 @@ public class EconomyUtilities {
         int items = 0;
         switch (itemType) {
             case PERKS:
-                System.out.println(itemName.toUpperCase() + ", " +  memberID);
+                 items = itemsDoc.getInteger(itemName.toUpperCase());
                 break;
             case CHESTS:
-                System.out.println(itemName.toUpperCase() + "_CHEST, " + memberID);
+                 items = itemsDoc.getInteger(itemName.toUpperCase() + "_CHEST");
                 break;
         }
         Database.close();
@@ -415,7 +415,7 @@ public class EconomyUtilities {
             MongoCollection<Document> members = Database.getCollection("members");
             Document member = members.find(eq("memberId", event.getMember().getId())).first();
             Document itemsDoc = (Document) member.get("items");
-            Document openedDoc = (Document) member.get("items");
+            Document openedDoc = (Document) member.get("chestsOpened");
         if (!freeChest) {
             int chests = itemsDoc.getInteger(chestType.toUpperCase() + "_CHEST");
             Bson newMemberchestsDoc = new Document("items." + chestType.toUpperCase() + "_CHEST", --chests);
