@@ -43,6 +43,7 @@ public class Ready extends ListenerAdapter {
         eb.setDescription("The following members joined while the bot was down/broken. I have added them to the database.");
         eb.setColor(color.getRandomColor());
         eb.setTimestamp(Instant.now());
+        eb.setFooter("Non-existant member", data.getSelfAvatar(event));
         for(Member member: event.getJDA().getGuildById("537736395268161537").getMembers()){
             if(members.find(eq("memberId", member.getId())).first() == null){
                 Document items = new Document(new BasicDBObject("ACE_IN_THE_HOLETheHole", 0).append("PHARMACY", 0).append("PLUNDERS_INSTINCT", 0).append("QUICK_AND_QUIET", 0).append("DEAD_HARD", 0).append("DECISIVE_STRIKE", 0).append("WHISPERS" , 0).append("BARBEQUE_AND_CHILI", 0).append("SLOPPY_BUTCHER", 0).append("TENACITY", 0).append("TINKERER", 0).append("BORROWED_TIME", 0).append("BASIC_CHEST", 10).append("SAFETY_CHEST", 5).append("GLITCH_CHEST", 5).append("SHINY_CHEST", 1).append("EPIC_CHEST", 0).append("LEGENDARY_CHEST", 0).append("GODLY_CHEST", 0));
