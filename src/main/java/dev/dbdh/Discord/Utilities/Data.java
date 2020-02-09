@@ -74,13 +74,13 @@ public class Data {
     public static String getSelfAvatar(GuildMessageEmbedEvent event){
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
-    public String intToTime(int milliInt){
+    public String intToTime(long milliInt){
         String phrase = "";
-        int s = milliInt;
+        long s = milliInt;
         milliInt /= 60;
-        int m = milliInt;
+        long m = milliInt;
         milliInt /= 60;
-        int h = milliInt;
+        long h = milliInt;
         milliInt /= 24;
         if(milliInt > 0)
         phrase += milliInt + " days, ";
@@ -89,9 +89,6 @@ public class Data {
         if(s % 60 > 0)
         phrase += (m % 60) + " minutes and ";
         phrase += (s % 60) + " seconds";
-
-
-
         return phrase;
     }
 

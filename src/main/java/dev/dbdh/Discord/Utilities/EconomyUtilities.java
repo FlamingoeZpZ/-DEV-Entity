@@ -23,7 +23,7 @@ public class EconomyUtilities {
     Database db = new Database();
 
     private final long freeChestCooldownMili = 300000; // 5 min
-    private final long dailyCooldownMili = 86400000; // 5 min
+    private final long dailyCooldownMili = 86400000; // 1 day
     private final long chaseCooldownMili = 300000; // 5 min
     private final int PERKS = 0;
     private final int CHESTS= 1;
@@ -72,7 +72,7 @@ public class EconomyUtilities {
 
     public void addLevel(GuildMessageReceivedEvent event, String memberID, Integer level) {
         Database.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         int currentlevel = Integer.parseInt(member.get("level").toString());
         Bson newMemberDoc = new Document("level", currentlevel + level);
@@ -93,11 +93,11 @@ public class EconomyUtilities {
     }
 
     public Integer getLevel(GuildMessageReceivedEvent event, String memberID) {
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         Integer currentLevel = Integer.parseInt(member.get("level").toString());
-        db.close();
+        Database.close();
         return currentLevel;
     }
 
@@ -139,9 +139,9 @@ public class EconomyUtilities {
 
     public long getXP(GuildMessageReceivedEvent event, String memberID) {
         Database.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        long XP = member.getLong("freeBasicCooldown");
+        long XP = member.getLong("experience");
         Database.close();
         return XP;
     }
@@ -150,29 +150,29 @@ public class EconomyUtilities {
         addItem(memberID, name, 1);
     }
     public void addItem(String memberID, String name, int count) {
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         int chestCount = member.getInteger("items." + name);
         Bson newMemberDoc = new Document("items." + name, chestCount + count);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
-        db.close();
+        Database.close();
     }
     //Is used like a default
-    public void removeItem(String memberID, String name){
+    public void removeItem(String memberID, String name) {
         removeItem(memberID, name, 1);
     }
 
     public void removeItem(String memberID, String name, int count) {
-        db.connect();
+        Database.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         int chestCount = member.getInteger("items." + name);
         Bson newMemberDoc = new Document("items." + name, chestCount - count);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
-        db.close();
+        Database.close();
     }
     //Accesses the Databases terms in the "Items" Array
     public int getItemCount(String memberID, String itemName) {
@@ -246,19 +246,21 @@ public class EconomyUtilities {
         members.deleteOne(member);
         db.close();
     }
-    public int getCooldown(String memberID, String type){
+    public long getCooldown(String memberID, String type){
         Database.connect();
-        int cooldownTime = 0;
+        long cooldownTime = 0;
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeBasicCooldown")) {
-            cooldownTime = (int)(member.getLong("freeBasicCooldown") + freeChestCooldownMili - System.currentTimeMillis());
+            cooldownTime = member.getLong("freeBasicCooldown") + freeChestCooldownMili - System.currentTimeMillis();
         } else if(type.equalsIgnoreCase("dailyCooldown")){
-            cooldownTime = (int)(member.getLong("dailyCooldown") + dailyCooldownMili - System.currentTimeMillis());
+            cooldownTime = member.getLong("dailyCooldown") + dailyCooldownMili - System.currentTimeMillis();
         } else if(type.equalsIgnoreCase("chaseCooldown")){
-            cooldownTime = (int)(member.getLong("chaseCooldown") + chaseCooldownMili - System.currentTimeMillis());
+            cooldownTime = member.getLong("chaseCooldown") + chaseCooldownMili - System.currentTimeMillis();
         }
         Database.close();
+        if(cooldownTime < 0)
+            cooldownTime = 0;
         return cooldownTime;
     }
 

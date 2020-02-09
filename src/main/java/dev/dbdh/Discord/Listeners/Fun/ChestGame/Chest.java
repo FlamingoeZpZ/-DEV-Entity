@@ -157,7 +157,7 @@ public class Chest extends ListenerAdapter {
                                     eb.setDescription("You have redeemed your free chest!");
                                     ecu.openChest(event, eb, items, true, "basic", 10, false);
                                 } else {
-                                    eb.setDescription("You don't have a basic chest available and your cooldown is not ready yet.\nPlease wait: " + ecu.getCooldown(event.getMember().getId(), "freeBasicCooldown") + " or you can buy chests in the shop (!~shop)");
+                                    eb.setDescription("You don't have a basic chest available and your cooldown is not ready yet.\nPlease wait: " + data.intToTime(ecu.getCooldown(event.getMember().getId(), "freeBasicCooldown")) + " or you can buy chests in the shop: " + Data.getPrefix() + "shop)");
                                     eb.setColor(Color.red);
                                 }
                             } else{ //Assumed to always be true
