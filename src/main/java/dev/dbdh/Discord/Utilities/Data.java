@@ -1,8 +1,10 @@
 package dev.dbdh.Discord.Utilities;
 
 import com.mongodb.client.MongoCollection;
+import dev.dbdh.Discord.Listeners.Miscellaneous.Ready;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageEmbedEvent;
@@ -115,5 +117,9 @@ public class Data {
     }
     public static TextChannel getLogChannel(GuildMessageEmbedEvent event){
         return event.getGuild().getTextChannelById("635607577794969644");
+    }
+
+    public static TextChannel getLogChannel(ReadyEvent event){
+        return event.getJDA().getGuildById("537736395268161537").getTextChannelById("635607577794969644");
     }
 }
