@@ -112,15 +112,15 @@ public class Chest extends ListenerAdapter {
             if(ecu.isMemberInDB(event.getMember().getId())) {
                 if (event.getMessage().getChannel().equals(event.getGuild().getTextChannelById("632350945891581992"))) {
                     if (args.length > 3) {
-                        eb.setDescription("You need to be more specific these are the possible chests\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameter] (Optional Parameter) !~chest [chestname] (amount defaults to 1)\n for a bio of each chest, do !~shop and find your chests ID\n" +
-                                "chests owned:\n" +
-                                "Basic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "basic",1) + " You may claim 1 for free every 5 minutes.\n" +
-                                "Safety Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "safety",1) + "\n" +
-                                "Glitch Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "glitch",1) + "\n" +
-                                "Shiny Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "shiny",1) + "\n" +
-                                "Epic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "epic",1) + "\n" +
-                                "Legendary Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "legendary",1) + "\n" +
-                                "Godly Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "godly",1));
+                        eb.setDescription("**You need to be more specific. These are the possible chests with usage:**\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameters] (Optional Parameters)\n" + Data.getPrefix() + "chest [chestname] (amount defaults to 1)\n for a bio of each chest, do " + Data.getPrefix() + "shop and find your chests ID\n" +
+                                "chests owned:\n\n" +
+                                ">Basic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "basic**",1) + " (You may claim 1 for free every 5 minutes.)\n" +
+                                ">Safety Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "safety",1) + "\n" +
+                                ">Glitch Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "glitch",1) + "\n" +
+                                ">Shiny Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "shiny",1) + "\n" +
+                                ">Epic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "epic",1) + "\n" +
+                                ">Legendary Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "legendary",1) + "\n" +
+                                ">Godly Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "godly",1));
 
                         eb.setColor(Color.errorRed);
                         eb.setTimestamp(Instant.now());
@@ -138,6 +138,7 @@ public class Chest extends ListenerAdapter {
                             item = args[1];
                             chestCount = ecu.getItemCount(event.getMember().getUser().getId(), args[1], 1); // The amount of chests the person has
                         }
+                        event.getChannel().sendMessage(item).queue();
                         if (item.equalsIgnoreCase("basic") || RC.isDeveloper(event) || RC.isOwner(event)) {
                             items.addAll(Bad);
                             items.addAll(Useless);

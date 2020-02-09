@@ -110,6 +110,7 @@ public class EconomyUtilities {
         int levelCost;
         while (true) {
             levelCost = (int)(Math.pow(currentLevel * 100, 2) * 1.8);
+            event.getChannel().sendMessage(xp + " >= " + levelCost).queue();
             if (XPChange >= levelCost) {
                 ++currentLevel; //Adds level but in doing so, increases cost
                 XPChange -= levelCost;
