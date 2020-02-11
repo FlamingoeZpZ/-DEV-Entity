@@ -428,7 +428,7 @@ public class EconomyUtilities {
             freeChest = true;
             int openedchests = openedDoc.getInteger(chestType.toUpperCase() + "_CHEST");
             event.getChannel().sendMessage(openedchests + "< prv chests | Name >" + chestType.toUpperCase()).queue();
-            Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", ++openedchests);
+            Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", openedchests + 1);
             Bson memberOpenedDoc = new Document("$set", newMemberopenedchestsDoc);
             members.findOneAndUpdate(member, memberOpenedDoc);
             Database.close();
