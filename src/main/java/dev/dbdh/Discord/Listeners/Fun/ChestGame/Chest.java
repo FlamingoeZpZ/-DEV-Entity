@@ -229,6 +229,7 @@ public class Chest extends ListenerAdapter {
             }
             Database.close();
             event.getChannel().sendMessage(eb.build()).queue();
+            eb.clear();
         }
     }
 

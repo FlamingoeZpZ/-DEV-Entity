@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateNameEvent;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.BasicBSONList;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -379,11 +380,7 @@ public class EconomyUtilities {
             }
         }
         int randomNum =rng.nextInt(100);
-<<<<<<< HEAD
         do{ //WOW I actually used a DO_WHILE LOOP!!
-=======
-        do{
->>>>>>> b249d1629f08c2f98637db63c5df58ead598db91
             repeatChance = (repeatChance / 2) - 5;
             GennedNum = rng.nextInt(maxRange - minRange) + minRange;
             if(forceShiny)
@@ -412,57 +409,32 @@ public class EconomyUtilities {
                     }
                     addXP(event, event.getMember().getId(), sortedItem.xpGain);
                     addCoins(event, event.getMember().getId(), sortedItem.goldGain);
-<<<<<<< HEAD
-                    eb.clear(); // Note: Spam embedding appending into multiple opens?
-=======
-                     // Note: Spam embedding appending into multiple opens?
->>>>>>> b249d1629f08c2f98637db63c5df58ead598db91
+                    eb.clear();
                     break;
                 }
             }
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
             Document member = members.find(eq("memberId", event.getMember().getId())).first();
-            if (!freeChest)
-                removeChest(chestType, event);
-            freeChest = true;
             Document openedDoc = (Document) member.get("chestsOpened");
-<<<<<<< HEAD
+            Document itemsDoc = (Document) member.get("items");
+            BasicBSONList docToUpdate = new BasicBSONList();
             if (!freeChest) {
                 int chests = itemsDoc.getInteger(chestType.toUpperCase() + "_CHEST");
                 Bson newMemberchestsDoc = new Document("items." + chestType.toUpperCase() + "_CHEST", --chests);
-                Bson updateMemberchestsDoc = new Document("$set", newMemberchestsDoc);
-                members.findOneAndUpdate(member, updateMemberchestsDoc);
+                Bson memberChestDoc = new Document("$set", newMemberchestsDoc);
+                members.findOneAndUpdate(member, memberChestDoc);
             }
             freeChest = true;
             int openedchests = openedDoc.getInteger(chestType.toUpperCase() + "_CHEST");
-=======
-            int openedchests = openedDoc.getInteger(chestType.toUpperCase() + "_CHEST");
             event.getChannel().sendMessage(openedchests + "< prv chests | Name >" + chestType.toUpperCase()).queue();
->>>>>>> b249d1629f08c2f98637db63c5df58ead598db91
             Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", ++openedchests);
-            Bson updateMemberopenedchestsDoc = new Document("$set", newMemberopenedchestsDoc);
-            members.findOneAndUpdate(member, updateMemberopenedchestsDoc);
+            Bson memberOpenedDoc = new Document("$set", newMemberopenedchestsDoc);
+            members.findOneAndUpdate(member, memberOpenedDoc);
             Database.close();
             randomNum = rng.nextInt(100);
         }
         while (repeatChance > randomNum);
-<<<<<<< HEAD
-=======
-        eb.clear();
     }
-    private int removeChest(String chestType, GuildMessageReceivedEvent event){
-        Database.connect();
-        MongoCollection<Document> members = Database.getCollection("members");
-        Document member = members.find(eq("memberId", event.getMember().getId())).first();
-        Document itemsDoc = (Document) member.get("items");
-        int chests = itemsDoc.getInteger(chestType.toUpperCase() + "_CHEST");
-        event.getChannel().sendMessage(chests + "< prv chests | Name >" + chestType.toUpperCase()).queue();
-        Bson newMemberchestsDoc = new Document("items." + chestType.toUpperCase() + "_CHEST", --chests);
-        Bson updateMemberchestsDoc = new Document("$set", newMemberchestsDoc);
-        members.findOneAndUpdate(member, updateMemberchestsDoc);
-        Database.close();
-        return chests;
->>>>>>> b249d1629f08c2f98637db63c5df58ead598db91
-    }
+
 }
