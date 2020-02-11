@@ -380,10 +380,10 @@ public class EconomyUtilities {
             }
         }
         int randomNum =rng.nextInt(100);
-        do{ //WOW I actually used a DO_WHILE LOOP!!
+        do { //WOW I actually used a DO_WHILE LOOP!!
             repeatChance = (repeatChance / 2) - 5;
             GennedNum = rng.nextInt(maxRange - minRange) + minRange;
-            if(forceShiny)
+            if (forceShiny)
                 isShiny = GennedNum == rng.nextInt(maxRange); // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
             count = minRange; // sets the count to the bottom of the list
             //Gets the range and spits out a random number
@@ -424,15 +424,16 @@ public class EconomyUtilities {
                 Bson newMemberchestsDoc = new Document("items." + chestType.toUpperCase() + "_CHEST", --chests);
                 Bson memberChestDoc = new Document("$set", newMemberchestsDoc);
                 members.findOneAndUpdate(member, memberChestDoc);
+            } else {
+                freeChest = true;
+                int openedchests = openedDoc.getInteger(chestType.toUpperCase() + "_CHEST");
+                event.getChannel().sendMessage(openedchests + "< prv chests | Name >" + chestType.toUpperCase()).queue();
+                Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", openedchests + 1);
+                Bson memberOpenedDoc = new Document("$set", newMemberopenedchestsDoc);
+                members.findOneAndUpdate(member, memberOpenedDoc);
+                Database.close();
+                randomNum = rng.nextInt(100);
             }
-            freeChest = true;
-            int openedchests = openedDoc.getInteger(chestType.toUpperCase() + "_CHEST");
-            event.getChannel().sendMessage(openedchests + "< prv chests | Name >" + chestType.toUpperCase()).queue();
-            Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", openedchests + 1);
-            Bson memberOpenedDoc = new Document("$set", newMemberopenedchestsDoc);
-            members.findOneAndUpdate(member, memberOpenedDoc);
-            Database.close();
-            randomNum = rng.nextInt(100);
         }
         while (repeatChance > randomNum);
     }
