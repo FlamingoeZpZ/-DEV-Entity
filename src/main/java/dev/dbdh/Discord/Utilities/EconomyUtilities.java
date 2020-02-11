@@ -27,7 +27,7 @@ public class EconomyUtilities {
     private final long dailyCooldownMili = 86400000; // 1 day
     private final long chaseCooldownMili = 300000; // 5 min
     private final int PERKS = 0;
-    private final int CHESTS = 1;
+    private final int CHESTS= 1;
 
     public void addCoins(GuildMessageReceivedEvent event, String memberID, Integer coins) {
         Database.connect();
@@ -110,12 +110,13 @@ public class EconomyUtilities {
         int currentLevel = getLevel(event, memberID);
         int levelCost;
         while (true) {
-            levelCost = (int) (Math.pow(currentLevel * 100, 2) * 1.8);
+            levelCost = (int)(Math.pow(currentLevel * 100, 2) * 1.8);
             event.getChannel().sendMessage(xp + " >= " + levelCost).queue();
             if (XPChange >= levelCost) {
                 ++currentLevel; //Adds level but in doing so, increases cost
                 XPChange -= levelCost;
-            } else
+            }
+            else
                 break;
         }
         Bson newMemberLevelDoc = new Document("level", currentLevel);
@@ -146,12 +147,10 @@ public class EconomyUtilities {
         Database.close();
         return XP;
     }
-
     //Is used like a default
-    public void addItem(String memberID, String name) {
+    public void addItem(String memberID, String name){
         addItem(memberID, name, 1);
     }
-
     public void addItem(String memberID, String name, int count) {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
@@ -162,7 +161,6 @@ public class EconomyUtilities {
         members.findOneAndUpdate(member, updateMemberDoc);
         Database.close();
     }
-
     //Is used like a default
     public void removeItem(String memberID, String name) {
         removeItem(memberID, name, 1);
@@ -178,12 +176,10 @@ public class EconomyUtilities {
         members.findOneAndUpdate(member, updateMemberDoc);
         Database.close();
     }
-
     //Accesses the Databases terms in the "Items" Array
     public int getItemCount(String memberID, String itemName) {
-        return getItemCount(memberID, itemName, 0);
+        return getItemCount(memberID,  itemName, 0);
     }
-
     public int getItemCount(String memberID, String itemName, int itemType) {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
@@ -192,10 +188,10 @@ public class EconomyUtilities {
         int items = 0;
         switch (itemType) {
             case PERKS:
-                items = itemsDoc.getInteger(itemName.toUpperCase());
+                 items = itemsDoc.getInteger(itemName.toUpperCase());
                 break;
             case CHESTS:
-                items = itemsDoc.getInteger(itemName.toUpperCase() + "_CHEST");
+                 items = itemsDoc.getInteger(itemName.toUpperCase() + "_CHEST");
                 break;
         }
         Database.close();
@@ -252,32 +248,32 @@ public class EconomyUtilities {
         members.deleteOne(member);
         db.close();
     }
-
-    public long getCooldown(String memberID, String type) {
+    public long getCooldown(String memberID, String type){
         Database.connect();
         long cooldownTime = 0;
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        if (type.equalsIgnoreCase("freeBasicCooldown")) {
+        if(type.equalsIgnoreCase("freeBasicCooldown")) {
             cooldownTime = member.getLong("freeBasicCooldown") + freeChestCooldownMili - System.currentTimeMillis();
-        } else if (type.equalsIgnoreCase("dailyCooldown")) {
+        } else if(type.equalsIgnoreCase("dailyCooldown")){
             cooldownTime = member.getLong("dailyCooldown") + dailyCooldownMili - System.currentTimeMillis();
-        } else if (type.equalsIgnoreCase("chaseCooldown")) {
+        } else if(type.equalsIgnoreCase("chaseCooldown")){
             cooldownTime = member.getLong("chaseCooldown") + chaseCooldownMili - System.currentTimeMillis();
         }
         Database.close();
-        if (cooldownTime < 0)
+        if(cooldownTime < 0)
             cooldownTime = 0;
         return cooldownTime;
     }
 
-    public boolean isMemberInDB(String memberID) {
+    public boolean isMemberInDB(String memberID){
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
         try {
             members.find(eq("memberId", memberID)).first();
-        } catch (Exception e) {
-            return false;
+        }
+        catch (Exception e){
+            return  false;
         }
         Database.close();
         return true;
@@ -288,7 +284,7 @@ public class EconomyUtilities {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members"); // make this segment public as a .getDBMember;
         Document member = members.find(eq("memberId", memberID)).first();
-        if (type.equalsIgnoreCase("freeChest")) { //It's getting the cooldown time > 0 and then adding free chest cooldown??? which is bigger than current time?
+        if(type.equalsIgnoreCase("freeChest")) { //It's getting the cooldown time > 0 and then adding free chest cooldown??? which is bigger than current time?
             if ((member.getLong("freeBasicCooldown") + freeChestCooldownMili) <= System.currentTimeMillis()) {
                 Database.close();
                 return true;
@@ -296,16 +292,16 @@ public class EconomyUtilities {
                 Database.close();
                 return false;
             }
-        } else if (type.equalsIgnoreCase("daily")) {
-            if ((member.getLong("dailyCooldown") + dailyCooldownMili) <= System.currentTimeMillis()) {
+        } else if(type.equalsIgnoreCase("daily")){
+            if((member.getLong("dailyCooldown") + dailyCooldownMili) <= System.currentTimeMillis()){
                 Database.close();
                 return true;
             } else {
                 Database.close();
                 return false;
             }
-        } else if (type.equalsIgnoreCase("chase")) {
-            if ((member.getLong("chaseCooldown") + chaseCooldownMili) <= System.currentTimeMillis()) {
+        } else if(type.equalsIgnoreCase("chase")){
+            if((member.getLong("chaseCooldown") + chaseCooldownMili) <= System.currentTimeMillis()){
                 Database.close();
                 return true;
             } else {
@@ -316,22 +312,21 @@ public class EconomyUtilities {
         Database.close();
         return false;
     }
-
-    public void resetCooldown(GuildMessageReceivedEvent event, String memberID, String type) {
+    public void resetCooldown(GuildMessageReceivedEvent event, String memberID, String type){
         db.connect();
         MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        if (type.equalsIgnoreCase("freeChest")) {
+        if(type.equalsIgnoreCase("freeChest")){
             Bson newMemberDoc = new Document("freeBasicCooldown", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
-        } else if (type.equalsIgnoreCase("daily")) {
+        } else if(type.equalsIgnoreCase("daily")){
             Bson newMemberDoc = new Document("dailyCooldown", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
             db.close();
-        } else if (type.equalsIgnoreCase("chase")) {
+        } else if(type.equalsIgnoreCase("chase")){
             Bson newMemberDoc = new Document("chaseCooldown", System.currentTimeMillis());
             Bson updateMemberDoc = new Document("$set", newMemberDoc);
             members.findOneAndUpdate(member, updateMemberDoc);
@@ -339,7 +334,7 @@ public class EconomyUtilities {
         }
     }
 
-    public void setRoleAssignMessageID(Message message) {
+    public void setRoleAssignMessageID(Message message){
         db.connect();
         MongoCollection<Document> guild = db.getCollection("guild");
         Document guildDoc = guild.find().first();
@@ -348,7 +343,6 @@ public class EconomyUtilities {
         guild.findOneAndUpdate(guildDoc, updateDoc);
         db.close();
     }
-
     public void openChest(GuildMessageReceivedEvent event, EmbedBuilder eb, List<Item> items, boolean freeChest, String chestType, int repeatChance, boolean forceShiny) {
         Random rng = new Random();
         List<Item> sortedItems = new ArrayList<>();
@@ -385,11 +379,11 @@ public class EconomyUtilities {
                 sortedItems.add(item);
             }
         }
-        int randomNum = rng.nextInt(100);
-        do { //WOW I actually used a DO_WHILE LOOP!!
+        int randomNum =rng.nextInt(100);
+        do{ //WOW I actually used a DO_WHILE LOOP!!
             repeatChance = (repeatChance / 2) - 5;
             GennedNum = rng.nextInt(maxRange - minRange) + minRange;
-            if (forceShiny)
+            if(forceShiny)
                 isShiny = GennedNum == rng.nextInt(maxRange); // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
             count = minRange; // sets the count to the bottom of the list
             //Gets the range and spits out a random number
@@ -427,20 +421,18 @@ public class EconomyUtilities {
             BasicBSONList docToUpdate = new BasicBSONList();
             if (!freeChest) {
                 int chests = itemsDoc.getInteger(chestType.toUpperCase() + "_CHEST");
-                int openedchests = openedDoc.getInteger(chestType.toUpperCase() + "_CHEST");
-                Bson newMemberchestsDoc = new Document("items." + chestType.toUpperCase() + "_CHEST", --chests).append("chestsOpened." + chestType.toUpperCase() + "_CHEST", openedchests++);
+                Bson newMemberchestsDoc = new Document("items." + chestType.toUpperCase() + "_CHEST", --chests);
                 Bson memberChestDoc = new Document("$set", newMemberchestsDoc);
                 members.findOneAndUpdate(member, memberChestDoc);
-            }// else {
-//                freeChest = true;
-//                int openedchests = openedDoc.getInteger(chestType.toUpperCase() + "_CHEST");
-//                event.getChannel().sendMessage(openedchests + "< prv chests | Name >" + chestType.toUpperCase()).queue();
-//                Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", openedchests + 1);
-//                Bson memberOpenedDoc = new Document("$set", newMemberopenedchestsDoc);
-//                members.findOneAndUpdate(member, memberOpenedDoc);
-//                Database.close();
-//                randomNum = rng.nextInt(100);
-            //}
+            }
+            freeChest = true;
+            int openedchests = openedDoc.getInteger(chestType.toUpperCase() + "_CHEST");
+            event.getChannel().sendMessage(openedchests + "< prv chests | Name >" + chestType.toUpperCase()).queue();
+            Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", ++openedchests);
+            Bson memberOpenedDoc = new Document("$set", newMemberopenedchestsDoc);
+            members.findOneAndUpdate(member, memberOpenedDoc);
+            Database.close();
+            randomNum = rng.nextInt(100);
         }
         while (repeatChance > randomNum);
     }

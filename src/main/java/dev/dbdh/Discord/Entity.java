@@ -32,6 +32,7 @@ public class Entity {
                 new AddEveryoneToDatabase(),
                 new NameUpdate(),
                 new Nonexistant(),
+
                 // Economy Listeners
                 new buildShop(),
                 new Shop(),
