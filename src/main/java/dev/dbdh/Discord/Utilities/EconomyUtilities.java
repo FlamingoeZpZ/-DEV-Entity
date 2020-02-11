@@ -424,14 +424,15 @@ public class EconomyUtilities {
                 Bson newMemberchestsDoc = new Document("items." + chestType.toUpperCase() + "_CHEST", --chests);
                 Bson memberChestDoc = new Document("$set", newMemberchestsDoc);
                 members.findOneAndUpdate(member, memberChestDoc);
-            } else {
-                freeChest = true;
                 int openedchests = openedDoc.getInteger(chestType.toUpperCase() + "_CHEST");
                 event.getChannel().sendMessage(openedchests + "< prv chests | Name >" + chestType.toUpperCase()).queue();
                 Bson newMemberopenedchestsDoc = new Document("chestsOpened." + chestType.toUpperCase() + "_CHEST", openedchests + 1);
                 Bson memberOpenedDoc = new Document("$set", newMemberopenedchestsDoc);
                 members.findOneAndUpdate(member, memberOpenedDoc);
                 Database.close();
+            } else {
+                freeChest = true;
+
                 randomNum = rng.nextInt(100);
             }
         }
