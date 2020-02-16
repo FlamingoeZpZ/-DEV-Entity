@@ -15,7 +15,6 @@ public class SuccessfulBump extends ListenerAdapter {
 
     public void onGuildMessageEmbed(GuildMessageEmbedEvent event){
         Color color = new Color();
-        Data data = new Data();
         EconomyUtilities ecu = new EconomyUtilities();
         EmbedBuilder eb = new EmbedBuilder();
         if(event.getMessageEmbeds().get(0).toData().getString("description").contains("<@") && event.getMessageEmbeds().get(0).toData().getString("description").contains(">")){
@@ -24,16 +23,16 @@ public class SuccessfulBump extends ListenerAdapter {
 
             Member member = event.getGuild().getMembersByName(embedParts[0], true).get(0);
 
-            ecu.addCoins(event, member.getId(), 100);
+            ecu.editCoins(member.getId(), 100);
 
             eb.setDescription("Successfully gave " + member.getAsMention() + " 100 coins for bumping the server");
             eb.setColor(color.getRandomColor());
             eb.setTimestamp(Instant.now());
-            eb.setFooter("Entity Bumping Bribe", data.getSelfAvatar(event));
+            eb.setFooter("Entity Bumping Bribe", Data.getSelfAvatar(event));
 
             event.getChannel().sendMessage(eb.build()).queue((message) -> {
                 message.delete().queueAfter(15, TimeUnit.SECONDS);
-                data.getLogChannel(event).sendMessage(eb.build()).queue();
+                Data.getLogChannel(event).sendMessage(eb.build()).queue();
             });
 
         }

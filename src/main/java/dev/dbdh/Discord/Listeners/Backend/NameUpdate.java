@@ -20,7 +20,7 @@ public class NameUpdate extends ListenerAdapter {
         EmbedBuilder eb = new EmbedBuilder();
         if(!event.getUser().isBot()){
 
-            ecu.updateMemberOnDatabase(event, event.getUser().getId(), event.getNewName() + "#" + event.getUser().getDiscriminator());
+            ecu.updateMemberOnDatabase(event.getUser().getId(), event.getNewName() + "#" + event.getUser().getDiscriminator());
 
             eb.setDescription(event.getOldName() + "#" + event.getUser().getDiscriminator() + " has changed their name on Discord. \nNew Name: " + event.getNewName() + "#" + event.getUser().getDiscriminator() + "\n\nUpdating database entry.");
             eb.setColor(color.getRandomColor());

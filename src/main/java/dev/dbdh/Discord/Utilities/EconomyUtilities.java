@@ -21,7 +21,7 @@ import java.util.Random;
 import static com.mongodb.client.model.Filters.eq;
 
 public class EconomyUtilities {
-    Database db = new Database();
+    private Database db = new Database();
 
     private final long freeChestCooldownMili = 300000; // 5 min
     private final long dailyCooldownMili = 86400000; // 1 day

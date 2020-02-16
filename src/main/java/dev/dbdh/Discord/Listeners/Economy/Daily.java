@@ -22,12 +22,12 @@ public class Daily extends ListenerAdapter {
         EmbedBuilder eb = new EmbedBuilder();
         EmbedBuilder success = new EmbedBuilder();
         if (args[0].equalsIgnoreCase(Data.getPrefix() + "daily")) {
-            if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "daily")) {
+            if (ecu.isCooldownReady(event.getMember().getUser().getId(), "daily")) {
                 ecu.resetCooldown(event, event.getMember().getUser().getId(), "daily");
                 int upper = 1000;
                 int lower = 250;
                 int coins = (int) (Math.random() * (upper - lower)) + lower;
-                ecu.addCoins(event, event.getMember().getUser().getId(), coins);
+                ecu.editCoins(event.getMember().getUser().getId(), coins);
                 eb.setDescription("You opened your daily and got " + coins + " coins!");
                 eb.setColor(Color.successGreen);
                 eb.setTimestamp(Instant.now());
