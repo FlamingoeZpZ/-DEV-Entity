@@ -63,7 +63,7 @@ public class EconomyUtilities {
             int EditLevelTo = getLevel(memberID);
             int levelCost;
             while (true) {
-                levelCost = (int) (Math.pow((float)(160 * (EditLevelTo / 100)), 2)  * 5) * 10;
+                levelCost = (int) (Math.pow(160 * EditLevelTo, 2)  * 2000); // Equivalent to  (160 * (level / 100))^2 * 5 just without decimals
                 event.getChannel().sendMessage(XPChange + " ?= " + levelCost).queue();
                 if (XPChange >= levelCost) {
                     event.getChannel().sendMessage(XPChange + " >= " + levelCost).queue();
