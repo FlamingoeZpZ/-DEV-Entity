@@ -56,12 +56,13 @@ public class EconomyUtilities {
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         long XPChange = getXP(memberID);
+        event.getChannel().sendMessage(XPChange + " | " + xp).queue();
         if(xp > 0) { // Skips over this part to prevent losing your level
             int EditLevelTo = getLevel(memberID);
             int levelCost;
             while (true) {
                 levelCost = (int) (Math.pow(EditLevelTo * 48, 2) * 1.2);
-                event.getChannel().sendMessage(xp + " >= " + levelCost).queue();
+                event.getChannel().sendMessage(" >= " + levelCost).queue();
                 if (XPChange >= levelCost) {
                     ++EditLevelTo; //Adds level but in doing so, increases cost
                     XPChange -= levelCost;
@@ -262,7 +263,7 @@ public class EconomyUtilities {
         int maxRange = 1;
         int minRange = 0;
         int count;
-        int retryRNG;
+        int retryRNG = 100;
         //sorts the items
         for (Item item : items) {
             if (item.posOrNeg) {
@@ -289,48 +290,50 @@ public class EconomyUtilities {
                 sortedItems.add(item);
             }
         }
-        do{ //WOW I actually used a DO_WHILE LOOP!!
-            repeatChance = (repeatChance / 2) + rng.nextInt(11) - 5; // 50 -> 30 to 20 -> 20 ->
-            GennedNum = rng.nextInt(maxRange - minRange) + minRange;
-            if(forceShiny)
-                isShiny = GennedNum == rng.nextInt(maxRange); // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
-            count = minRange; // sets the count to the bottom of the list
-            //Gets the range and spits out a random number
-            for (Item sortedItem : sortedItems) {
-                count += Math.abs(sortedItem.drawChance); // 9 + 8 + 4 + 6 + 11 + 12
-                if (count >= GennedNum) { // adds together all terms from least to most until count is bigger than genned num
-                    eb.setColor(Color.deepRed);
-                    if (isShiny || forceShiny) {
-                        eb.setColor(Color.gold);
-                        sortedItem.goldGain *= 4;
-                        sortedItem.xpGain *= 4;
-                        eb.appendDescription("\n\n***" + event.getAuthor().getAsMention() + " FOUND " + sortedItem.rarityString + "SHINY" + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP***");
-                    } else if (sortedItem.posOrNeg) {
-                        eb.setColor(Color.darkGreen);
-                        eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
-                        eb.setImage(sortedItem.URL);
-                        event.getChannel().sendMessage(eb.build()).queue();
-                    } else {
+        chestType = chestType.toUpperCase() + "_CHEST"; //SO all chests are recognized properly
+        while (repeatChance > retryRNG)
+            {
+
+                GennedNum = rng.nextInt(maxRange - minRange) + minRange;
+                if(forceShiny)
+                    isShiny = GennedNum == rng.nextInt(maxRange); // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
+                count = minRange; // sets the count to the bottom of the list
+                //Gets the range and spits out a random number
+                for (Item sortedItem : sortedItems) {
+                    count += Math.abs(sortedItem.drawChance); // 9 + 8 + 4 + 6 + 11 + 12
+                    if (count >= GennedNum) { // adds together all terms from least to most until count is bigger than genned num
                         eb.setColor(Color.deepRed);
-                        eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " lost " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
-                        eb.setImage(sortedItem.URL);
-                        event.getChannel().sendMessage(eb.build()).queue();
+                        if (isShiny || forceShiny) {
+                            eb.setColor(Color.gold);
+                            sortedItem.goldGain *= 4;
+                            sortedItem.xpGain *= 4;
+                            eb.appendDescription("\n\n***" + event.getAuthor().getAsMention() + " FOUND " + sortedItem.rarityString + "SHINY" + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP***");
+                        } else if (sortedItem.posOrNeg) {
+                            eb.setColor(Color.darkGreen);
+                            eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
+                            eb.setImage(sortedItem.URL);
+                            event.getChannel().sendMessage(eb.build()).queue();
+                        } else {
+                            eb.setColor(Color.deepRed);
+                            eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " lost " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
+                            eb.setImage(sortedItem.URL);
+                            event.getChannel().sendMessage(eb.build()).queue();
+                        }
+                        editXP(event, event.getMember().getId(), sortedItem.xpGain);
+                        editCoins(event.getMember().getId(), sortedItem.goldGain);
+                        eb.clear();
+                        break;
                     }
-                    editXP(event, event.getMember().getId(), sortedItem.xpGain);
-                    editCoins(event.getMember().getId(), sortedItem.goldGain);
-                    eb.clear();
-                    break;
                 }
+                if (!freeChest) {
+                    editItem(Member, chestType, -1);
+                }
+                editHistoryItem(Member, chestType, 1);
+
+                freeChest = true;
+                repeatChance = (repeatChance / 2) + rng.nextInt(11) - 5; //Changes chests odds of opening multiple times
+                retryRNG = rng.nextInt(100); //Changes the chests odds of 'wanting' to be opened multiple times
             }
-            chestType = chestType.toUpperCase() + "_CHEST"; //SO all chests are recognized properly
-            if (!freeChest) {
-                editItem(Member, chestType, 1);
-            }
-            freeChest = true;
-            editHistoryItem(Member, chestType, 1);
-            retryRNG = rng.nextInt(100);
-        }
-        while (repeatChance > retryRNG);
     }
 
 }
