@@ -17,6 +17,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.LongAccumulator;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -33,7 +34,7 @@ public class EconomyUtilities {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        long balance = member.getLong("balance");
+        long balance = Long.parseLong(member.get("balance").toString());
         Bson newMemberDoc = new Document("balance", balance + coinChange);
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
