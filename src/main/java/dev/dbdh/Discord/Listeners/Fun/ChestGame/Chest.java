@@ -114,29 +114,29 @@ public class Chest extends ListenerAdapter {
                     if (args.length > 3) {
                         eb.setDescription("**You need to be more specific. These are the possible chests with usage:**\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameters] (Optional Parameters)\n" + Data.getPrefix() + "chest [chestname] (amount defaults to 1)\n for a bio of each chest, do " + Data.getPrefix() + "shop and find your chests ID\n" +
                                 "chests owned:\n\n" +
-                                ">Basic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "basic**",1) + " (You may claim 1 for free every 5 minutes.)\n" +
-                                ">Safety Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "safety",1) + "\n" +
-                                ">Glitch Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "glitch",1) + "\n" +
-                                ">Shiny Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "shiny",1) + "\n" +
-                                ">Epic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "epic",1) + "\n" +
-                                ">Legendary Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "legendary",1) + "\n" +
-                                ">Godly Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "godly",1));
+                                "**>Basic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "BASIC_CHEST") + " (You may claim 1 for free every 5 minutes.)\n" +
+                                ">Safety Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "SAFETY_CHEST") + "\n" +
+                                ">Glitch Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "GLITCH_CHEST") + "\n" +
+                                ">Shiny Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "SHINY_CHEST") + "\n" +
+                                ">Epic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "EPIC_CHEST") + "\n" +
+                                ">Legendary Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "LEGENDARY_CHEST") + "\n" +
+                                ">Godly Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "GODLY_CHEST" + "**"));
 
                         eb.setColor(Color.errorRed);
                         eb.setTimestamp(Instant.now());
-                        eb.setFooter("Insufficient Arguments -- Chest Game", data.getSelfAvatar(event));
+                        eb.setFooter("Insufficient Arguments -- Chest Game", Data.getSelfAvatar(event));
 
                     } else {
                         int chestCount;
                         String item;
                         //Segment determines which chest to retrieve, if only !~chest has been specified, it will ALWAYS return a basic chest
                         if (args.length == 1){
-                            chestCount = ecu.getItemCount(event.getMember().getUser().getId(), "basic", 1);
+                            chestCount = ecu.getItemCount(event.getMember().getUser().getId(), "BASIC_CHEST");
                             item = "basic";
                         }
                         else {
                             item = args[1];
-                            chestCount = ecu.getItemCount(event.getMember().getUser().getId(), args[1], 1); // The amount of chests the person has
+                            chestCount = ecu.getItemCount(event.getMember().getUser().getId(), args[1].toUpperCase() + "_CHEST"); // The amount of chests the person has
                         }
                         event.getChannel().sendMessage(item).queue();
                         if (item.equalsIgnoreCase("basic") || RC.isDeveloper(event) || RC.isOwner(event)) {
@@ -152,7 +152,7 @@ public class Chest extends ListenerAdapter {
                             items.addAll(Legendary);
                             if (chestCount == 0) {
                                 //Make the free chest a random chest between like 5 different options w/ exponential odds
-                                if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "freeChest")) {
+                                if (ecu.isCooldownReady(event.getMember().getUser().getId(), "freeChest")) {
                                     eb.setDescription("You have redeemed your free chest!");
                                     ecu.openChest(event, eb, items, true, "basic", 10, false);
                                 } else {
