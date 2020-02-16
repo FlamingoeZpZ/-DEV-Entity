@@ -59,8 +59,9 @@ public class EconomyUtilities {
         if(XPChange < 0)
             XPChange = 0;
         event.getChannel().sendMessage(XPChange + " | " + xp).queue();
-        if(xp > 0) { // Skips over this part to prevent losing your level
-            int EditLevelTo = getLevel(memberID);
+        int EditLevelTo = getLevel(memberID);
+        if(xp > 0 && EditLevelTo != 100) { // Skips over this part to prevent losing your level
+
             int levelCost;
             while (true) {
                 levelCost = (int) (Math.pow(160 * EditLevelTo, 2)  / 2000); // Equivalent to  (160 * (level / 100))^2 * 5 just without decimals
