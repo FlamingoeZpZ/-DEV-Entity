@@ -61,7 +61,8 @@ public class EconomyUtilities {
             int EditLevelTo = getLevel(memberID);
             int levelCost;
             while (true) {
-                levelCost = (int) (Math.pow(EditLevelTo * 36, 2) * 0.5);
+                levelCost = (int) (Math.pow(EditLevelTo * 40, 2) * 0.5 / 10) * 10;
+                event.getChannel().sendMessage(XPChange + " ?= " + levelCost).queue();
                 if (XPChange >= levelCost) {
                     event.getChannel().sendMessage(XPChange + " >= " + levelCost).queue();
                     ++EditLevelTo; //Adds level but in doing so, increases cost
