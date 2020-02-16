@@ -61,9 +61,9 @@ public class EconomyUtilities {
             int EditLevelTo = getLevel(memberID);
             int levelCost;
             while (true) {
-                levelCost = (int) (Math.pow(EditLevelTo * 48, 2) * 1.2);
-                event.getChannel().sendMessage(" >= " + levelCost).queue();
+                levelCost = (int) (Math.pow(EditLevelTo * 64, 2) * 0.55);
                 if (XPChange >= levelCost) {
+                    event.getChannel().sendMessage(XPChange + " >= " + levelCost).queue();
                     ++EditLevelTo; //Adds level but in doing so, increases cost
                     XPChange -= levelCost;
                 } else
@@ -263,7 +263,7 @@ public class EconomyUtilities {
         int maxRange = 1;
         int minRange = 0;
         int count;
-        int retryRNG = 100;
+        int retryRNG = 0;
         //sorts the items
         for (Item item : items) {
             if (item.posOrNeg) {
@@ -291,9 +291,8 @@ public class EconomyUtilities {
             }
         }
         chestType = chestType.toUpperCase() + "_CHEST"; //SO all chests are recognized properly
-        while (repeatChance <= retryRNG)
+        while (repeatChance >= retryRNG)
             {
-
                 GennedNum = rng.nextInt(maxRange - minRange) + minRange;
                 if(forceShiny)
                     isShiny = GennedNum == rng.nextInt(maxRange); // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
