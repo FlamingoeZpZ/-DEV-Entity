@@ -55,13 +55,15 @@ public class EconomyUtilities {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
-        long XPChange = getXP(memberID);
+        long XPChange = getXP(memberID) + xp;
+        if(XPChange < 0)
+            XPChange = 0;
         event.getChannel().sendMessage(XPChange + " | " + xp).queue();
         if(xp > 0) { // Skips over this part to prevent losing your level
             int EditLevelTo = getLevel(memberID);
             int levelCost;
             while (true) {
-                levelCost = (int) (Math.pow(EditLevelTo * 40, 2) * 0.5 / 10) * 10;
+                levelCost = (int) (Math.pow(160 * (double)(EditLevelTo / 100), 2)  * 500 / 10) * 10;
                 event.getChannel().sendMessage(XPChange + " ?= " + levelCost).queue();
                 if (XPChange >= levelCost) {
                     event.getChannel().sendMessage(XPChange + " >= " + levelCost).queue();
@@ -70,6 +72,7 @@ public class EconomyUtilities {
                 } else
                     break;
             }
+
             editLevel(memberID, EditLevelTo);
         }
         Bson newMemberXPDoc = new Document("experience", XPChange);
