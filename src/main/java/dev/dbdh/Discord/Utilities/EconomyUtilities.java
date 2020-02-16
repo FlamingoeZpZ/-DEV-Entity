@@ -96,6 +96,14 @@ public class EconomyUtilities {
         members.findOneAndUpdate(member, updateMemberDoc);
         db.close();
     }
+    public long getCoins(String memberID) {
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        long bal = member.getLong("balance");
+        Database.close();
+        return bal;
+    }
     public long getXP(String memberID) {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members");

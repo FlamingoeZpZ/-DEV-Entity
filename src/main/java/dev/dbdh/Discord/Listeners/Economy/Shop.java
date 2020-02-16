@@ -59,19 +59,17 @@ public class Shop extends ListenerAdapter {
                         if(member.getInteger("balance") <= pay) { //add check for max level
                             break;
                         }
-                        total += pay;
-
-                        ecu.removeCoins(event, event.getMember().getId(), pay);
-                        ecu.addItem(event, event.getMember().getId(), shopItem.toString());
+                        ecu.editCoins(event.getMember().getId(), pay);
+                        ecu.editItem(event.getMember().getId(), shopItem.toString(), 1);
                     }
                     //eb.setImage(); ADD
                     if(k > 0) {
-                        eb.setColor(color.successGreen);
+                        eb.setColor(Color.successGreen);
                         eb.setDescription(shopItem.toString() + " has been purchased, " + k + " times for " + total + ".");
                     }
                     else {
-                        eb.setColor(color.errorRed);
-                        eb.setDescription(shopItem.toString() + " could not be purchased due to a lack of money.\nYour Balance: " + ecu.getCoins(event, event.getMember().getId()) + "\t Cost: " + pay + ".");
+                        eb.setColor(Color.errorRed);
+                        eb.setDescription(shopItem.toString() + " could not be purchased due to a lack of money.\nYour Balance: " + ecu.getCoins(event.getMember().getId()) + "\t Cost: " + pay + ".");
                     }
                 }
                 else if( args.length > 2 && args[2].equalsIgnoreCase("sell") && pay != 0){
