@@ -291,7 +291,7 @@ public class EconomyUtilities {
             }
         }
         chestType = chestType.toUpperCase() + "_CHEST"; //SO all chests are recognized properly
-        while (repeatChance > retryRNG)
+        while (repeatChance <= retryRNG)
             {
 
                 GennedNum = rng.nextInt(maxRange - minRange) + minRange;
