@@ -52,19 +52,15 @@ public class EconomyUtilities {
     }
 
     public void editXP(GuildMessageReceivedEvent event, String memberID, long xp) {
-        Database.connect();
-        MongoCollection<Document> members = Database.getCollection("members");
-        Document member = members.find(eq("memberId", memberID)).first();
         long XPChange = getXP(memberID) + xp;
         if(XPChange < 0)
             XPChange = 0;
         event.getChannel().sendMessage(XPChange + " | " + xp).queue();
         int EditLevelTo = getLevel(memberID);
         if(xp > 0 && EditLevelTo != 100) { // Skips over this part to prevent losing your level
-
             int levelCost;
             while (true) {
-                levelCost = (int) (Math.pow(160 * EditLevelTo, 2)  / 2000); // Equivalent to  (160 * (level / 100))^2 * 5 just without decimals
+                levelCost = (int) (Math.pow(160 * EditLevelTo, 2)  / 20); // Equivalent to  (160 * (level / 100))^2 * 5 just without decimals
                 event.getChannel().sendMessage(XPChange + " ?= " + levelCost).queue();
                 if (XPChange >= levelCost) {
                     event.getChannel().sendMessage(XPChange + " >= " + levelCost).queue();
@@ -73,10 +69,16 @@ public class EconomyUtilities {
                 } else
                     break;
             }
-
+            mongoSuk(memberID, XPChange);
             editLevel(memberID, EditLevelTo);
         }
-        Bson newMemberXPDoc = new Document("experience", XPChange);
+
+    }
+    private void mongoSuk(String memberID, long newXP){
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
+        Document member = members.find(eq("memberId", memberID)).first();
+        Bson newMemberXPDoc = new Document("experience", newXP);
         Bson updateMemberXPDoc = new Document("$set", newMemberXPDoc);
         members.findOneAndUpdate(member, updateMemberXPDoc);
         Database.close();
@@ -124,7 +126,7 @@ public class EconomyUtilities {
         MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         Document itemsDoc = (Document) member.get("items");
-        int items = itemsDoc.getInteger(itemName.toUpperCase());
+        int items = Integer.parseInt(itemsDoc.get(itemName.toUpperCase()).toString());
         Database.close();
         return items;
     }
@@ -333,7 +335,6 @@ public class EconomyUtilities {
                     editItem(Member, chestType, -1);
                 }
                 editHistoryItem(Member, chestType, 1);
-
                 freeChest = true;
                 repeatChance = (repeatChance / 2) + rng.nextInt(11) - 5; //Changes chests odds of opening multiple times
                 retryRNG = rng.nextInt(100); //Changes the chests odds of 'wanting' to be opened multiple times
