@@ -218,6 +218,7 @@ public class Chest extends ListenerAdapter {
                                 case "GODLY":
                                     items.addAll(Legendary);
                                     eb.setDescription("You opened a godly chest! Remaining amount: " + (chestCount - 1));
+
                                     ecu.openChest(event, eb, items, false, "godly", 40, true);
                                     break;
                                 default:
@@ -231,6 +232,9 @@ public class Chest extends ListenerAdapter {
                                                 ">Legendary Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "LEGENDARY_CHEST") + "\n" +
                                                 ">Godly Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "GODLY_CHEST" + "**"));
                                     eb.setColor(Color.errorRed);
+                                    eb.setTimestamp(Instant.now());
+                                    eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes " + Data.getPrefix() + "chest or " + Data.getPrefix() + "chest basic", Data.getSelfAvatar(event));
+                                    event.getChannel().sendMessage(eb.build()).queue();
                                     break;
                             }
                         }
@@ -239,6 +243,7 @@ public class Chest extends ListenerAdapter {
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes " + Data.getPrefix() + "chest or " + Data.getPrefix() + "chest basic", Data.getSelfAvatar(event));
                             eb.setColor(Color.errorRed);
+                            event.getChannel().sendMessage(eb.build()).queue();
                         }
                     }
                 }
@@ -250,10 +255,9 @@ public class Chest extends ListenerAdapter {
                 eb.setColor(Color.errorRed);
                 eb.setImage("https://us.v-cdn.net/6030815/uploads/editor/n5/xf83dvvsxoh5.png");
                 eb.setFooter("Please don't kill us... Love " + Data.getSelfName(event), Data.getSelfAvatar(event));
+                event.getChannel().sendMessage(eb.build()).queue();
             }
             Database.close();
-            event.getChannel().sendMessage(eb.build()).queue();
-            eb.clear();
         }
     }
 
