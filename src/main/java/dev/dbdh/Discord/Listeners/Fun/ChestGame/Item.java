@@ -20,57 +20,57 @@ public class Item extends Chest{
         this.URL = URL;
         switch (rarity) {
             case RARITY_BAD:
-                drawChance = 30;
+                drawChance = 240;
                 xpGain = -240;
                 goldGain = -480;
                 rarityString = "**No item:** ";
                 posOrNeg = false;
                 break;
             case RARITY_BROWN:
-                drawChance = 120;
+                drawChance = 240;
                 xpGain = 120;
                 goldGain = 240;
                 rarityString = "a **Common Item:** ";
                 break;
             case RARITY_YELLOW:
                 guaranteedPolish += 10;
-                drawChance = 80;
+                drawChance = 180;
                 xpGain = 240;
                 goldGain = 120;
                 rarityString = "an **Uncommon Item:** ";
                 break;
             case RARITY_GREEN:
-                drawChance = 70;
+                drawChance = 140;
                 xpGain = 240;
                 goldGain = 240;
                 rarityString = "a **Rare Item:** ";
                 break;
             case RARITY_PURPLE:
-                drawChance = 60;
+                drawChance = 100;
                 xpGain = 240;
                 goldGain = 480;
                 rarityString = "a **Very Rare Item:** ";
                 break;
             case RARITY_PINK:
-                drawChance = 10;
+                drawChance = 60;
                 xpGain = 960;
                 goldGain = 960;
                 rarityString = "an **Ultra Rare Item:** ";
                 break;
             case RARITY_EVENT:
-                drawChance = 5;
+                drawChance = 40;
                 xpGain = 1920;
                 goldGain = 960;
                 rarityString = "an **Event Item:** ";
                 break;
             case RARITY_EPIC:
-                drawChance = 3;
+                drawChance = 15;
                 xpGain = 1920;
                 goldGain = 3840;
                 rarityString = "an **Epic Item:** ";
                 break;
             case RARITY_LEGENDARY:
-                drawChance = 1;
+                drawChance = 5;
                 xpGain = 4800;
                 goldGain = 4800;
                 rarityString = "a **LEGENDARY ITEM:** ";

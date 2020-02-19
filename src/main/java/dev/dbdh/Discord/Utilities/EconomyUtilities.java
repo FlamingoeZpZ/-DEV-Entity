@@ -301,14 +301,13 @@ public class EconomyUtilities {
                         } else if (sortedItem.posOrNeg) {
                             eb.setColor(Color.darkGreen);
                             eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
-                            eb.setImage(sortedItem.URL);
+
                             event.getChannel().sendMessage(eb.build()).queue();
                         } else {
                             eb.setColor(Color.deepRed);
                             eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " lost " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
-                            eb.setImage(sortedItem.URL);
-                            event.getChannel().sendMessage(eb.build()).queue();
                         }
+                        eb.setImage(sortedItem.URL);
                         editXP(event, event.getMember().getId(), sortedItem.xpGain);
                         editCoins(event.getMember().getId(), sortedItem.goldGain);
                         eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes " + Data.getPrefix() + "chest or " + Data.getPrefix() + "chest basic", Data.getSelfAvatar(event));
