@@ -1,24 +1,15 @@
 package dev.dbdh.Discord.Utilities;
 
 import com.mongodb.client.MongoCollection;
-import dev.dbdh.Discord.Listeners.Fun.ChestGame.Chest;
 import dev.dbdh.Discord.Listeners.Fun.ChestGame.Item;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageEmbedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.api.events.user.update.UserUpdateNameEvent;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.BasicBSONList;
-
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.LongAccumulator;
-
 import static com.mongodb.client.model.Filters.eq;
 
 public class EconomyUtilities {
@@ -27,8 +18,6 @@ public class EconomyUtilities {
     private final long freeChestCooldownMili = 300000; // 5 min
     private final long dailyCooldownMili = 86400000; // 1 day
     private final long chaseCooldownMili = 300000; // 5 min
-    private final int PERKS = 0;
-    private final int CHESTS= 1;
 
     public void editCoins(String memberID, int coinChange) {
         Database.connect();
@@ -61,49 +50,43 @@ public class EconomyUtilities {
             int levelCost;
             while (true) {
                 levelCost = (int) (Math.pow(160 * EditLevelTo, 2)  / 20); // Equivalent to  (160 * (level / 100))^2 * 5 just without decimals
-                event.getChannel().sendMessage(XPChange + " ?= " + levelCost).queue();
                 if (XPChange >= levelCost) {
-                    event.getChannel().sendMessage(XPChange + " >= " + levelCost).queue();
                     ++EditLevelTo; //Adds level but in doing so, increases cost
                     XPChange -= levelCost;
                 } else
                     break;
             }
-            mongoSuk(memberID, XPChange);
+            event.getChannel().sendMessage("Current XP: " + XPChange + "\nCurrent Level: " + EditLevelTo).queue();
+            Database.connect();
+            MongoCollection<Document> members = Database.getCollection("members");
+            Document member = members.find(eq("memberId", memberID)).first();
+            Bson newMemberXPDoc = new Document("experience", XPChange);
+            Bson updateMemberXPDoc = new Document("$set", newMemberXPDoc);
+            members.findOneAndUpdate(member, updateMemberXPDoc);
             editLevel(memberID, EditLevelTo);
         }
-
-    }
-    private void mongoSuk(String memberID, long newXP){
-        Database.connect();
-        MongoCollection<Document> members = Database.getCollection("members");
-        Document member = members.find(eq("memberId", memberID)).first();
-        Bson newMemberXPDoc = new Document("experience", newXP);
-        Bson updateMemberXPDoc = new Document("$set", newMemberXPDoc);
-        members.findOneAndUpdate(member, updateMemberXPDoc);
-        Database.close();
     }
     public void editItem(String memberID, String perkName, int change) {
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         Document itemsDoc = (Document) member.get("items");
         int prvPerkLevel = itemsDoc.getInteger(perkName);
         Bson newMemberDoc = new Document("items." + perkName, prvPerkLevel + change); // use . to access objects in arrays ( BSON )
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
-        db.close();
+        Database.close();
     }
     public void editHistoryItem(String memberID, String perkName, int change){
-        db.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        Database.connect();
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         Document itemsDoc = (Document) member.get("chestsOpened");
         int prvPerkLevel = itemsDoc.getInteger(perkName);
         Bson newMemberDoc = new Document("chestsOpened." + perkName, prvPerkLevel + change); // use . to access objects in arrays ( BSON )
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
-        db.close();
+        Database.close();
     }
     public long getCoins(String memberID) {
         Database.connect();
@@ -251,13 +234,13 @@ public class EconomyUtilities {
     }
 
     public void setRoleAssignMessageID(Message message){
-        db.connect();
-        MongoCollection<Document> guild = db.getCollection("guild");
+        Database.connect();
+        MongoCollection<Document> guild = Database.getCollection("guild");
         Document guildDoc = guild.find().first();
         Bson newDoc = new Document("roleAssignMessageID", message.getId());
         Bson updateDoc = new Document("$set", newDoc);
         guild.findOneAndUpdate(guildDoc, updateDoc);
-        db.close();
+        Database.close();
     }
     public void openChest(GuildMessageReceivedEvent event, EmbedBuilder eb, List<Item> items, boolean freeChest, String chestType, int repeatChance, boolean forceShiny) {
         String Member = event.getMember().getId();
@@ -301,8 +284,9 @@ public class EconomyUtilities {
         while (repeatChance >= retryRNG)
             {
                 GennedNum = rng.nextInt(maxRange - minRange) + minRange;
+                int Gt = rng.nextInt(maxRange);
                 if(forceShiny)
-                    isShiny = GennedNum == rng.nextInt(maxRange); // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
+                    isShiny = GennedNum == Gt; // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
                 count = minRange; // sets the count to the bottom of the list
                 //Gets the range and spits out a random number
                 for (Item sortedItem : sortedItems) {
@@ -329,6 +313,7 @@ public class EconomyUtilities {
                         editCoins(event.getMember().getId(), sortedItem.goldGain);
                         eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes " + Data.getPrefix() + "chest or " + Data.getPrefix() + "chest basic", Data.getSelfAvatar(event));
                         eb.clear();
+                        event.getChannel().sendMessage("is shiny forced: " + forceShiny + "\nThe shiny number you rolled: " + GennedNum + " The random number needed was: " + Gt +"\nThe chest re-open chance was " + repeatChance + " the number you rolled was: " + retryRNG).queue();
                         break;
                     }
                 }
