@@ -283,27 +283,29 @@ public class EconomyUtilities {
         chestType = chestType.toUpperCase() + "_CHEST"; //SO all chests are recognized properly
         while (repeatChance >= retryRNG)
             {
-                GennedNum = rng.nextInt(maxRange - minRange) + minRange;
-                int Gt = rng.nextInt(maxRange);
+                GennedNum = 12;//rng.nextInt(maxRange - minRange) + minRange;
+                int Gt = 12;//rng.nextInt(maxRange);
                 if(forceShiny)
                     isShiny = GennedNum == Gt; // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
                 count = minRange; // sets the count to the bottom of the list
                 //Gets the range and spits out a random number
                 for (Item sortedItem : sortedItems) {
                     count += Math.abs(sortedItem.drawChance); // 9 + 8 + 4 + 6 + 11 + 12
-                    if (count >= GennedNum) { // adds together all terms from least to most until count is bigger than genned num
+                    if (count >= GennedNum) { // adds together all terms from least to most until count is bigger than genned num THIS check when true will stop the loop
                         eb.setColor(Color.deepRed);
                         if (isShiny || forceShiny) {
                             eb.setColor(Color.gold);
                             sortedItem.goldGain *= 4;
                             sortedItem.xpGain *= 4;
                             eb.appendDescription("\n\n***" + event.getAuthor().getAsMention() + " FOUND " + sortedItem.rarityString + "SHINY" + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP***");
-                        } else if (sortedItem.posOrNeg) {
+                        }
+                        else if (sortedItem.posOrNeg)
+                        {
                             eb.setColor(Color.darkGreen);
                             eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
-
-                            event.getChannel().sendMessage(eb.build()).queue();
-                        } else {
+                        }
+                        else
+                        {
                             eb.setColor(Color.deepRed);
                             eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " lost " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
                         }
@@ -311,6 +313,7 @@ public class EconomyUtilities {
                         editXP(event, event.getMember().getId(), sortedItem.xpGain);
                         editCoins(event.getMember().getId(), sortedItem.goldGain);
                         eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes " + Data.getPrefix() + "chest or " + Data.getPrefix() + "chest basic", Data.getSelfAvatar(event));
+                        event.getChannel().sendMessage(eb.build()).queue();
                         eb.clear();
                         event.getChannel().sendMessage("is shiny forced: " + forceShiny + "\nThe shiny number you rolled: " + GennedNum + " The random number needed was: " + Gt +"\nThe chest re-open chance was " + repeatChance + " the number you rolled was: " + retryRNG).queue();
                         break;
