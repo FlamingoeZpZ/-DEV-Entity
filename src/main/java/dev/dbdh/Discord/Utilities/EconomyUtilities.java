@@ -283,13 +283,13 @@ public class EconomyUtilities {
         chestType = chestType.toUpperCase() + "_CHEST"; //SO all chests are recognized properly
         while (repeatChance >= retryRNG)
             {
-                GennedNum = 12;//rng.nextInt(maxRange - minRange) + minRange;
-                int Gt = 12;//rng.nextInt(maxRange);
-                if(forceShiny)
-                    isShiny = GennedNum == Gt; // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
+
                 count = minRange; // sets the count to the bottom of the list
                 //Gets the range and spits out a random number
                 for (Item sortedItem : sortedItems) {
+                    GennedNum = 12;//rng.nextInt(maxRange - minRange) + minRange;
+                    int Gt = 12;//rng.nextInt(maxRange);
+                    isShiny = GennedNum == Gt; // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
                     count += Math.abs(sortedItem.drawChance); // 9 + 8 + 4 + 6 + 11 + 12
                     if (count >= GennedNum) { // adds together all terms from least to most until count is bigger than genned num THIS check when true will stop the loop
                         eb.setColor(Color.deepRed);
