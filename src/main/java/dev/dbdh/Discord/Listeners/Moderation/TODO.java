@@ -29,11 +29,13 @@ public class TODO extends ListenerAdapter {
 
 
             }
-            if (args[1].equalsIgnoreCase("add")) {
-                event.getGuild().getTextChannelById("680583891639337021").retrieveMessageById("");
+            else {
+                if (args[1].equalsIgnoreCase("add")) {
+                    event.getGuild().getTextChannelById("680583891639337021").retrieveMessageById("");
 
-            } else if (args[1].equalsIgnoreCase("remove")) {
+                } else if (args[1].equalsIgnoreCase("remove")) {
 
+                }
             }
             //Auto delete function will ALWAYS happen ensuring that the channel will not be flooded
             event.getChannel().sendMessage(TODOEmbed.build()).queue((message) -> {

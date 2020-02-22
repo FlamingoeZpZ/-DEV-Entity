@@ -281,13 +281,15 @@ public class EconomyUtilities {
             }
         }
         chestType = chestType.toUpperCase() + "_CHEST"; //SO all chests are recognized properly
+        int shinyChance = 1000; //(1 out of 1000)
         while (repeatChance >= retryRNG)
             {
                 count = minRange; // sets the count to the bottom of the list
                 //Gets the range and spits out a random number
                 GennedNum = rng.nextInt(maxRange - minRange) + minRange;
-                int Gt = rng.nextInt(maxRange);
-                isShiny = GennedNum == Gt; // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
+                int PlayerNum = rng.nextInt(shinyChance);
+                int RNGNum = rng.nextInt(shinyChance);
+                isShiny = PlayerNum == RNGNum; // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
                 for (Item sortedItem : sortedItems) {
                     count += Math.abs(sortedItem.drawChance); // 9 + 8 + 4 + 6 + 11 + 12
                     if (count >= GennedNum) { // adds together all terms from least to most until count is bigger than genned num THIS check when true will stop the loop
@@ -314,7 +316,7 @@ public class EconomyUtilities {
                         eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes " + Data.getPrefix() + "chest or " + Data.getPrefix() + "chest basic", Data.getSelfAvatar(event));
                         event.getChannel().sendMessage(eb.build()).queue();
                         eb.clear();
-                        event.getChannel().sendMessage("is shiny forced: " + forceShiny + "\nThe shiny number you rolled: " + GennedNum + " The random number needed was: " + Gt +"\nThe chest re-open chance was " + repeatChance + " the number you rolled was: " + retryRNG).queue();
+                        event.getChannel().sendMessage("is shiny forced: " + forceShiny + "\nThe shiny number you rolled: " + PlayerNum + " The random number needed was: " + RNGNum +"\nThe chest re-open chance was " + repeatChance + " the number you rolled was: " + retryRNG).queue();
                         break;
                     }
                 }
