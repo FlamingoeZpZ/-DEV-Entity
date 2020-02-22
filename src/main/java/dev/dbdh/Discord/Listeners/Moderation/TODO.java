@@ -29,7 +29,7 @@ public class TODO extends ListenerAdapter {
 
 
             }
-            else {
+            else if (args.length > 3){
                 if (args[1].equalsIgnoreCase("add")) {
                     event.getGuild().getTextChannelById("680583891639337021").retrieveMessageById("");
 
