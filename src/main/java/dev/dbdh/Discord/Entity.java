@@ -55,6 +55,7 @@ public class Entity {
                 new ReactionRoleAssign(),
                 new ReactionRoleUnassign(),
                 new Report(),
+                new TODO(),
 
                 //Misc Listeners
                 //new Censor(),
