@@ -35,11 +35,12 @@ public class TODO extends ListenerAdapter {
                     message.delete().queueAfter(30, TimeUnit.SECONDS);
                 });
                 */
+                event.getChannel().sendMessage(TODOEmbed.build()).queue();
             }
             else if (args.length > 2){
                 if (args[1].equalsIgnoreCase("add")) {
                     event.getGuild().getTextChannelById("680583891639337021").retrieveMessageById("");
-
+                    event.getGuild().getTextChannelById("680583891639337021").sendMessage(TODOEmbed.build()).queue();
                 } else if (args[1].equalsIgnoreCase("remove")) {
 
                 }
