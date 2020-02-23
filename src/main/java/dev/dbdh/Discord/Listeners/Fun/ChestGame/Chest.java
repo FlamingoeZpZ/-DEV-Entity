@@ -41,11 +41,8 @@ public class Chest extends ListenerAdapter {
 
     public static boolean isShiny;
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-
         String[] args = event.getMessage().getContentRaw().split("\\s+");
-        Color color = new Color();
         Data data = new Data();
-        RoleCheck RC = new RoleCheck();
         EconomyUtilities ecu = new EconomyUtilities();
         EmbedBuilder eb = new EmbedBuilder();
 
@@ -107,11 +104,12 @@ public class Chest extends ListenerAdapter {
         Legendary.add(new Item("ExZiBytes Legendary", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/0/03/FulliconItems_willOWisp.png", TYPE_LEGENDARY, RARITY_LEGENDARY, 0));
         Legendary.add(new Item("Handsome Jack's Mask?", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/a/a3/FulliconItems_allHallowsEveLunchbox.png", TYPE_LEGENDARY, RARITY_LEGENDARY, 0));
 
-        if (args[0].equalsIgnoreCase(data.getPrefix() + "chest")) {
+
+        if (args[0].equalsIgnoreCase(data.getPrefix() + "chest") || args[0].equalsIgnoreCase(data.getPrefix() + "inv") || args[0].equalsIgnoreCase(data.getPrefix() + "inventory")) {
             Database.connect();
             if(ecu.isMemberInDB(event.getMember().getId())) {
                 if (event.getMessage().getChannel().equals(event.getGuild().getTextChannelById("632350945891581992"))) {
-                    if (args.length > 3) {
+                    if (args.length > 3 || !args[0].equalsIgnoreCase(data.getPrefix() + "chest")) {
                         eb.setDescription("**You need to be more specific. These are the possible chests with usage:**\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameters] (Optional Parameters)\n" + Data.getPrefix() + "chest [chestname] (amount defaults to 1)\n for a bio of each chest, do " + Data.getPrefix() + "shop and find your chests ID\n" +
                                 "chests owned:\n\n" +
                                 "**>Basic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "BASIC_CHEST") + " (You may claim 1 for free every 5 minutes.)\n" +
@@ -139,7 +137,7 @@ public class Chest extends ListenerAdapter {
                             chestCount = ecu.getItemCount(event.getMember().getUser().getId(), item + "_CHEST"); // The amount of chests the person has
                         }
                         event.getChannel().sendMessage(item).queue();
-                        if(chestCount > 0 || item.equals("BASIC")) {
+                        if(chestCount > 0 || item.equals("BASIC") && args[0].equalsIgnoreCase(data.getPrefix() + "chest")) {
                             switch (item) {
                                 case "BASIC":
                                     items.addAll(Bad);
