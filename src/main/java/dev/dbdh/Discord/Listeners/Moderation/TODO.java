@@ -18,11 +18,14 @@ public class TODO extends ListenerAdapter {
         int indexLimit = 38;
         int curIndexs = 0;
         if(args[0].equalsIgnoreCase("!todo")){
-            TODOEmbed.setTitle( event.getGuild().getName() + " TO-DO:");
-            TODOEmbed.setFooter("Last editor: " + event.getAuthor().getName() + "\nTotal index's:"  + curIndexs + " character limit: " + 50);
-            TODOEmbed.setColor(Color.purpleHaze);
-            TODOEmbed.setTimestamp(Instant.now());
+            event.getMessage().delete().queue();
+
             if(args.length < 2) {
+                TODOEmbed.setTitle( event.getGuild().getName() + " TO-DO:");
+                TODOEmbed.setFooter("Last editor: " + event.getAuthor().getName() + "\nTotal index's:"  + curIndexs + " character limit: " + 50);
+                TODOEmbed.setColor(Color.purpleHaze);
+                TODOEmbed.setTimestamp(Instant.now());
+                /*
                 TODOEmbed.setDescription("You need to specify want you want to do. Type "+ Data.getPrefix() + "TODO <add/remove> [if remove then specify index] <TEXT>. \n the <TEXT> must not exceed the maximum character count: " + characterLimit + " exceeding this limit will simply remove text out of bounds.\nThe index limit is: " + indexLimit + " to prevent errors.");
                 TODOEmbed.setColor(0xff5555);
                 TODOEmbed.setTimestamp(Instant.now());
@@ -31,6 +34,7 @@ public class TODO extends ListenerAdapter {
                     TODOEmbed.clear();
                     message.delete().queueAfter(30, TimeUnit.SECONDS);
                 });
+                */
             }
             else if (args.length > 2){
                 if (args[1].equalsIgnoreCase("add")) {
