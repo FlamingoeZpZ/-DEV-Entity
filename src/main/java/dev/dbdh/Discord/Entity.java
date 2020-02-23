@@ -63,6 +63,8 @@ public class Entity {
                 new Leave(),
                 new Ready(),
                 new ReactionMessage(),
+                new Suggest(),
+                new SuggestReactAdd(),
 
                 //Moderation Listeners
                 new Ban(),
