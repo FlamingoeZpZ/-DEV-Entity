@@ -25,7 +25,7 @@ public class Shop extends ListenerAdapter {
         //(prefix)shop [item] [buy/sell] [amount]
         if (Arrays.stream(al.shopAliases).anyMatch(args[0]::equalsIgnoreCase)) {
             Database.connect();
-            int userNum = Integer.parseInt(args[1]);
+            int userNum = 0;
             MongoCollection<Document> shopItems = Database.getCollection("shopItems");
             Document shopItem;
             MongoCollection<Document> members = Database.getCollection("members");
@@ -38,7 +38,7 @@ public class Shop extends ListenerAdapter {
                     eb.setTitle(event.getGuild().getName() + " shop");
                     eb.setDescription("Welcome to the " + event.getGuild().getName() + " shop!");
                     for (int i = 1; i <= shopIndexes; i++) {
-                        shopItem = shopItems.find(eq("ID", userNum)).first();
+                        shopItem = shopItems.find(eq("ID", i)).first();
                         itemName = shopItem.getString("name");
                         eb.appendDescription("\nID: " + i + " | Item: " + itemName + " | current level: " + itemsDoc.getInteger(itemName));
                     }
@@ -46,6 +46,7 @@ public class Shop extends ListenerAdapter {
                     eb.setFooter("Fatal error unknown item ~ " + Data.getSelfName(event), Data.getSelfAvatar(event));
                     break;
                 case 2:
+                    userNum = Integer.parseInt(args[1]);
                     if (userNum <= shopIndexes && userNum > 0) {
                         shopItem = shopItems.find(eq("ID", userNum)).first();
                         itemName = shopItem.getString("name");
@@ -63,6 +64,7 @@ public class Shop extends ListenerAdapter {
                     }
                     break;
                 case 4:
+                    userNum = Integer.parseInt(args[1]);
                     loops = Integer.parseInt(args[3]);
                 case 3:
                     shopItem = shopItems.find(eq("ID", userNum)).first();

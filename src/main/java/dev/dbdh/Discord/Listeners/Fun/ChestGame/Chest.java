@@ -106,10 +106,10 @@ public class Chest extends ListenerAdapter {
         Legendary.add(new Item("Handsome Jack's Mask?", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/a/a3/FulliconItems_allHallowsEveLunchbox.png", TYPE_LEGENDARY, RARITY_LEGENDARY, 0));
 
 
-        if (args[0].equalsIgnoreCase(data.getPrefix() + "chest") || args[0].equalsIgnoreCase(data.getPrefix() + "inv") || args[0].equalsIgnoreCase(data.getPrefix() + "inventory")) {
+        if (args[0].equalsIgnoreCase(Data.getPrefix() + "chest") || args[0].equalsIgnoreCase(Data.getPrefix() + "inv") || args[0].equalsIgnoreCase(data.getPrefix() + "inventory")) {
             if (ecu.isMemberInDB(event.getMember().getId())) {
                 if (event.getMessage().getChannel().equals(event.getGuild().getTextChannelById("632350945891581992"))) {
-                    if (args.length > 3 || !args[0].equalsIgnoreCase(data.getPrefix() + "chest")) {
+                    if (args.length > 3 || !args[0].equalsIgnoreCase(Data.getPrefix() + "chest")) {
                         eb.setDescription("**You need to be more specific. These are the possible chests with usage:**\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameters] (Optional Parameters)\n" + Data.getPrefix() + "chest [chestname] (amount defaults to 1)\n for a bio of each chest, do " + Data.getPrefix() + "shop and find your chests ID\n" +
                                 "chests owned:\n\n" +
                                 ">**Basic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "BASIC_CHEST") + " (You may claim 1 for free every 5 minutes.)\n" +
@@ -132,11 +132,17 @@ public class Chest extends ListenerAdapter {
                             chestCount = ecu.getItemCount(event.getMember().getUser().getId(), "BASIC_CHEST");
                             item = "BASIC";
                         } else {
-                            item = args[1].toUpperCase();
-                            chestCount = ecu.getItemCount(event.getMember().getUser().getId(), item + "_CHEST"); // The amount of chests the person has
+                            try {
+                                item = args[1].toUpperCase();
+                                chestCount = ecu.getItemCount(event.getMember().getUser().getId(), item + "_CHEST"); // The amount of chests the person has
+                            }
+                            catch (Exception E){
+                                item = "null";
+                                chestCount = 0;
+                            }
                         }
                         event.getChannel().sendMessage(item).queue();
-                        if (chestCount > 0 || item.equals("BASIC") && args[0].equalsIgnoreCase(data.getPrefix() + "chest")) {
+                        if (chestCount > 0 || item.equals("BASIC") && args[0].equalsIgnoreCase(Data.getPrefix() + "chest")) {
                             switch (item) {
                                 case "BASIC":
                                     items.addAll(Bad);
@@ -278,6 +284,7 @@ public class Chest extends ListenerAdapter {
                                     eb.appendDescription("\n__Chests gained:__\nBasic: " + CG[0] + "\nSafety: " + CG[1] + "\nGlitch: " + CG[2] + "\nShiny: " + CG[3] + "\nEpic: " + CG[4] + "\nLegendary: " + CG[5] + "\nGodly: " + CG[6]);
                                     eb.setColor(Color.successGreen);
                                     eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes " + Data.getPrefix() + "chest or " + Data.getPrefix() + "chest basic", Data.getSelfAvatar(event));
+                                    event.getChannel().sendMessage(eb.build()).queue();
                                     break;
                                 default:
                                     eb.setDescription("**You need to be more specific. These are the possible chests with usage:**\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameters] (Optional Parameters)\n" + Data.getPrefix() + "chest [chestname] (amount defaults to 1)\n for a bio of each chest, do " + Data.getPrefix() + "shop and find your chests ID\n" +
