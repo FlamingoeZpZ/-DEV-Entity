@@ -62,7 +62,8 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                                             .append("SHINY_CHEST", 3)
                                             .append("EPIC_CHEST", 1)
                                             .append("LEGENDARY_CHEST", 1)
-                                            .append("GODLY_CHEST", 0));
+                                            .append("GODLY_CHEST", 0)
+                                            .append("CRATE_CHEST", 10));
 
                             Document chestsOpened = new Document(
                                     new BasicDBObject("BASIC_CHEST", 0)
@@ -71,7 +72,8 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                                             .append("SHINY_CHEST", 0)
                                             .append("EPIC_CHEST", 0)
                                             .append("LEGENDARY_CHEST", 0)
-                                            .append("GODLY_CHEST", 0));
+                                            .append("GODLY_CHEST", 0)
+                                            .append("CRATE_CHEST", 0));
 
                             Document memberInfo = new Document(
                                     new BasicDBObject("memberId", member.getUser().getId())

@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageEmbedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
@@ -103,9 +104,6 @@ public class Data {
     }
     public static String getSelfName(GuildMessageReceivedEvent event){
         return event.getJDA().getSelfUser().getName();
-    }
-    public static String getGuildName(GuildMemberJoinEvent event){
-        return event.getGuild().getName();
     }
 
     public static TextChannel getLogChannel(GuildMessageReceivedEvent event){
