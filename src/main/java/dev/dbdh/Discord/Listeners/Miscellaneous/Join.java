@@ -79,8 +79,9 @@ public class Join extends ListenerAdapter {
                                 .append("SHINY_CHEST", 1)
                                 .append("EPIC_CHEST", 0)
                                 .append("LEGENDARY_CHEST", 0)
-                                .append("GODLY_CHEST", 0));
-                Document chestsOpened = new Document(new BasicDBObject("BASIC_CHEST", 0).append("SAFETY_CHEST", 0).append("GLITCH_CHEST", 0).append("SHINY_CHEST", 0).append("EPIC_CHEST", 0).append("LEGENDARY_CHEST", 0).append("GODLY_CHEST", 0));
+                                .append("GODLY_CHEST", 0)
+                                .append("CRATE_CHEST", 10));
+                Document chestsOpened = new Document(new BasicDBObject("BASIC_CHEST", 0).append("SAFETY_CHEST", 0).append("GLITCH_CHEST", 0).append("SHINY_CHEST", 0).append("EPIC_CHEST", 0).append("LEGENDARY_CHEST", 0).append("GODLY_CHEST", 0).append("CRATE_CHEST", 0));
                 Document memberInfo = new Document(new BasicDBObject("memberId", event.getMember().getUser().getId())
                         .append("memberName", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator())
                         .append("level", 1)

@@ -44,19 +44,17 @@ public class EconomyUtilities {
         long XPChange = getXP(memberID) + xp;
         if(XPChange < 0)
             XPChange = 0;
-        event.getChannel().sendMessage(XPChange + " | " + xp).queue();
         int EditLevelTo = getLevel(memberID);
         if(xp > 0 && EditLevelTo != 100) { // Skips over this part to prevent losing your level
             int levelCost;
             while (true) {
-                levelCost = (int) (Math.pow(160 * EditLevelTo, 2)  / 20); // Equivalent to  (160 * (level / 100))^2 * 5 just without decimals
+                levelCost =  120 * (int)(Math.pow(EditLevelTo, 2)  + 1000); // Equivalent to y = 120(1)^2\ + 1000
                 if (XPChange >= levelCost) {
                     ++EditLevelTo; //Adds level but in doing so, increases cost
                     XPChange -= levelCost;
                 } else
                     break;
             }
-            event.getChannel().sendMessage("Current XP: " + XPChange + "\nCurrent Level: " + EditLevelTo).queue();
             Database.connect();
             MongoCollection<Document> members = Database.getCollection("members");
             Document member = members.find(eq("memberId", memberID)).first();
@@ -288,8 +286,7 @@ public class EconomyUtilities {
                 //Gets the range and spits out a random number
                 GennedNum = rng.nextInt(maxRange - minRange) + minRange;
                 int PlayerNum = rng.nextInt(shinyChance);
-                int RNGNum = rng.nextInt(shinyChance);
-                isShiny = PlayerNum == RNGNum; // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
+                isShiny = 1 == PlayerNum; // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
                 for (Item sortedItem : sortedItems) {
                     count += Math.abs(sortedItem.drawChance); // 9 + 8 + 4 + 6 + 11 + 12
                     if (count >= GennedNum) { // adds together all terms from least to most until count is bigger than genned num THIS check when true will stop the loop
@@ -316,7 +313,6 @@ public class EconomyUtilities {
                         eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes " + Data.getPrefix() + "chest or " + Data.getPrefix() + "chest basic", Data.getSelfAvatar(event));
                         event.getChannel().sendMessage(eb.build()).queue();
                         eb.clear();
-                        event.getChannel().sendMessage("is shiny forced: " + forceShiny + "\nThe shiny number you rolled: " + PlayerNum + " The random number needed was: " + RNGNum +"\nThe chest re-open chance was " + repeatChance + " the number you rolled was: " + retryRNG).queue();
                         break;
                     }
                 }

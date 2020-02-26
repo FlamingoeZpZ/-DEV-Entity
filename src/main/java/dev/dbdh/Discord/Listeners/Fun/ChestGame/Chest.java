@@ -40,12 +40,10 @@ public class Chest extends ListenerAdapter {
     final int RARITY_LEGENDARY = 8;
 
     public static boolean isShiny;
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
-        Color color = new Color();
         Data data = new Data();
-        RoleCheck RC = new RoleCheck();
         EconomyUtilities ecu = new EconomyUtilities();
         EmbedBuilder eb = new EmbedBuilder();
 
@@ -107,20 +105,20 @@ public class Chest extends ListenerAdapter {
         Legendary.add(new Item("ExZiBytes Legendary", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/0/03/FulliconItems_willOWisp.png", TYPE_LEGENDARY, RARITY_LEGENDARY, 0));
         Legendary.add(new Item("Handsome Jack's Mask?", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/a/a3/FulliconItems_allHallowsEveLunchbox.png", TYPE_LEGENDARY, RARITY_LEGENDARY, 0));
 
-        if (args[0].equalsIgnoreCase(data.getPrefix() + "chest")) {
-            Database.connect();
-            if(ecu.isMemberInDB(event.getMember().getId())) {
+
+        if (args[0].equalsIgnoreCase(Data.getPrefix() + "chest") || args[0].equalsIgnoreCase(Data.getPrefix() + "inv") || args[0].equalsIgnoreCase(data.getPrefix() + "inventory")) {
+            if (ecu.isMemberInDB(event.getMember().getId())) {
                 if (event.getMessage().getChannel().equals(event.getGuild().getTextChannelById("632350945891581992"))) {
-                    if (args.length > 3) {
+                    if (args.length > 3 || !args[0].equalsIgnoreCase(Data.getPrefix() + "chest")) {
                         eb.setDescription("**You need to be more specific. These are the possible chests with usage:**\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameters] (Optional Parameters)\n" + Data.getPrefix() + "chest [chestname] (amount defaults to 1)\n for a bio of each chest, do " + Data.getPrefix() + "shop and find your chests ID\n" +
                                 "chests owned:\n\n" +
-                                "**>Basic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "BASIC_CHEST") + " (You may claim 1 for free every 5 minutes.)\n" +
+                                ">**Basic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "BASIC_CHEST") + " (You may claim 1 for free every 5 minutes.)\n" +
                                 ">Safety Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "SAFETY_CHEST") + "\n" +
                                 ">Glitch Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "GLITCH_CHEST") + "\n" +
                                 ">Shiny Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "SHINY_CHEST") + "\n" +
                                 ">Epic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "EPIC_CHEST") + "\n" +
                                 ">Legendary Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "LEGENDARY_CHEST") + "\n" +
-                                ">Godly Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "GODLY_CHEST" + "**"));
+                                ">Godly Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "GODLY_CHEST") + "**");
 
                         eb.setColor(Color.errorRed);
                         eb.setTimestamp(Instant.now());
@@ -130,16 +128,21 @@ public class Chest extends ListenerAdapter {
                         int chestCount;
                         String item;
                         //Segment determines which chest to retrieve, if only !~chest has been specified, it will ALWAYS return a basic chest
-                        if (args.length == 1){
+                        if (args.length == 1) {
                             chestCount = ecu.getItemCount(event.getMember().getUser().getId(), "BASIC_CHEST");
                             item = "BASIC";
-                        }
-                        else {
-                            item = args[1].toUpperCase();
-                            chestCount = ecu.getItemCount(event.getMember().getUser().getId(), item + "_CHEST"); // The amount of chests the person has
+                        } else {
+                            try {
+                                item = args[1].toUpperCase();
+                                chestCount = ecu.getItemCount(event.getMember().getUser().getId(), item + "_CHEST"); // The amount of chests the person has
+                            }
+                            catch (Exception E){
+                                item = "null";
+                                chestCount = 0;
+                            }
                         }
                         event.getChannel().sendMessage(item).queue();
-                        if(chestCount > 0 || item.equals("BASIC")) {
+                        if (chestCount > 0 || item.equals("BASIC") && args[0].equalsIgnoreCase(Data.getPrefix() + "chest")) {
                             switch (item) {
                                 case "BASIC":
                                     items.addAll(Bad);
@@ -221,24 +224,85 @@ public class Chest extends ListenerAdapter {
 
                                     ecu.openChest(event, eb, items, false, "godly", 40, true);
                                     break;
+                                case "CRATE": // Exception
+                                    Database.connect();
+                                    String chestGained = "";
+                                    int randomOpensRNG = rng.nextInt(1000);
+                                    int [] CG = {0,0,0,0,0,0,0};
+                                    int loops = 0;
+                                    if (randomOpensRNG < 300)
+                                        loops = 1;
+                                    else if (randomOpensRNG < 500)
+                                        loops = 2;
+                                    else if (randomOpensRNG < 700)
+                                        loops = 3;
+                                    else if (randomOpensRNG < 900)
+                                        loops = 4;
+                                    else if (randomOpensRNG < 975)
+                                        loops = 5;
+                                    else if (randomOpensRNG < 999)
+                                        loops = 10;
+                                    else
+                                        loops = 25;
+                                    eb.setTitle("Opening Chest Crate! " + event.getGuild().getEmoteById("573235478711500837").getAsMention());
+                                    eb.setDescription("You found :"+ loops + " inside this crate!");
+                                    for (; loops > 0; loops--) {
+                                        int randomChestRNG = rng.nextInt(100);
+                                        if (randomChestRNG < 30) {
+                                            chestGained = "BASIC_CHEST";
+                                            CG[0]++;
+                                        }
+                                        else if (randomChestRNG < 55) {
+                                            chestGained = "SAFETY_CHEST";
+                                            CG[1]++;
+                                        }
+                                        else if (randomChestRNG < 75){
+                                            chestGained = "GLITCH_CHEST";
+                                            CG[2]++;
+                                        }
+                                        else if (randomChestRNG < 90) {
+                                            chestGained = "SHINY_CHEST";
+                                            CG[3]++;
+                                        }
+                                        else if (randomChestRNG < 96){
+                                            chestGained = "EPIC_CHEST";
+                                            CG[4]++;
+                                        }
+                                        else if (randomChestRNG < 99) {
+                                            chestGained = "LEGENDARY_CHEST";
+                                            CG[5]++;
+                                        }
+                                        else {
+                                            chestGained = "GODLY_CHEST";
+                                            CG[6]++;
+                                        }
+                                        ecu.editItem(event.getMember().getId(), chestGained, 1);
+                                    }
+                                    ecu.editItem(event.getMember().getId(), "CRATE_CHEST", -1);
+                                    ecu.editHistoryItem(event.getMember().getId(), "CRATE_CHEST", 1);
+                                    Database.close();
+                                    eb.appendDescription("\n__Chests gained:__\nBasic: " + CG[0] + "\nSafety: " + CG[1] + "\nGlitch: " + CG[2] + "\nShiny: " + CG[3] + "\nEpic: " + CG[4] + "\nLegendary: " + CG[5] + "\nGodly: " + CG[6]);
+                                    eb.setColor(Color.successGreen);
+                                    eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes " + Data.getPrefix() + "chest or " + Data.getPrefix() + "chest basic", Data.getSelfAvatar(event));
+                                    event.getChannel().sendMessage(eb.build()).queue();
+                                    break;
                                 default:
-                                        eb.setDescription("**You need to be more specific. These are the possible chests with usage:**\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameters] (Optional Parameters)\n" + Data.getPrefix() + "chest [chestname] (amount defaults to 1)\n for a bio of each chest, do " + Data.getPrefix() + "shop and find your chests ID\n" +
-                                                "chests owned:\n\n" +
-                                                "**>Basic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "BASIC_CHEST") + " (You may claim 1 for free every 5 minutes.)\n" +
-                                                ">Safety Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "SAFETY_CHEST") + "\n" +
-                                                ">Glitch Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "GLITCH_CHEST") + "\n" +
-                                                ">Shiny Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "SHINY_CHEST") + "\n" +
-                                                ">Epic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "EPIC_CHEST") + "\n" +
-                                                ">Legendary Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "LEGENDARY_CHEST") + "\n" +
-                                                ">Godly Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "GODLY_CHEST" + "**"));
+                                    eb.setDescription("**You need to be more specific. These are the possible chests with usage:**\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameters] (Optional Parameters)\n" + Data.getPrefix() + "chest [chestname] (amount defaults to 1)\n for a bio of each chest, do " + Data.getPrefix() + "shop and find your chests ID\n" +
+                                            "chests owned:\n\n" +
+                                            "**>Basic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "BASIC_CHEST") + " (You may claim 1 for free every 5 minutes.)\n" +
+                                            ">Safety Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "SAFETY_CHEST") + "\n" +
+                                            ">Glitch Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "GLITCH_CHEST") + "\n" +
+                                            ">Shiny Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "SHINY_CHEST") + "\n" +
+                                            ">Epic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "EPIC_CHEST") + "\n" +
+                                            ">Legendary Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "LEGENDARY_CHEST") + "\n" +
+                                            ">Godly Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "GODLY_CHEST" + "**"));
                                     eb.setColor(Color.errorRed);
                                     eb.setTimestamp(Instant.now());
                                     eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes " + Data.getPrefix() + "chest or " + Data.getPrefix() + "chest basic", Data.getSelfAvatar(event));
                                     event.getChannel().sendMessage(eb.build()).queue();
                                     break;
                             }
-                        }
-                        else {
+                        } else {
                             eb.setDescription("You didn't have enough of " + args[1] + "chests!");
                             eb.setTimestamp(Instant.now());
                             eb.setFooter("Entity Chest Game | Free Basic Chests every 5 minutes " + Data.getPrefix() + "chest or " + Data.getPrefix() + "chest basic", Data.getSelfAvatar(event));
@@ -247,9 +311,7 @@ public class Chest extends ListenerAdapter {
                         }
                     }
                 }
-            }
-            else
-                {
+            } else {
                 eb.setTitle("UH OH! DATABASE ERROR!");
                 eb.setDescription("There was an error and we could not find you in our data base!\n We have now added you to the database... Sorry for the inconvenience! Please take this meme as compensation...");
                 eb.setColor(Color.errorRed);
@@ -257,7 +319,6 @@ public class Chest extends ListenerAdapter {
                 eb.setFooter("Please don't kill us... Love " + Data.getSelfName(event), Data.getSelfAvatar(event));
                 event.getChannel().sendMessage(eb.build()).queue();
             }
-            Database.close();
         }
     }
 
