@@ -22,7 +22,7 @@ public class Daily extends ListenerAdapter {
         EmbedBuilder eb = new EmbedBuilder();
         EmbedBuilder success = new EmbedBuilder();
         if (args[0].equalsIgnoreCase(Data.getPrefix() + "daily")) {
-            if (ecu.isCooldownReady(event.getMember().getUser().getId(), "daily")) {
+            if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "daily")) {
                 ecu.resetCooldown(event, event.getMember().getUser().getId(), "daily");
                 int upper = 1000;
                 int lower = 250;
@@ -38,8 +38,7 @@ public class Daily extends ListenerAdapter {
                 success.setTimestamp(Instant.now());
                 success.setFooter("Entity Daily Coin Allowance", Data.getSelfAvatar(event));
 
-                event.getChannel().sendMessage(eb.build()).queue(); //-> {
-             //       data.getLogChannel(event).sendMessage(success.build()).queue((msg) -> success.clear());
+                //       data.getLogChannel(event).sendMessage(success.build()).queue((msg) -> success.clear());
             //        message.delete().queueAfter(15, TimeUnit.SECONDS);
             //       eb.clear();
             //    });
@@ -50,11 +49,11 @@ public class Daily extends ListenerAdapter {
                 eb.setTimestamp(Instant.now());
                 eb.setFooter("Entity Daily Cooldown not ready", Data.getSelfAvatar(event));
 
-                event.getChannel().sendMessage(eb.build()).queue(); //-> {
-               //     message.delete().queueAfter(15, TimeUnit.SECONDS);
+                //     message.delete().queueAfter(15, TimeUnit.SECONDS);
                //     eb.clear();
               //  });
             }
+            event.getChannel().sendMessage(eb.build()).queue();
         }
     }
 }

@@ -26,7 +26,6 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
         Data data = new Data();
         EmbedBuilder eb = new EmbedBuilder();
         RoleCheck rc = new RoleCheck();
-        Database db = new Database();
         if(args[0].equalsIgnoreCase(data.getPrefix() + "rebuilddb")) {
             if (rc.isDeveloper(event)) {
                 Long unixTime = System.currentTimeMillis();
@@ -95,7 +94,7 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                 eb.setDescription("Added " + count + " members to the Dead by Daylight Hub Database, Thank you for letting us harvest your data!");
                 eb.setColor(color.getRandomColor());
                 eb.setTimestamp(Instant.now());
-                eb.setFooter("Entity Data Harvester", data.getSelfAvatar(event));
+                eb.setFooter("Entity Data Harvester", Data.getSelfAvatar(event));
 
                 event.getChannel().sendMessage(eb.build()).queueAfter(5, TimeUnit.SECONDS, ((message) -> {
                     eb.clear();
@@ -103,9 +102,9 @@ public class AddEveryoneToDatabase extends ListenerAdapter {
                 Database.close();
             }else {
                 eb.setDescription("You don't have the permissions to use this command");
-                eb.setColor(color.errorRed);
+                eb.setColor(Color.errorRed);
                 eb.setTimestamp(Instant.now());
-                eb.setFooter("Insufficient Permissions", data.getSelfAvatar(event));
+                eb.setFooter("Insufficient Permissions", Data.getSelfAvatar(event));
 
                 event.getChannel().sendMessage(eb.build()).queue((message) -> {
                     eb.clear();

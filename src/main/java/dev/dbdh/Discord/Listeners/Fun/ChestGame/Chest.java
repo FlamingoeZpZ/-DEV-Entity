@@ -157,7 +157,7 @@ public class Chest extends ListenerAdapter {
                                     items.addAll(Legendary);
                                     if (chestCount == 0) {
                                         //Make the free chest a random chest between like 5 different options w/ exponential odds
-                                        if (ecu.isCooldownReady(event.getMember().getUser().getId(), "freeChest")) {
+                                        if (ecu.isCooldownReady(event, event.getMember().getUser().getId(), "freeChest")) {
                                             eb.setDescription("You have redeemed your free chest!");
                                             ecu.openChest(event, eb, items, true, "basic", 10, false);
                                         } else {

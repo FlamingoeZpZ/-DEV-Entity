@@ -178,12 +178,15 @@ public class EconomyUtilities {
         return true;
     }
 
-    public boolean isCooldownReady(String memberID, String type) {
+    public boolean isCooldownReady(GuildMessageReceivedEvent event, String memberID, String type) {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members"); // make this segment public as a .getDBMember;
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeChest")) { //It's getting the cooldown time > 0 and then adding free chest cooldown??? which is bigger than current time?
             if ((member.getLong("freeBasicCooldown") + freeChestCooldownMili) <= System.currentTimeMillis()) {
+                String h = Long.toString(member.getLong("freeBasicCooldown")+ freeChestCooldownMili);
+                String k = Long.toString(System.currentTimeMillis());
+                event.getChannel().sendMessage("H: " + h + " <= K: " + k).queue();
                 Database.close();
                 return true;
             } else {
@@ -212,7 +215,7 @@ public class EconomyUtilities {
     }
     public void resetCooldown(GuildMessageReceivedEvent event, String memberID, String type){
         Database.connect();
-        MongoCollection<Document> members = db.getCollection("members");
+        MongoCollection<Document> members = Database.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeChest")){
             Bson newMemberDoc = new Document("freeBasicCooldown", System.currentTimeMillis());
