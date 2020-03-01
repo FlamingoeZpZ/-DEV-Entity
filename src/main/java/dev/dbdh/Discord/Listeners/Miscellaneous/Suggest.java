@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -20,7 +22,10 @@ import java.util.stream.Collectors;
 
 public class Suggest extends ListenerAdapter {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(Suggest.class);
+
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         Data data = new Data();
         Color color = new Color();
@@ -58,7 +63,7 @@ public class Suggest extends ListenerAdapter {
                     eb.setFooter("Entity Suggestions", data.getSelfAvatar(event));
                 } catch (IOException ex) {
                     event.getChannel().sendMessage("Well shit there was an error with this command tell " + event.getGuild().getMemberById("79693184417931264").getAsMention() + " he retarded").queue();
-                    ex.printStackTrace();
+                    LOGGER.error("A fatal error has occured: ", ex);
                 }
             }
         }
