@@ -31,7 +31,7 @@ public class Entity {
                 //Backend Listeners
                 new AddEveryoneToDatabase(),
                 new NameUpdate(),
-                new Nonexistant(),
+                //new Nonexistant(),
 
                 // Economy Listeners
                 new buildShop(),
