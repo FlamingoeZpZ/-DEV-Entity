@@ -15,6 +15,7 @@ import org.bson.Document;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -75,7 +76,7 @@ public class Warn extends ListenerAdapter {
                         db.connect();
                         MongoCollection<Document> members = db.getCollection("members");
                         BasicDBObject member = new BasicDBObject("memberId", mentioned.getUser().getId());
-                        BasicDBObject newWarning = new BasicDBObject("reason", reason).append("severityLevel", severity).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator());
+                        BasicDBObject newWarning = new BasicDBObject("reason", reason).append("severityLevel", severity).append("author", event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()).append("timestamp", new Date());
                         BasicDBObject updateDoc = new BasicDBObject("$push", new BasicDBObject("warnings", newWarning));
                         members.updateOne(member, updateDoc);
                         db.close();
