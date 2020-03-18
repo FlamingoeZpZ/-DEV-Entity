@@ -81,6 +81,18 @@ public class Data {
     public static String getSelfAvatar(ReadyEvent event) {
         return event.getJDA().getSelfUser().getEffectiveAvatarUrl();
     }
+
+    public String RandomTip(){
+        Random rng = new Random();
+        String [] tips = {
+                "You can retrieve a free basic chest every five minutes!",
+                "Daily rewards can be upgraded, and give coins and crate chests!",
+                "Special thanks to\nProgrammers: ExziByte and Flamingo\nArtists: Awexis, Handsome Jack and Mace-Face\nfor helping create me!",
+                "The entity was made "
+        };
+        return tips[rng.nextInt(tips.length)];
+    }
+
     public String intToTime(long milliInt){
         String phrase = "";
         long s = milliInt;

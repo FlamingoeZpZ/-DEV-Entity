@@ -21,11 +21,11 @@ public class Shop extends ListenerAdapter {
         int loops = 0;
         String itemName;
         EmbedBuilder eb = new EmbedBuilder();
+        int userNum = 0;
 
         //(prefix)shop [item] [buy/sell] [amount]
         if (Arrays.stream(al.shopAliases).anyMatch(args[0]::equalsIgnoreCase)) {
             Database.connect();
-            int userNum = 0;
             MongoCollection<Document> shopItems = Database.getCollection("shopItems");
             Document shopItem;
             MongoCollection<Document> members = Database.getCollection("members");
@@ -56,6 +56,7 @@ public class Shop extends ListenerAdapter {
                         eb.setDescription(shopItem.getString("description") + "\nCost: " + pay + "c");
                         eb.setColor(Color.darkSlateBlue);
                         eb.setFooter("Fatal error unknown item ~ " + Data.getSelfName(event), Data.getSelfAvatar(event));
+                        eb.setImage(shopItem.getString("image"));
                     } else {
                         eb.setTitle("__ERROR UNKNOWN ITEM ID__: " + args[1]);
                         eb.setDescription("Please enter a valid item, for a list of available items type: " + Data.getPrefix() + "shop. This server has: " + shopIndexes + " shop items.");

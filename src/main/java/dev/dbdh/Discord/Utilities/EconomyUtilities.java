@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import dev.dbdh.Discord.Listeners.Fun.ChestGame.Item;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -38,6 +39,58 @@ public class EconomyUtilities {
         Bson updateMemberDoc = new Document("$set", newMemberDoc);
         members.findOneAndUpdate(member, updateMemberDoc);
         Database.close();
+    }
+
+    public double getXPMultipliers(GuildMessageReceivedEvent event, int gameMode){
+        double Boost = 1; // Multiply by this number
+        Database.connect();
+        MongoCollection<Document> ServerEvent = Database.getCollection("event");
+        //Global boosters first
+        if(ServerEvent.countDocuments() > 0){
+           Document ServerBoost = ServerEvent.find(eq("ServerID", event.getGuild().getId())).first(); // Check if valid?
+           Document GlobalBoost = ServerEvent.find(eq("Master")).first(); // Check if valid?
+           Boost += ServerBoost.getInteger("Xmultiplier");
+           Boost += GlobalBoost.getInteger("Xmultiplier");
+        }
+        for (Role r : event.getMember().getRoles()){
+            switch (r.getId()) {
+                case "634878331728297996"://Adept
+                    Boost += 0.05;
+                    break;
+                case "552578223972810753"://Rank 1
+                    Boost += 0.1;
+                    break;
+                case "634879348767457281":// Entities Champion
+                    Boost += 0.15;
+                    break;
+                case "638944062736433173":// Nitro Booster
+                    Boost += 0.25;
+                    break;
+            }
+        }
+        /*
+        MongoCollection<Document> members = Database.getCollection("members");
+        MongoCollection<Document> shopItems = Database.getCollection("shopItems");
+
+        Document curMember = members.find(eq("memberId", event.getMember().getId())).first();
+        Document itemsDoc = (Document) curMember.get("items");
+        switch (gameMode){
+            case 0: // Chest
+                //Document shopItem = itemsDoc.getInteger()
+                break;
+            case 1: // Feed and Grow: Survivors
+                break;
+            case 2: // Lil' Killers
+                break;
+        }
+        */
+        Database.close();
+        return Boost;
+    }
+
+    public double getCoinMultipliers(){
+        double Boost = 1;
+        return Boost;
     }
 
     public void editXP(GuildMessageReceivedEvent event, String memberID, long xp) {
@@ -178,15 +231,12 @@ public class EconomyUtilities {
         return true;
     }
 
-    public boolean isCooldownReady(GuildMessageReceivedEvent event, String memberID, String type) {
+    public boolean isCooldownReady(String memberID, String type) {
         Database.connect();
         MongoCollection<Document> members = Database.getCollection("members"); // make this segment public as a .getDBMember;
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeChest")) { //It's getting the cooldown time > 0 and then adding free chest cooldown??? which is bigger than current time?
             if ((member.getLong("freeBasicCooldown") + freeChestCooldownMili) <= System.currentTimeMillis()) {
-                String h = Long.toString(member.getLong("freeBasicCooldown")+ freeChestCooldownMili);
-                String k = Long.toString(System.currentTimeMillis());
-                event.getChannel().sendMessage("H: " + h + " <= K: " + k).queue();
                 Database.close();
                 return true;
             } else {
@@ -215,7 +265,7 @@ public class EconomyUtilities {
     }
     public void resetCooldown(GuildMessageReceivedEvent event, String memberID, String type){
         Database.connect();
-        MongoCollection<Document> members = Database.getCollection("members");
+        MongoCollection<Document> members = db.getCollection("members");
         Document member = members.find(eq("memberId", memberID)).first();
         if(type.equalsIgnoreCase("freeChest")){
             Bson newMemberDoc = new Document("freeBasicCooldown", System.currentTimeMillis());
@@ -255,6 +305,8 @@ public class EconomyUtilities {
         int minRange = 0;
         int count;
         int retryRNG = 0;
+        int shinyChance = 1000; //(1 out of 1000)
+        int playerNum;
         //sorts the items
         for (Item item : items) {
             if (item.posOrNeg) {
@@ -282,28 +334,30 @@ public class EconomyUtilities {
             }
         }
         chestType = chestType.toUpperCase() + "_CHEST"; //SO all chests are recognized properly
-        int shinyChance = 1000; //(1 out of 1000)
+
         while (repeatChance >= retryRNG)
             {
                 count = minRange; // sets the count to the bottom of the list
                 //Gets the range and spits out a random number
                 GennedNum = rng.nextInt(maxRange - minRange) + minRange;
-                int PlayerNum = rng.nextInt(shinyChance);
-                isShiny = 1 == PlayerNum; // Sets shiny to a random POSITIVE value in the list making shiny bads impossible
+                playerNum = rng.nextInt(shinyChance);
                 for (Item sortedItem : sortedItems) {
                     count += Math.abs(sortedItem.drawChance); // 9 + 8 + 4 + 6 + 11 + 12
                     if (count >= GennedNum) { // adds together all terms from least to most until count is bigger than genned num THIS check when true will stop the loop
                         eb.setColor(Color.deepRed);
-                        if (isShiny || forceShiny) {
-                            eb.setColor(Color.gold);
-                            sortedItem.goldGain *= 4;
-                            sortedItem.xpGain *= 4;
-                            eb.appendDescription("\n\n***" + event.getAuthor().getAsMention() + " FOUND " + sortedItem.rarityString + "SHINY " + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP***");
-                        }
-                        else if (sortedItem.posOrNeg)
-                        {
-                            eb.setColor(Color.darkGreen);
-                            eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
+                        if(sortedItem.posOrNeg) { // Checks if the item is a bad (false) or good (true) item
+                            isShiny = 1 == playerNum; // Will only calculate if
+                            if (isShiny || forceShiny) {
+                                eb.setColor(Color.gold);
+                                sortedItem.goldGain *= 4;
+                                sortedItem.xpGain *= 4;
+                                eb.appendDescription("\n\n***" + event.getAuthor().getAsMention() + " FOUND " + sortedItem.rarityString + "SHINY " + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP***");
+                            }
+                            else // Runs default for if shiny is false
+                            {
+                                eb.setColor(Color.darkGreen);
+                                eb.appendDescription("\n\n" + event.getAuthor().getAsMention() + " found " + sortedItem.rarityString + sortedItem.name + event.getAuthor().getAsMention() + " earned " + sortedItem.goldGain + "c and " + sortedItem.xpGain + "XP");
+                            }
                         }
                         else
                         {
