@@ -1,19 +1,17 @@
 package dev.dbdh.Discord.Listeners.Fun.ChestGame;
 
-import com.mongodb.client.MongoCollection;
-import dev.dbdh.Discord.Utilities.*;
+import dev.dbdh.Discord.Utilities.Color;
+import dev.dbdh.Discord.Utilities.Data;
+import dev.dbdh.Discord.Utilities.Database;
+import dev.dbdh.Discord.Utilities.EconomyUtilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.bson.Document;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
-import static com.mongodb.client.model.Filters.eq;
 
 public class Chest extends ListenerAdapter {
 
@@ -108,6 +106,7 @@ public class Chest extends ListenerAdapter {
         if (args[0].equalsIgnoreCase(Data.getPrefix() + "chest")) {
             if (ecu.isMemberInDB(event.getMember().getId())) {
                 if (event.getMessage().getChannel().equals(event.getGuild().getTextChannelById("632350945891581992"))) {
+                    if(args.length > 2) // Added to remove issue w/ java where code in an if statement is all considered instead of finding 1 false and immediately being false
                     if (args.length > 3 || args[1].equalsIgnoreCase("help") || args[1].equalsIgnoreCase("inv") || args[1].equalsIgnoreCase("inventory") ) {
                         eb.setDescription("**You need to be more specific. These are the possible chests with usage:**\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameters] (Optional Parameters)\n" + Data.getPrefix() + "chest [chestname] (amount defaults to 1)\n for a bio of each chest, do " + Data.getPrefix() + "shop and find your chests ID\n" +
                                 "chests owned:\n\n" +
@@ -140,7 +139,6 @@ public class Chest extends ListenerAdapter {
                                 chestCount = 0;
                             }
                         }
-                        event.getChannel().sendMessage(item).queue();
                         if (chestCount > 0 || item.equals("BASIC") && args[0].equalsIgnoreCase(Data.getPrefix() + "chest")) {
                             switch (item) {
                                 case "BASIC":
