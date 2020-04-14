@@ -104,11 +104,11 @@ public class Chest extends ListenerAdapter {
         Legendary.add(new Item("Swarm of Flamingos̫", "https://imgur.com/a/J6WUmnj", TYPE_LEGENDARY, RARITY_LEGENDARY, 0));
         Legendary.add(new Item("ExZiBytes Legendary", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/0/03/FulliconItems_willOWisp.png", TYPE_LEGENDARY, RARITY_LEGENDARY, 0));
         Legendary.add(new Item("Handsome Jack's Mask?", "https://gamepedia.cursecdn.com/deadbydaylight_gamepedia_en/a/a3/FulliconItems_allHallowsEveLunchbox.png", TYPE_LEGENDARY, RARITY_LEGENDARY, 0));
-        
+
         if (args[0].equalsIgnoreCase(Data.getPrefix() + "chest")) {
             if (ecu.isMemberInDB(event.getMember().getId())) {
                 if (event.getMessage().getChannel().equals(event.getGuild().getTextChannelById("632350945891581992"))) {
-                    if (args.length > 3 || args[1].equalsIgnoreCase("help") || args[1].equalsIgnoreCase("inv") || args[1].equalsIgnoreCase("inventory") ) {
+                    if (args.length >= 3 || args[1].equalsIgnoreCase("help") || args[1].equalsIgnoreCase("inv") || args[1].equalsIgnoreCase("inventory") ) {
                         eb.setDescription("**You need to be more specific. These are the possible chests with usage:**\n`Basic | Safety | Glitch | Shiny | Epic | Legendary | Godly`\n [Required Parameters] (Optional Parameters)\n" + Data.getPrefix() + "chest [chestname] (amount defaults to 1)\n for a bio of each chest, do " + Data.getPrefix() + "shop and find your chests ID\n" +
                                 "chests owned:\n\n" +
                                 ">**Basic Chests: " + ecu.getItemCount(event.getMember().getUser().getId(), "BASIC_CHEST") + " (You may claim 1 for free every 5 minutes.)\n" +
